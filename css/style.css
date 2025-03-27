@@ -1,0 +1,969 @@
+/* Подключение локальных шрифтов Roboto Condensed */
+@font-face {
+    font-family: 'Roboto Condensed';
+    font-style: normal;
+    font-weight: 100;
+    font-display: swap;
+    src: url('../fonts/roboto-condensed/static/RobotoCondensed-Thin.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'Roboto Condensed';
+    font-style: normal;
+    font-weight: 200;
+    font-display: swap;
+    src: url('../fonts/roboto-condensed/static/RobotoCondensed-ExtraLight.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'Roboto Condensed';
+    font-style: normal;
+    font-weight: 300;
+    font-display: swap;
+    src: url('../fonts/roboto-condensed/static/RobotoCondensed-Light.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'Roboto Condensed';
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
+    src: url('../fonts/roboto-condensed/static/RobotoCondensed-Regular.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'Roboto Condensed';
+    font-style: normal;
+    font-weight: 500;
+    font-display: swap;
+    src: url('../fonts/roboto-condensed/static/RobotoCondensed-Medium.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'Roboto Condensed';
+    font-style: normal;
+    font-weight: 600;
+    font-display: swap;
+    src: url('../fonts/roboto-condensed/static/RobotoCondensed-SemiBold.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'Roboto Condensed';
+    font-style: normal;
+    font-weight: 700;
+    font-display: swap;
+    src: url('../fonts/roboto-condensed/static/RobotoCondensed-Bold.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'Roboto Condensed';
+    font-style: normal;
+    font-weight: 800;
+    font-display: swap;
+    src: url('../fonts/roboto-condensed/static/RobotoCondensed-ExtraBold.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'Roboto Condensed';
+    font-style: normal;
+    font-weight: 900;
+    font-display: swap;
+    src: url('../fonts/roboto-condensed/static/RobotoCondensed-Black.ttf') format('truetype');
+}
+
+/* Подключение шрифта Alata */
+@font-face {
+    font-family: 'Alata';
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
+    src: url('../fonts/alata/Alata-Regular.ttf') format('truetype');
+}
+
+:root {
+    /* ======= БАЗОВЫЕ ЦВЕТА ======= */
+    --color-dark-teal: #005931;
+    --color-light-green: #A1FF8E;
+    --color-bright-green: #18BF00;
+    --color-magenta: #DC00BB;
+    --color-white: #FFFFFF;
+    --color-black: #000000;
+    --color-turquoise: #5cfde2;
+    --color-purple: #A70097;
+    
+    /* ======= НАСТРОЙКИ ШАПКИ И ОБЩИЕ ======= */
+    --body-bg-color: var(--color-white);  /* Фон страницы */
+    --body-padding-top: 2rem;             /* Отступ шапки от верха */
+    --body-padding-sides: 1.5rem;         /* Боковые отступы */
+    
+    /* ======= ШРИФТЫ ======= */
+    --base-font-size: 16px;               /* Базовый размер шрифта */
+    --font-primary: 'Roboto Condensed', sans-serif;  /* Основной шрифт */
+    --font-logo: 'Alata', sans-serif;     /* Шрифт для логотипа Faberlic */
+    
+    /* ======= ЖИРНОСТЬ ШРИФТА ======= */
+    /* Доступные значения жирности для Roboto Condensed: 
+       100 (Thin) - самый тонкий
+       200 (ExtraLight) - очень тонкий
+       300 (Light) - светлый
+       400 (Regular) - обычный (стандартный)
+       500 (Medium) - средний
+       600 (SemiBold) - полужирный
+       700 (Bold) - жирный
+       800 (ExtraBold) - очень жирный
+       900 (Black) - сверхжирный
+    */
+    --font-weight-thin: 100;              /* Самый тонкий шрифт (Thin) */
+    --font-weight-light: 300;             /* Светлый шрифт (Light) */
+    --font-weight-normal: 400;            /* Обычная жирность (Regular) */
+    --font-weight-medium: 500;            /* Средняя жирность (Medium) */
+    --font-weight-semibold: 600;          /* Полужирный шрифт (SemiBold) */
+    --font-weight-bold: 700;              /* Жирный шрифт (Bold) */
+    --font-weight-black: 900;             /* Сверхжирный шрифт (Black) */
+    
+    /* ======= КОНТЕЙНЕР ======= */
+    --container-desktop-width: 60%;       /* Ширина контейнера на десктопе */
+    --container-1200-width: 65%;          /* Ширина при 1024-1200px */
+    --container-1024-width: 70%;          /* Ширина при 900-1024px */
+    --container-900-width: 75%;           /* Ширина при 768-900px */
+    --container-768-width: 80%;           /* Ширина при 600-768px */
+    --container-600-width: 90%;           /* Ширина при 480-600px */
+    --container-mobile-width: 100%;       /* Ширина на мобильных (<480px) */
+    --container-max-width: 1200px;        /* Максимальная ширина контейнера */
+    
+    /* ======= ЗЕЛЕНАЯ КАРТОЧКА ======= */
+    --card-bg-color: var(--color-light-green);    /* Фон карточки */
+    --card-border-color: var(--color-magenta);    /* Цвет рамки карточки */
+    --card-border-width: 2px;                     /* Толщина рамки */
+    --card-border-radius: 0.5rem;                 /* Скругление углов */
+    --card-min-height: 120px;                     /* Мин. высота карточки */
+    --card-min-height-tablet: 100px;              /* Мин. высота на планшетах */
+    --card-padding: 1.5rem;                       /* Отступы внутри карточки */
+    --card-padding-top: calc(1.5rem + 2rem);      /* Верхний отступ для помещения даты и логотипа */
+    --card-padding-tablet: 1rem;                  /* Отступы на планшете */
+    --card-padding-top-tablet: calc(1rem + 2rem); /* Верхний отступ на планшете */
+    
+    /* ======= АКЦИОННАЯ ДАТА (До 20 апреля) ======= */
+    --date-text-color: var(--color-magenta);      /* Цвет текста даты */
+    --date-font-size: 1.2rem;                     /* Размер шрифта даты */
+    --date-font-weight: var(--font-weight-normal); /* Жирность шрифта даты */
+    --date-position-top: 1rem;                    /* Отступ сверху */
+    --date-position-left: 1.5rem;                 /* Отступ слева */
+    --date-max-width: 45%;                        /* Макс. ширина текста */
+    --date-line-height: 1.2;                      /* Высота строки */
+    
+    /* ======= ЛОГОТИП FABERLIC ======= */
+    --logo-text-color: var(--color-magenta);      /* Цвет логотипа */
+    --logo-font-size: 1.5rem;                     /* Размер шрифта логотипа */
+    --logo-font-weight: normal;                   /* Жирность шрифта логотипа */
+    --logo-position-top: 0.7rem;                  /* Отступ сверху */
+    --logo-position-right: 1.5rem;                /* Отступ справа */
+    --logo-max-width: 45%;                        /* Макс. ширина */
+    --logo-line-height: 1.2;                      /* Высота строки */
+    
+    /* ======= ОСНОВНОЙ ТЕКСТ ПРЕДЛОЖЕНИЯ ======= */
+    --offer-text-color: var(--color-dark-teal);   /* Цвет основного текста */
+    --offer-font-size: 1.5rem;                    /* Размер шрифта */
+    --offer-font-size-tablet: 1rem;               /* Размер на планшете */
+    --offer-font-weight: var(--font-weight-normal); /* Жирность шрифта предложения */
+    --offer-max-width: 60%;                       /* Макс. ширина */
+    --offer-max-width-tablet: 55%;                /* Макс. ширина на планшете */
+    --offer-margin-right: 1rem;                   /* Отступ справа (увеличен с 0.5rem) */
+    
+    /* ======= ЦЕНА ======= */
+    --price-bg-color: linear-gradient(90deg, var(--color-magenta) 0%, #FF3DCE 50%, var(--color-magenta) 100%);  /* Градиент для блока цены */
+    --price-text-color: var(--color-white);       /* Цвет текста цены */
+    --price-font-size: 1.7rem;                    /* Размер шрифта цены */
+    --price-font-size-tablet: 1.2rem;             /* Размер на планшете */
+    --price-font-weight: var(--font-weight-light); /* Жирность шрифта цены */
+    --price-padding-x: 0.3rem;                    /* Горизонтальный отступ - увеличиваем для лучшего вида */
+    --price-padding-y: 0.2rem;                    /* Вертикальный отступ - увеличиваем для лучшего вида */
+    --price-border-radius: 0.5rem;                /* Скругление углов - увеличиваем для более современного вида */
+    --price-letter-spacing: 0.5px;                /* Межбуквенный интервал */
+    
+    /* ======= ПОЛОСКА "АКЦИЯ" ======= */
+    --promo-bg-color: linear-gradient(90deg, var(--color-purple) 0%, var(--color-magenta) 35%, #FF3DCE 65%, var(--color-purple) 100%);  /* Градиент для полоски "Акция" */
+    --promo-text-color: var(--color-white);       /* Цвет текста "Акция" */
+    --promo-font-size: 1.5rem;                    /* Размер шрифта */
+    --promo-font-weight: var(--font-weight-light); /* Жирность шрифта акции */
+    --promo-padding: 0.75rem;                     /* Внутренний отступ */
+    --promo-border-radius: 0.5rem;                /* Скругление углов */
+    --promo-margin-bottom: 0.5rem;                /* Отступ снизу */
+    --promo-line-height: 1.5;                     /* Высота строки */
+    
+    /* =============================================
+       ======== НАСТРОЙКИ ТАЙМЕРА ================
+       =============================================*/
+    
+    /* ======= ТАЙМЕР: ОСНОВНОЙ КОНТЕЙНЕР ======= */
+    --timer-bg-color: var(--color-turquoise);    /* Фон всего таймера (бирюзовый) */
+    --timer-border-radius: 1.25rem;              /* Скругление углов таймера */
+    --timer-margin: 0 auto;                      /* Отступы для центрирования */
+    --timer-margin-top: 1rem;                    /* Верхний отступ таймера */
+    
+    /* Отступы внутри таймера */
+    --timer-padding-desktop: 1.5rem 1.5rem 2rem;   /* Отступы на десктопе */
+    --timer-padding-tablet: 1.2rem 1.2rem 1.8rem;  /* Отступы на планшете */
+    --timer-padding-small: 1rem 1rem 1.5rem;       /* Отступы на маленьких экранах */
+    --timer-padding-mobile: 0.8rem 0.8rem 1.2rem;  /* Отступы на мобильных */
+    
+    /* ======= ТАЙМЕР: ЗАГОЛОВОК ======= */
+    --timer-header-color: var(--color-purple);     /* Цвет заголовка таймера */
+    --timer-header-font-size: 1.5rem;             /* Размер шрифта заголовка */
+    --timer-header-font-size-tablet: calc(var(--timer-header-font-size) * 0.9);  /* Размер на планшете */
+    --timer-header-font-size-mobile: calc(var(--timer-header-font-size) * 0.85); /* Размер на мобильном */
+    --timer-header-margin-bottom: 1.25rem;        /* Отступ снизу */
+    --timer-header-margin-mobile: calc(var(--timer-header-margin-bottom) * 0.8); /* Отступ на мобильном */
+    --timer-header-font-style: italic;            /* Стиль шрифта (курсив, нормальный) */
+    --timer-header-font-weight: var(--font-weight-normal); /* Жирность */
+    
+    /* ======= ТАЙМЕР: БЛОКИ И РАСПОЛОЖЕНИЕ ======= */
+    --timer-blocks-gap: var(--timer-gap, 1rem);           /* Отступ между блоками дни/часы/минуты/секунды */
+    --timer-blocks-gap-tablet: 0.8rem;            /* Отступ на планшете */
+    --timer-blocks-gap-mobile: 0.6rem;            /* Отступ на мобильном */
+    --timer-digit-gap: 0.5rem;                    /* Отступ между цифрами внутри блока */
+    --timer-digit-gap-tablet: 0.3rem;             /* Отступ между цифрами на планшете */
+    --timer-digit-gap-mobile: 0.2rem;             /* Отступ между цифрами на мобильном */
+    --timer-digit-gap-xs: 0.15rem;                /* Отступ между цифрами на очень маленьких экранах */
+    
+    /* Сетка 2х2 для маленьких экранов */
+    --timer-grid-width: 90%;                      /* Ширина сетки блоков таймера */
+    --timer-grid-width-mobile: 95%;               /* Ширина сетки на маленьких экранах */
+    
+    /* ======= ТАЙМЕР: ЦИФРЫ ======= */
+    /* Цвета цифр и блоков */
+    --digit-bg-color: var(--color-light-green);   /* Цвет верхнего прямоугольника */
+    --digit-back-color: var(--color-bright-green); /* Цвет нижнего прямоугольника */
+    --digit-color: var(--color-dark-teal);        /* Цвет текста цифр */
+    
+    /* Размеры цифровых блоков */
+    --digit-width: 3.5rem;                        /* Ширина блока цифры */
+    --digit-height: 4.2rem;                       /* Высота блока цифры */
+    --digit-width-tablet: 2.6rem;                 /* Ширина на планшете */
+    --digit-height-tablet: 3.4rem;                /* Высота на планшете */
+    --digit-width-small: calc(var(--digit-width-tablet) * 0.85); /* Ширина на маленьких экранах */
+    --digit-height-small: calc(var(--digit-height-tablet) * 0.85); /* Высота на маленьких экранах */
+    --digit-width-mobile: 2.2rem;                 /* Ширина на мобильном */
+    --digit-height-mobile: 2.8rem;                /* Высота на мобильном */
+    
+    /* Шрифт цифр */
+    --digit-font-size: 2.2rem;                    /* Размер шрифта цифр */
+    --digit-font-size-tablet: calc(var(--digit-font-size) * 0.85); /* Размер на планшете */
+    --digit-font-size-small: calc(var(--digit-font-size) * 0.7);   /* Размер на маленьких экранах */
+    --digit-font-size-mobile: calc(var(--digit-font-size) * 0.55); /* Размер на мобильном */
+    --digit-font-weight: var(--font-weight-bold); /* Жирность шрифта цифр */
+    
+    /* Стиль цифровых блоков */
+    --digit-border-radius: 0.7rem;                /* Скругление углов цифровых блоков */
+    --digit-offset: 0.3rem;                       /* Смещение верхнего прямоугольника от нижнего для 3D-эффекта */
+    
+    /* ======= ТАЙМЕР: РАЗДЕЛИТЕЛИ (ДВОЕТОЧИЯ) ======= */
+    --separator-color: var(--digit-color);        /* Цвет разделительных двоеточий */
+    --separator-font-weight: var(--font-weight-bold); /* Жирность двоеточий */
+    
+    /* Размер двоеточий на разных устройствах */
+    --separator-font-size: 1.8rem;                /* Размер двоеточий на десктопе */
+    --separator-font-size-tablet: 1.6rem;         /* Размер на планшете */
+    --separator-font-size-small: 1.4rem;          /* Размер на маленьких экранах */
+    --separator-font-size-mobile: 1.2rem;         /* Размер на мобильных */
+    
+    /* Позиционирование двоеточий */
+    --separator-offset: 0.3rem;                   /* Горизонтальное смещение от края */
+    --separator-offset-tablet: 0.2rem;            /* Смещение на планшете */
+    
+    /* ======= ТАЙМЕР: ПОДПИСИ (ДНИ, ЧАСЫ и т.д.) ======= */
+    --label-color: var(--color-dark-teal);            /* Цвет подписей под блоками таймера */
+    --label-font-size: 1rem;                      /* Размер шрифта подписей */
+    --label-font-size-tablet: 0.9rem;             /* Размер на планшете */
+    --label-font-size-mobile: 0.75rem;            /* Размер на мобильных */
+    --label-margin-top: 0.5rem;                   /* Отступ сверху */
+    --label-font-weight: var(--font-weight-normal); /* Жирность подписей */
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    font-size: var(--base-font-size);
+    font-family: var(--font-primary);
+}
+
+body {
+    background-color: var(--body-bg-color);
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    min-height: 100vh;
+    padding: var(--body-padding-sides);
+    padding-top: var(--body-padding-top);
+}
+
+.container {
+    width: var(--container-desktop-width);
+    max-width: var(--container-max-width);
+    margin: 0 auto;
+}
+
+/* Карточка с предложением */
+.offer-card {
+    background-color: var(--card-bg-color);
+    border-radius: var(--card-border-radius);
+    padding: var(--card-padding);
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    border: var(--card-border-width) solid var(--card-border-color);
+    margin-bottom: var(--promo-margin-bottom);
+    width: 100%;
+    min-height: var(--card-min-height);
+    height: auto;
+    justify-content: space-between;
+    overflow: hidden;
+    padding-top: var(--card-padding-top);
+}
+
+/* ТЕКСТ: "До 20 апреля!" - верхний левый текст в карточке */
+.offer-text {
+    color: var(--date-text-color);
+    font-size: var(--date-font-size);
+    font-weight: var(--date-font-weight);
+    font-family: var(--font-primary);
+    position: absolute;
+    top: var(--date-position-top);
+    left: var(--date-position-left);
+    max-width: var(--date-max-width);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    line-height: var(--date-line-height);
+}
+
+.offer-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end; /* Выравнивание по нижнему краю */
+    margin-top: auto;
+    width: 100%;
+    flex-wrap: nowrap; /* Предотвращает перенос блоков при уменьшении ширины */
+}
+
+/* ТЕКСТ: "Набор всего за" - часть с основным текстом предложения */
+.offer-title {
+    color: var(--offer-text-color);
+    font-size: var(--offer-font-size);
+    font-weight: var(--offer-font-weight);
+    font-family: var(--font-primary);
+    max-width: var(--offer-max-width);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin-right: 2rem !important; /* Значительно увеличиваем отступ и делаем его приоритетным */
+    display: inline-flex;
+    align-items: flex-end; /* Выравнивание по нижнему краю */
+    line-height: 1; /* Для лучшего выравнивания */
+}
+
+/* Анимация для блока с ценой */
+@keyframes priceGlow {
+    0% {
+        box-shadow: inset 0 0 5px rgba(220, 0, 187, 0.4);
+        background-position: 0% 50%;
+    }
+    50% {
+        box-shadow: inset 0 0 8px rgba(255, 255, 255, 0.6);
+        background-position: 100% 50%;
+    }
+    100% {
+        box-shadow: inset 0 0 5px rgba(220, 0, 187, 0.4);
+        background-position: 0% 50%;
+    }
+}
+
+/* Анимация для текста цены */
+@keyframes priceTextShine {
+    0% {
+        text-shadow: 0 0 2px rgba(255, 255, 255, 0.8);
+        color: var(--price-text-color);
+    }
+    50% {
+        text-shadow: 0 0 5px rgba(255, 255, 255, 1), 0 0 8px rgba(255, 255, 255, 0.8);
+        color: #ffffff;
+    }
+    100% {
+        text-shadow: 0 0 2px rgba(255, 255, 255, 0.8);
+        color: var(--price-text-color);
+    }
+}
+
+/* ТЕКСТ: "31.08 BYN" - цена в цветном блоке */
+.price {
+    background: var(--price-bg-color);
+    background-size: 200% 200%;
+    color: var(--price-text-color);
+    padding: var(--price-padding-y) var(--price-padding-x);
+    border-radius: var(--price-border-radius);
+    display: inline-flex;
+    align-items: center; /* Выравнивание по центру */
+    justify-content: center; /* Горизонтальное выравнивание */
+    font-size: var(--price-font-size);
+    font-weight: var(--price-font-weight);
+    font-family: var(--font-primary);
+    white-space: nowrap;
+    letter-spacing: var(--price-letter-spacing);
+    flex-shrink: 0;
+    min-width: min-content;
+    animation: priceGlow 3s ease-in-out infinite, priceTextShine 3s ease-in-out infinite;
+    transition: transform 0.3s ease;
+    overflow: hidden; /* Ограничиваем свечение границами элемента */
+    line-height: 1; /* Для предотвращения проблем с выравниванием */
+}
+
+.price:hover {
+    transform: scale(1.05);
+    animation-duration: 1.5s;
+}
+
+/* ТЕКСТ: "Faberlic" - логотип/бренд в правом верхнем углу */
+.brand {
+    color: var(--logo-text-color);
+    font-size: var(--logo-font-size);
+    font-weight: var(--logo-font-weight);
+    font-family: var(--font-logo);
+    position: absolute;
+    top: var(--logo-position-top);
+    right: var(--logo-position-right);
+    max-width: var(--logo-max-width);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-align: right;
+    line-height: var(--logo-line-height);
+}
+
+/* Добавляем анимацию градиента для полоски "Акция" */
+@keyframes gradientMove {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+/* Полоска с "Акция" */
+.promo-bar {
+    background: var(--promo-bg-color);
+    background-size: 200% 200%;
+    animation: gradientMove 5s ease infinite;
+    padding: var(--promo-padding);
+    margin-bottom: var(--promo-margin-bottom);
+    border-radius: var(--promo-border-radius);
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+/* ТЕКСТ: "Акция" - бегущая строка */
+.promo-text {
+    color: var(--promo-text-color);
+    font-size: var(--promo-font-size);
+    font-weight: var(--promo-font-weight);
+    font-family: var(--font-primary);
+    font-style: italic;
+    line-height: var(--promo-line-height);
+    display: block;
+    text-align: center;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+/* Контейнер таймера */
+.countdown-timer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: var(--timer-margin-top);
+    position: relative;
+    background-color: var(--timer-bg-color);   /* Восстанавливаем бирюзовый фон таймера */
+    border-radius: var(--timer-border-radius); /* Скругление углов */
+    padding: var(--timer-padding-desktop);             /* Внутренние отступы */
+    text-align: center;
+    margin: var(--timer-margin);               /* Отступы для центрирования */
+    width: 100%;
+    overflow: hidden;                          /* Предотвращаем выход за границы */
+    box-sizing: border-box;                    /* Включаем padding в размер блока */
+}
+
+.timer-header {
+    font-size: var(--timer-header-font-size);
+    color: var(--timer-header-color);
+    font-weight: var(--timer-header-font-weight);
+    margin-bottom: var(--timer-header-margin-bottom);
+    text-align: center;
+}
+
+.timer-blocks {
+    display: flex;
+    justify-content: center;
+    gap: var(--timer-blocks-gap);
+    margin: 0;
+    padding: 0;
+    flex-wrap: nowrap; /* Гарантируем отсутствие переноса */
+    width: 100%;
+    position: relative; /* Для позиционирования разделителей */
+}
+
+/* Добавляем разделители между блоками времени */
+.timer-block {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 0;
+    padding: 0;
+    position: relative; /* Для добавления разделителей */
+}
+
+/* Добавляем разделительные двоеточия между блоками */
+.timer-block:not(:last-child)::after {
+    content: ":";
+    position: absolute;
+    right: calc(-1 * var(--timer-blocks-gap) / 2 - var(--separator-offset));
+    top: calc(var(--digit-height) / 2 - 0.8rem);
+    font-size: var(--separator-font-size);
+    font-weight: var(--separator-font-weight);
+    color: var(--separator-color);
+}
+
+.timer-unit {
+    display: flex;
+    gap: var(--timer-digit-gap);
+}
+
+.timer-label {
+    font-size: var(--label-font-size);
+    color: var(--label-color);
+    font-weight: var(--label-font-weight);
+    margin-top: var(--label-margin-top);
+    text-align: center;
+}
+
+.timer-digit {
+    position: relative;
+    width: var(--digit-width);
+    height: var(--digit-height);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: visible;
+}
+
+.timer-digit-front, .timer-digit-back {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    border-radius: var(--digit-border-radius);
+    background-color: var(--digit-bg-color);
+}
+
+/* Уменьшаем смещение зеленых блоков, чтобы не выходили за границы */
+.timer-digit-back {
+    top: calc(var(--digit-offset) * 0.8);
+    left: calc(var(--digit-offset) * 0.8);
+    background-color: var(--digit-back-color);
+    z-index: 1;
+}
+
+.timer-digit-front {
+    z-index: 2;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.timer-digit span {
+    font-size: var(--digit-font-size);
+    color: var(--digit-color);
+    font-weight: var(--digit-font-weight);
+    position: relative;
+    z-index: 3;
+    width: 1em; /* Фиксированная ширина для каждой цифры */
+    text-align: center;
+    line-height: 1; /* Предотвращает дергание по вертикали */
+}
+
+/* Медиа-запросы для адаптации разделителей на разных устройствах */
+@media (max-width: 768px) {
+    .countdown-timer {
+        padding: var(--timer-padding-tablet);
+    }
+    
+    .timer-block:not(:last-child)::after {
+        right: calc(-1 * var(--timer-blocks-gap-tablet) / 2 - 0.2rem);
+        top: calc(var(--digit-height-tablet) / 2 - 0.7rem); /* Скорректировано положение */
+        font-size: var(--separator-font-size-tablet);
+    }
+}
+
+@media (max-width: 600px) {
+    .container {
+        width: var(--container-600-width);
+    }
+    
+    :root {
+        --base-font-size: 16px;
+    }
+    
+    /* Перегруппировка таймера в сетку 2×2 */
+    .timer-blocks {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        grid-template-rows: repeat(2, auto);
+        gap: var(--timer-blocks-gap-mobile);
+        justify-items: center;
+        width: var(--timer-grid-width-mobile);
+        margin: 0 auto;
+    }
+    
+    .countdown-timer {
+        padding: var(--timer-padding-small);
+    }
+    
+    /* Добавляем разделитель между днями и часами (первый и второй блоки) */
+    .timer-block:first-child::after {
+        content: ":";
+        display: block;
+        position: absolute;
+        right: -50%; /* Смещаем на половину расстояния между ячейками */
+        top: 50%; /* Размещаем по вертикальному центру */
+        transform: translate(50%, -50%); /* Центрируем по обеим осям */
+        font-size: var(--separator-font-size-mobile);
+        font-weight: var(--separator-font-weight);
+        color: var(--separator-color);
+    }
+    
+    /* Добавляем разделитель между минутами и секундами (третий и четвертый блоки) */
+    .timer-block:nth-child(3)::after {
+        content: ":";
+        display: block;
+        position: absolute;
+        right: -50%; /* Смещаем на половину расстояния между ячейками */
+        top: 50%; /* Размещаем по вертикальному центру */
+        transform: translate(50%, -50%); /* Центрируем по обеим осям */
+        font-size: var(--separator-font-size-mobile);
+        font-weight: var(--separator-font-weight);
+        color: var(--separator-color);
+    }
+    
+    /* Еще больше уменьшаем размер ячеек */
+    .timer-digit {
+        width: var(--digit-width-small);
+        height: var(--digit-height-small);
+    }
+    
+    .timer-digit span {
+        font-size: var(--digit-font-size-mobile);
+    }
+    
+    /* Скрываем стандартные разделители при перегруппировке в сетку 2×2 */
+    .timer-block:not(:last-child)::after {
+        content: "";
+        display: none;
+    }
+}
+
+@media (max-width: 480px) {
+    :root {
+        --base-font-size: 15px;
+    }
+    
+    body {
+        padding: var(--card-padding-tablet);
+    }
+    
+    .container {
+        width: var(--container-mobile-width);
+    }
+    
+    .offer-card {
+        height: auto;
+        min-height: var(--card-min-height);
+        padding: var(--card-padding-tablet);
+        padding-top: var(--card-padding-top-tablet);
+    }
+    
+    .offer-content {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.625rem;
+        margin-bottom: var(--promo-margin-bottom);
+    }
+    
+    .offer-title {
+        max-width: 100%;
+        margin-right: 0; /* Сброс правого отступа в мобильной версии */
+    }
+    
+    /* Адаптация сетки 2×2 для маленьких экранов */
+    .timer-blocks {
+        gap: var(--timer-digit-gap-xs);
+        width: var(--timer-grid-width-mobile);
+    }
+    
+    .countdown-timer {
+        padding: var(--timer-padding-mobile);
+    }
+    
+    /* Подправляем разделители для маленьких экранов */
+    .timer-block:first-child::after,
+    .timer-block:nth-child(3)::after {
+        font-size: var(--separator-font-size-mobile);
+        /* Сохраняем центрирование, меняя только размер шрифта */
+    }
+    
+    /* Максимально уменьшаем размер ячеек */
+    .timer-digit {
+        width: var(--digit-width-mobile);
+        height: var(--digit-height-mobile);
+    }
+    
+    .timer-digit span {
+        font-size: var(--digit-font-size-mobile);
+    }
+    
+    .timer-header {
+        font-size: var(--timer-header-font-size-mobile);
+        margin-bottom: var(--timer-header-margin-mobile);
+    }
+    
+    .timer-label {
+        font-size: var(--label-font-size-mobile);
+    }
+    
+    .timer-unit {
+        gap: var(--timer-digit-gap-mobile);
+    }
+}
+
+/* Основные медиа-запросы с постепенным увеличением ширины контейнера */
+@media (max-width: 1200px) {
+    .container {
+        width: var(--container-1200-width);
+    }
+}
+
+@media (max-width: 1024px) {
+    .container {
+        width: var(--container-1024-width);
+    }
+}
+
+@media (max-width: 900px) {
+    .container {
+        width: var(--container-900-width);
+    }
+    
+    :root {
+        --base-font-size: 16px;
+    }
+}
+
+@media (max-width: 768px) {
+    :root {
+        --base-font-size: 16px;
+    }
+    
+    .container {
+        width: var(--container-768-width);
+    }
+    
+    .offer-card {
+        min-height: var(--card-min-height-tablet);
+        height: auto;
+        padding: var(--card-padding-tablet);
+        padding-top: var(--card-padding-top-tablet);
+    }
+    
+    /* Корректировка размеров текста для лучшей читаемости */
+    .offer-title {
+        max-width: var(--offer-max-width-tablet);
+        font-size: var(--offer-font-size-tablet);
+    }
+    
+    .price {
+        font-size: var(--price-font-size-tablet);
+        padding: var(--price-padding-y) var(--price-padding-x);
+    }
+    
+    /* Уменьшаем размер ячеек для таймера */
+    .timer-digit {
+        width: var(--digit-width-tablet);
+        height: var(--digit-height-tablet);
+    }
+    
+    .timer-digit span {
+        font-size: var(--digit-font-size-tablet);
+    }
+    
+    /* Уменьшаем отступы для блоков таймера */
+    .timer-unit {
+        gap: var(--timer-blocks-gap-tablet);
+    }
+}
+
+@media (max-width: 600px) {
+    .container {
+        width: var(--container-600-width);
+    }
+    
+    :root {
+        --base-font-size: 16px;
+    }
+    
+    /* Перегруппировка таймера в сетку 2×2 */
+    .timer-blocks {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        grid-template-rows: repeat(2, auto);
+        gap: var(--timer-blocks-gap-mobile);
+        justify-items: center;
+        width: var(--timer-grid-width-mobile);
+        margin: 0 auto;
+    }
+    
+    .countdown-timer {
+        padding: var(--timer-padding-small);
+    }
+    
+    /* Добавляем разделитель между днями и часами (первый и второй блоки) */
+    .timer-block:first-child::after {
+        content: ":";
+        display: block;
+        position: absolute;
+        right: -50%; /* Смещаем на половину расстояния между ячейками */
+        top: 50%; /* Размещаем по вертикальному центру */
+        transform: translate(50%, -50%); /* Центрируем по обеим осям */
+        font-size: var(--separator-font-size-mobile);
+        font-weight: var(--separator-font-weight);
+        color: var(--separator-color);
+    }
+    
+    /* Добавляем разделитель между минутами и секундами (третий и четвертый блоки) */
+    .timer-block:nth-child(3)::after {
+        content: ":";
+        display: block;
+        position: absolute;
+        right: -50%; /* Смещаем на половину расстояния между ячейками */
+        top: 50%; /* Размещаем по вертикальному центру */
+        transform: translate(50%, -50%); /* Центрируем по обеим осям */
+        font-size: var(--separator-font-size-mobile);
+        font-weight: var(--separator-font-weight);
+        color: var(--separator-color);
+    }
+    
+    /* Еще больше уменьшаем размер ячеек */
+    .timer-digit {
+        width: var(--digit-width-small);
+        height: var(--digit-height-small);
+    }
+    
+    .timer-digit span {
+        font-size: var(--digit-font-size-mobile);
+    }
+    
+    .timer-unit {
+        gap: var(--timer-digit-gap-mobile);
+    }
+    
+    .timer-block {
+        margin: 0;
+        padding: 0;
+    }
+    
+    .timer-blocks {
+        padding: 0;
+    }
+    
+    /* Скрываем стандартные разделители при перегруппировке в сетку 2×2 */
+    .timer-block:not(:last-child)::after {
+        content: "";
+        display: none;
+    }
+}
+
+@media (max-width: 480px) {
+    :root {
+        --base-font-size: 15px;
+    }
+    
+    body {
+        padding: var(--card-padding-tablet);
+    }
+    
+    .container {
+        width: var(--container-mobile-width);
+    }
+    
+    .offer-card {
+        height: auto;
+        min-height: var(--card-min-height);
+        padding: var(--card-padding-tablet);
+        padding-top: var(--card-padding-top-tablet);
+    }
+    
+    .offer-content {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.625rem;
+        margin-bottom: var(--promo-margin-bottom);
+    }
+    
+    .offer-title {
+        max-width: 100%;
+        margin-right: 0; /* Сброс правого отступа в мобильной версии */
+    }
+    
+    /* Адаптация сетки 2×2 для маленьких экранов */
+    .timer-blocks {
+        gap: var(--timer-digit-gap-xs);
+        width: var(--timer-grid-width-mobile);
+    }
+    
+    .countdown-timer {
+        padding: var(--timer-padding-mobile);
+    }
+    
+    /* Подправляем разделители для маленьких экранов */
+    .timer-block:first-child::after,
+    .timer-block:nth-child(3)::after {
+        font-size: var(--separator-font-size-mobile);
+        /* Сохраняем центрирование, меняя только размер шрифта */
+    }
+    
+    /* Максимально уменьшаем размер ячеек */
+    .timer-digit {
+        width: var(--digit-width-mobile);
+        height: var(--digit-height-mobile);
+    }
+    
+    .timer-digit span {
+        font-size: var(--digit-font-size-mobile);
+    }
+    
+    .timer-header {
+        font-size: var(--timer-header-font-size-mobile);
+        margin-bottom: var(--timer-header-margin-mobile);
+    }
+    
+    .timer-label {
+        font-size: var(--label-font-size-mobile);
+    }
+    
+    .timer-unit {
+        gap: var(--timer-digit-gap-mobile);
+    }
+} 
