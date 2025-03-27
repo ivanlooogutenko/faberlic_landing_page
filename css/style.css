@@ -86,38 +86,38 @@
     --color-black: #000000;
 
     /* ======= ЦВЕТА ВЕРХНЕЙ КАРТОЧКИ ======= */
-    --card-background: #d6eeff;           /* Фон основной карточки */
-    --card-border: #B275C1;              /* Цвет рамки карточки */
-    --card-date-text: #B275C1;           /* Цвет текста даты "До 20 апреля" */
-    --card-main-text: #3E442B;           /* Цвет основного текста "Набор всего за" */
-    --card-logo-text: #B275C1;           /* Цвет текста логотипа Faberlic */
+    --card-background: #68ff9d;           /* Фон основной карточки */
+    --card-border: #FF59C8;              /* Цвет рамки карточки */
+    --card-date-text: #1E2A4A;           /* Цвет текста даты "До 20 апреля" - более синеватый */
+    --card-main-text: #1E2A4A;           /* Цвет основного текста "Набор всего за" - более синеватый */
+    --card-logo-text: #FF59C8;           /* Цвет текста логотипа Faberlic */
 
     /* ======= ЦВЕТА БЛОКА ЦЕНЫ ======= */
-    --price-gradient-start: #B275C1;      /* Начальный цвет градиента цены */
-    --price-gradient-middle: #C990D3;     /* Средний цвет градиента цены */
-    --price-gradient-end: #B275C1;        /* Конечный цвет градиента цены */
+    --price-gradient-start: #FF59C8;      /* Начальный цвет градиента цены */
+    --price-gradient-middle: #FF59C8;     /* Средний цвет градиента цены */
+    --price-gradient-end: #FF59C8;        /* Конечный цвет градиента цены */
     --price-text: #ffffff;                /* Цвет текста цены */
-    --price-glow-shadow: rgba(178, 117, 193, 0.4);  /* Цвет свечения цены */
+    --price-glow-shadow: rgba(255, 89, 200, 0.4);  /* Цвет свечения цены */
     --price-glow-white: rgba(255, 255, 255, 0.6);   /* Цвет белого свечения */
 
     /* ======= ЦВЕТА ПОЛОСКИ "АКЦИЯ" ======= */
-    --promo-gradient-start: #B275C1;      /* Начальный цвет градиента акции */
-    --promo-gradient-middle1: #C990D3;    /* Первый средний цвет градиента акции */
-    --promo-gradient-middle2: #B275C1;    /* Второй средний цвет градиента акции */
-    --promo-gradient-end: #B275C1;        /* Конечный цвет градиента акции */
+    --promo-gradient-start: #FF00C1;      /* Насыщенный розовый цвет */
+    --promo-gradient-middle1: #FF6000;    /* Яркий оранжевый цвет */
+    --promo-gradient-middle2: #0066FF;    /* Насыщенный синий цвет */
+    --promo-gradient-end: #FF00C1;        /* Насыщенный розовый цвет */
     --promo-text: #ffffff;                /* Цвет текста "Акция" */
 
     /* ======= ЦВЕТА ТАЙМЕРА ======= */
-    --timer-background: #d6eeff;          /* Фон блока таймера */
-    --timer-border: #B275C1;             /* Цвет рамки таймера */
-    --timer-header-text: #B275C1;        /* Цвет текста заголовка таймера */
+    --timer-background: #68ff9d;          /* Фон блока таймера */
+    --timer-border: #FF59C8;             /* Цвет рамки таймера */
+    --timer-header-text: #1E2A4A;        /* Цвет текста заголовка таймера - более синеватый */
     
     /* Цвета цифр таймера */
     --timer-digit-top-block: #a1dce6;    /* Цвет верхнего прямоугольника цифры */
     --timer-digit-bottom-block: #597db4;  /* Цвет нижнего прямоугольника цифры */
     --timer-digit-text: #2f5b9b;         /* Цвет текста цифр */
     --timer-separator: #004c58;          /* Цвет разделителей (двоеточий) */
-    --timer-label-text: #3E442B;         /* Цвет подписей (дни, часы и т.д.) */
+    --timer-label-text: #1E2A4A;         /* Цвет подписей (дни, часы и т.д.) - более синеватый */
 
     /* Обновляем все использования цветов на новые переменные */
     --price-bg-color: linear-gradient(90deg, var(--price-gradient-start) 0%, var(--price-gradient-middle) 50%, var(--price-gradient-end) 100%);
@@ -139,16 +139,16 @@
     --label-color: var(--timer-label-text);
     
     /* ======= БАЗОВЫЕ ЦВЕТА ======= */
-    --color-dark-teal: #3E442B;      /* Тёмно-серый для текста */
-    --color-light-green: #d6eeff;    /* Светло-голубой для фона */
+    --color-dark-teal: #1E2A4A;      /* Тёмно-синий для текста - более синеватый */
+    --color-light-green: #68ff9d;    /* Яркий зеленый для фона */
     --color-bright-green: #1B2A41;   /* Тёмно-синий для нижнего прямоугольника (более тусклый и холодный) */
-    --color-magenta: #B275C1;        /* Фиолетовый для акцентов */
-    --color-turquoise: #d6eeff;      /* Светло-голубой для фона таймера */
-    --color-purple: #B275C1;         /* Фиолетовый для элементов */
+    --color-magenta: #FF59C8;        /* Фиолетовый для акцентов */
+    --color-turquoise: #68ff9d;      /* Яркий зеленый для фона таймера */
+    --color-purple: #FF59C8;         /* Фиолетовый для элементов */
     
     /* Дополнительные цвета для градиентов и анимаций */
-    --color-magenta-light: #C990D3;  /* Светлый фиолетовый для градиентов */
-    --color-magenta-dark: #9B5CAF;   /* Тёмный фиолетовый для градиентов */
+    --color-magenta-light: #FF59C8;  /* Светлый фиолетовый для градиентов */
+    --color-magenta-dark: #FF59C8;   /* Тёмный фиолетовый для градиентов */
     
     /* ======= НАСТРОЙКИ ШАПКИ И ОБЩИЕ ======= */
     --body-bg-color: var(--color-white);  /* Фон страницы */
@@ -234,8 +234,8 @@
     --price-letter-spacing: 0.5px;                /* Межбуквенный интервал */
     
     /* ======= ПОЛОСКА "АКЦИЯ" ======= */
-    --promo-font-size: 1.5rem;                    /* Размер шрифта */
-    --promo-font-weight: var(--font-weight-light); /* Жирность шрифта акции */
+    --promo-font-size: 1.3rem;                    /* Размер шрифта */
+    --promo-font-weight: var(--font-weight-normal); /* Жирность шрифта акции */
     --promo-padding: 0.75rem;                     /* Внутренний отступ */
     --promo-border-radius: 0.5rem;                /* Скругление углов */
     --promo-margin-bottom: 0.5rem;                /* Отступ снизу */
@@ -317,7 +317,7 @@
     --label-font-weight: var(--font-weight-normal); /* Жирность подписей */
 
     /* ======= СЕТКА ТЕТРАДИ ======= */
-    --grid-color: rgba(0, 0, 139, 0.1);    /* Цвет линий сетки */
+    --grid-color: rgba(89, 77, 196, 0.7);    /* Цвет линий сетки #594DC4 с прозрачностью 70% */
     --grid-size: 20px;                      /* Размер ячейки сетки */
 
     /* Настройки божьих коровок */
@@ -377,7 +377,7 @@ body {
     z-index: 1;
 }
 
-/* Карточка с предложением */
+
 .offer-card {
     background-color: var(--card-bg-color);
     border-radius: var(--card-border-radius);
@@ -436,42 +436,14 @@ body {
     line-height: 1; /* Для лучшего выравнивания */
 }
 
-/* Анимация для блока с ценой */
+/* Удаляем старые анимации взрыва */
 @keyframes priceGlow {
-    0% {
-        box-shadow: inset 0 0 5px rgba(178, 117, 193, 0.4);
-        background-position: 0% 50%;
-    }
-    50% {
-        box-shadow: inset 0 0 8px rgba(255, 255, 255, 0.6);
-        background-position: 100% 50%;
-    }
-    100% {
-        box-shadow: inset 0 0 5px rgba(178, 117, 193, 0.4);
-        background-position: 0% 50%;
-    }
+    /* Пустая анимация, не будет использоваться */
 }
 
-/* Анимация для текста цены */
-@keyframes priceTextShine {
-    0% {
-        text-shadow: 0 0 2px rgba(255, 255, 255, 0.8);
-        color: var(--price-text-color);
-    }
-    50% {
-        text-shadow: 0 0 5px rgba(255, 255, 255, 1), 0 0 8px rgba(255, 255, 255, 0.8);
-        color: #ffffff;
-    }
-    100% {
-        text-shadow: 0 0 2px rgba(255, 255, 255, 0.8);
-        color: var(--price-text-color);
-    }
-}
-
-/* ТЕКСТ: "31.08 BYN" - цена в цветном блоке */
+/* ТЕКСТ: "31.08 BYN" - цена в цветном блоке без эффектов */
 .price {
-    background: var(--price-bg-color);
-    background-size: 200% 200%;
+    background-color: #FF59C8;
     color: var(--price-text-color);
     padding: var(--price-padding-y) var(--price-padding-x);
     border-radius: var(--price-border-radius);
@@ -485,15 +457,12 @@ body {
     letter-spacing: var(--price-letter-spacing);
     flex-shrink: 0;
     min-width: min-content;
-    animation: priceGlow 3s ease-in-out infinite, priceTextShine 3s ease-in-out infinite;
-    transition: transform 0.3s ease;
-    overflow: hidden;
     line-height: 1;
 }
 
+/* Удаляем эффект при наведении */
 .price:hover {
-    transform: scale(1.05);
-    animation-duration: 1.5s;
+    transform: none;
 }
 
 /* ТЕКСТ: "Faberlic" - логотип/бренд в правом верхнем углу */
@@ -513,7 +482,7 @@ body {
     line-height: var(--logo-line-height);
 }
 
-/* Добавляем анимацию градиента для полоски "Акция" */
+/* Добавляем анимацию градиента для полоски "Акция" с очень плавными переходами цветов */
 @keyframes gradientMove {
     0% {
         background-position: 0% 50%;
@@ -528,9 +497,21 @@ body {
 
 /* Полоска с "Акция" */
 .promo-bar {
-    background: var(--promo-bg-color);
-    background-size: 200% 200%;
-    animation: gradientMove 5s ease infinite;
+    background: linear-gradient(90deg, 
+        var(--promo-gradient-start) 0%, 
+        color-mix(in srgb, var(--promo-gradient-start) 80%, var(--promo-gradient-middle1) 20%) 10%,
+        color-mix(in srgb, var(--promo-gradient-start) 50%, var(--promo-gradient-middle1) 50%) 20%,
+        color-mix(in srgb, var(--promo-gradient-start) 20%, var(--promo-gradient-middle1) 80%) 30%,
+        var(--promo-gradient-middle1) 40%,
+        color-mix(in srgb, var(--promo-gradient-middle1) 70%, var(--promo-gradient-middle2) 30%) 50%,
+        color-mix(in srgb, var(--promo-gradient-middle1) 30%, var(--promo-gradient-middle2) 70%) 60%,
+        var(--promo-gradient-middle2) 70%,
+        color-mix(in srgb, var(--promo-gradient-middle2) 70%, var(--promo-gradient-end) 30%) 80%,
+        color-mix(in srgb, var(--promo-gradient-middle2) 30%, var(--promo-gradient-end) 70%) 90%,
+        var(--promo-gradient-end) 100%
+    );
+    background-size: 300% 100%;
+    animation: gradientMove 20s cubic-bezier(0.445, 0.05, 0.55, 0.95) infinite;
     padding: var(--promo-padding);
     margin-bottom: var(--promo-margin-bottom);
     border-radius: var(--promo-border-radius);

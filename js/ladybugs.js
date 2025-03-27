@@ -195,94 +195,76 @@ class Ladybug {
         this.isHappy = true;
         this.element.style.transform = 'scale(1.2)';
         
-        // Определяем цвета сердечек - более мягкие оттенки розового и красного
-        const colors = [
-            '#ff9999', '#ffb3b3', '#ffcccc', // Светлые тона
-            '#ff7777', '#ff5252', '#ff6b6b', // Средние тона
-            '#e57373', '#ef5350', '#f44336'  // Насыщенные тона
-        ];
+        // Определяем цвет сердечка - яркий оттенок розового
+        const heartColor = '#ff5252';
         
-        // Создаем больше сердечек для охвата всего периметра
-        for (let i = 0; i < 24; i++) {
-            const heart = document.createElement('div');
-            heart.className = 'ladybug-heart';
-            
-            // Используем unicode сердце
-            heart.innerHTML = '&#x2764;';
-            heart.style.position = 'absolute';
-            heart.style.fontSize = `${10 + Math.random() * 10}px`; // Разные размеры от 10px до 20px
-            
-            // Рандомизируем начальное положение по всему периметру вокруг божьей коровки
-            const angle = Math.random() * Math.PI * 2; // Полный круг (от 0 до 2π)
-            const distance = 5 + Math.random() * 10; // Расстояние от центра
-            // Центрируем положение сердечек относительно божьей коровки
-            heart.style.left = `${15 + Math.cos(angle) * distance}px`;
-            heart.style.top = `${15 + Math.sin(angle) * distance}px`;
-            
-            // Выбираем случайный цвет из палитры
-            heart.style.color = colors[Math.floor(Math.random() * colors.length)];
-            heart.style.opacity = '0';
-            heart.style.zIndex = '1001';
-            heart.style.pointerEvents = 'none';
-            
-            // Добавляем эффект свечения для некоторых сердечек
-            if (Math.random() > 0.6) {
-                heart.style.filter = `drop-shadow(0 0 2px ${heart.style.color})`;
-            } else {
-                heart.style.filter = 'drop-shadow(0 1px 1px rgba(0,0,0,0.1))';
+        // Создаем одно сердечко
+        const heart = document.createElement('div');
+        heart.className = 'ladybug-heart';
+        
+        // Используем unicode сердце
+        heart.innerHTML = '&#x2764;';
+        heart.style.position = 'fixed'; // Используем fixed вместо absolute
+        heart.style.fontSize = '16px'; // Фиксированный размер для стабильности
+        
+        // Вычисляем позицию божьей коровки на экране
+        const rect = this.element.getBoundingClientRect();
+        // Размещаем сердечко над божьей коровкой, вычисляя абсолютные координаты
+        heart.style.left = `${rect.left + rect.width / 2 - 8}px`; // Центрируем по горизонтали (8px - половина ширины сердечка)
+        heart.style.top = `${rect.top - 10}px`;  // Немного выше божьей коровки
+        
+        // Настраиваем внешний вид сердечка
+        heart.style.color = heartColor;
+        heart.style.opacity = '0';
+        heart.style.zIndex = '1001';
+        heart.style.pointerEvents = 'none';
+        heart.style.filter = 'drop-shadow(0 0 2px rgba(255,0,0,0.5))';
+        
+        // Добавляем сердечко напрямую в body вместо элемента божьей коровки
+        document.body.appendChild(heart);
+        
+        // Создаем анимацию для сердечка
+        const duration = 1.5; // 1.5 секунды
+        
+        // Анимация для сердечка - просто поднимается вверх
+        const keyframes = `
+            @keyframes heart${this.id} {
+                0% {
+                    opacity: 0;
+                    transform: translateY(0) scale(0.5);
+                }
+                20% {
+                    opacity: 1;
+                    transform: translateY(-10px) scale(1);
+                }
+                80% {
+                    opacity: 0.8;
+                    transform: translateY(-30px) scale(1.1);
+                }
+                100% {
+                    opacity: 0;
+                    transform: translateY(-50px) scale(0.8);
+                }
             }
-            
-            // Делаем сердечки плоскими с разной степенью сплющенности
-            const flatness = 0.3 + Math.random() * 0.3; // От 0.3 до 0.6
-            heart.style.transform = `scale(1, ${flatness})`;
-            
-            // Добавляем уникальные параметры анимации для большего разнообразия
-            const duration = 1.2 + Math.random() * 1.5; // От 1.2 до 2.7 секунд
-            const delay = Math.random() * 0.5; // От 0 до 0.5 секунд
-            const maxHeight = 30 + Math.random() * 20; // Максимальная высота подъема
-            
-            // Анимация для каждого сердечка будет направлена от центра наружу
-            const keyframes = `
-                @keyframes heart${this.id}_${i} {
-                    0% {
-                        opacity: 0;
-                        transform: scale(1, ${flatness}) translate(0, 0) rotate(0deg);
-                    }
-                    15% {
-                        opacity: 0.9;
-                        transform: scale(1, ${flatness}) translate(${Math.cos(angle) * 5}px, ${Math.sin(angle) * 5}px) rotate(${(Math.random() - 0.5) * 10}deg);
-                    }
-                    70% {
-                        opacity: 0.8;
-                        transform: scale(1, ${flatness}) translate(${Math.cos(angle) * 20}px, ${Math.sin(angle) * 20}px) rotate(${(Math.random() - 0.5) * 25}deg);
-                    }
-                    100% {
-                        opacity: 0;
-                        transform: scale(1, ${flatness}) translate(${Math.cos(angle) * 40}px, ${Math.sin(angle) * 40}px) rotate(${(Math.random() - 0.5) * 40}deg);
-                    }
-                }
-            `;
-            
-            // Добавляем стиль с анимацией в head
-            const style = document.createElement('style');
-            style.textContent = keyframes;
-            document.head.appendChild(style);
-            
-            // Применяем уникальную анимацию
-            heart.style.animation = `heart${this.id}_${i} ${duration}s ${delay}s forwards`;
-            
-            this.element.appendChild(heart);
-            
-            // Удаляем сердечки и стиль через время
-            setTimeout(() => {
-                if (heart.parentNode) {
-                    heart.parentNode.removeChild(heart);
-                }
-                if (style.parentNode) {
-                    style.parentNode.removeChild(style);
-                }
-            }, (duration + delay) * 1000 + 100);
-        }
+        `;
+        
+        // Добавляем стиль с анимацией в head
+        const style = document.createElement('style');
+        style.textContent = keyframes;
+        document.head.appendChild(style);
+        
+        // Применяем анимацию
+        heart.style.animation = `heart${this.id} ${duration}s forwards`;
+        
+        // Удаляем сердечко и стиль через время
+        setTimeout(() => {
+            if (heart.parentNode) {
+                heart.parentNode.removeChild(heart);
+            }
+            if (style.parentNode) {
+                style.parentNode.removeChild(style);
+            }
+        }, duration * 1000 + 100);
         
         // Возвращаем обычное состояние через 1.5 секунды
         setTimeout(() => {
@@ -840,22 +822,47 @@ class Ladybug {
         this.x += Math.cos(radians) * this.speed * deltaTime / 1000;
         this.y += Math.sin(radians) * this.speed * deltaTime / 1000;
         
-        // Проверка границ экрана и отражение от них
-        if (this.x < 0) {
-            this.x = 0;
-            this.direction = (180 - this.direction) % 360;
-        } else if (this.x > 95) {
-            this.x = 95;
-            this.direction = (180 - this.direction) % 360;
+        // Улучшенное отталкивание от границ экрана
+        const borderMargin = 5; // Отступ от края, при котором начинаем отталкиваться
+        const pushForce = 1.5; // Сила отталкивания от края
+        
+        if (this.x < borderMargin) {
+            // Отталкиваемся от левого края
+            this.x += pushForce * (borderMargin - this.x) / borderMargin;
+            this.targetDirection = (Math.random() * 90 - 45) % 360; // Направление вправо с разбросом
+            this.targetSpeed = 1.2 + Math.random() * 0.8; // Увеличиваем скорость для уверенного отхода
+            // Небольшой дополнительный импульс
+            this.x += 0.5;
+        } else if (this.x > (100 - borderMargin)) {
+            // Отталкиваемся от правого края
+            this.x -= pushForce * (this.x - (100 - borderMargin)) / borderMargin;
+            this.targetDirection = (180 + Math.random() * 90 - 45) % 360; // Направление влево с разбросом
+            this.targetSpeed = 1.2 + Math.random() * 0.8;
+            // Небольшой дополнительный импульс
+            this.x -= 0.5;
         }
         
-        if (this.y < 0) {
-            this.y = 0;
-            this.direction = (360 - this.direction) % 360;
-        } else if (this.y > 95) {
-            this.y = 95;
-            this.direction = (360 - this.direction) % 360;
+        if (this.y < borderMargin) {
+            // Отталкиваемся от верхнего края
+            this.y += pushForce * (borderMargin - this.y) / borderMargin;
+            this.targetDirection = (90 + Math.random() * 90 - 45) % 360; // Направление вниз с разбросом
+            this.targetSpeed = 1.2 + Math.random() * 0.8;
+            // Небольшой дополнительный импульс
+            this.y += 0.5;
+        } else if (this.y > (100 - borderMargin)) {
+            // Отталкиваемся от нижнего края
+            this.y -= pushForce * (this.y - (100 - borderMargin)) / borderMargin;
+            this.targetDirection = (270 + Math.random() * 90 - 45) % 360; // Направление вверх с разбросом
+            this.targetSpeed = 1.2 + Math.random() * 0.8;
+            // Небольшой дополнительный импульс
+            this.y -= 0.5;
         }
+        
+        // Жесткие ограничения - на случай, если божья коровка каким-то образом оказалась за пределами экрана
+        if (this.x < 0) this.x = 0.5;
+        if (this.x > 100) this.x = 99.5;
+        if (this.y < 0) this.y = 0.5;
+        if (this.y > 100) this.y = 99.5;
     }
 }
 
