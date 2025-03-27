@@ -81,15 +81,74 @@
 }
 
 :root {
-    /* ======= БАЗОВЫЕ ЦВЕТА ======= */
-    --color-dark-teal: #005931;
-    --color-light-green: #A1FF8E;
-    --color-bright-green: #18BF00;
-    --color-magenta: #DC00BB;
-    --color-white: #FFFFFF;
+    /* ======= ОСНОВНАЯ ЦВЕТОВАЯ ПАЛИТРА ======= */
+    --color-white: #ffffff;
     --color-black: #000000;
-    --color-turquoise: #5cfde2;
-    --color-purple: #A70097;
+
+    /* ======= ЦВЕТА ВЕРХНЕЙ КАРТОЧКИ ======= */
+    --card-background: #d6eeff;           /* Фон основной карточки */
+    --card-border: #B275C1;              /* Цвет рамки карточки */
+    --card-date-text: #B275C1;           /* Цвет текста даты "До 20 апреля" */
+    --card-main-text: #3E442B;           /* Цвет основного текста "Набор всего за" */
+    --card-logo-text: #B275C1;           /* Цвет текста логотипа Faberlic */
+
+    /* ======= ЦВЕТА БЛОКА ЦЕНЫ ======= */
+    --price-gradient-start: #B275C1;      /* Начальный цвет градиента цены */
+    --price-gradient-middle: #C990D3;     /* Средний цвет градиента цены */
+    --price-gradient-end: #B275C1;        /* Конечный цвет градиента цены */
+    --price-text: #ffffff;                /* Цвет текста цены */
+    --price-glow-shadow: rgba(178, 117, 193, 0.4);  /* Цвет свечения цены */
+    --price-glow-white: rgba(255, 255, 255, 0.6);   /* Цвет белого свечения */
+
+    /* ======= ЦВЕТА ПОЛОСКИ "АКЦИЯ" ======= */
+    --promo-gradient-start: #B275C1;      /* Начальный цвет градиента акции */
+    --promo-gradient-middle1: #C990D3;    /* Первый средний цвет градиента акции */
+    --promo-gradient-middle2: #B275C1;    /* Второй средний цвет градиента акции */
+    --promo-gradient-end: #B275C1;        /* Конечный цвет градиента акции */
+    --promo-text: #ffffff;                /* Цвет текста "Акция" */
+
+    /* ======= ЦВЕТА ТАЙМЕРА ======= */
+    --timer-background: #d6eeff;          /* Фон блока таймера */
+    --timer-border: #B275C1;             /* Цвет рамки таймера */
+    --timer-header-text: #B275C1;        /* Цвет текста заголовка таймера */
+    
+    /* Цвета цифр таймера */
+    --timer-digit-top-block: #a1dce6;    /* Цвет верхнего прямоугольника цифры */
+    --timer-digit-bottom-block: #597db4;  /* Цвет нижнего прямоугольника цифры */
+    --timer-digit-text: #2f5b9b;         /* Цвет текста цифр */
+    --timer-separator: #004c58;          /* Цвет разделителей (двоеточий) */
+    --timer-label-text: #3E442B;         /* Цвет подписей (дни, часы и т.д.) */
+
+    /* Обновляем все использования цветов на новые переменные */
+    --price-bg-color: linear-gradient(90deg, var(--price-gradient-start) 0%, var(--price-gradient-middle) 50%, var(--price-gradient-end) 100%);
+    --promo-bg-color: linear-gradient(90deg, var(--promo-gradient-start) 0%, var(--promo-gradient-middle1) 35%, var(--promo-gradient-middle2) 65%, var(--promo-gradient-end) 100%);
+    
+    /* Заменяем старые переменные на новые */
+    --card-bg-color: var(--card-background);
+    --card-border-color: var(--card-border);
+    --date-text-color: var(--card-date-text);
+    --offer-text-color: var(--card-main-text);
+    --logo-text-color: var(--card-logo-text);
+    --price-text-color: var(--price-text);
+    --promo-text-color: var(--promo-text);
+    --timer-bg-color: var(--timer-background);
+    --digit-bg-color: var(--timer-digit-top-block);
+    --digit-back-color: var(--timer-digit-bottom-block);
+    --digit-color: var(--timer-digit-text);
+    --separator-color: var(--timer-separator);
+    --label-color: var(--timer-label-text);
+    
+    /* ======= БАЗОВЫЕ ЦВЕТА ======= */
+    --color-dark-teal: #3E442B;      /* Тёмно-серый для текста */
+    --color-light-green: #d6eeff;    /* Светло-голубой для фона */
+    --color-bright-green: #1B2A41;   /* Тёмно-синий для нижнего прямоугольника (более тусклый и холодный) */
+    --color-magenta: #B275C1;        /* Фиолетовый для акцентов */
+    --color-turquoise: #d6eeff;      /* Светло-голубой для фона таймера */
+    --color-purple: #B275C1;         /* Фиолетовый для элементов */
+    
+    /* Дополнительные цвета для градиентов и анимаций */
+    --color-magenta-light: #C990D3;  /* Светлый фиолетовый для градиентов */
+    --color-magenta-dark: #9B5CAF;   /* Тёмный фиолетовый для градиентов */
     
     /* ======= НАСТРОЙКИ ШАПКИ И ОБЩИЕ ======= */
     --body-bg-color: var(--color-white);  /* Фон страницы */
@@ -132,8 +191,6 @@
     --container-max-width: 1200px;        /* Максимальная ширина контейнера */
     
     /* ======= ЗЕЛЕНАЯ КАРТОЧКА ======= */
-    --card-bg-color: var(--color-light-green);    /* Фон карточки */
-    --card-border-color: var(--color-magenta);    /* Цвет рамки карточки */
     --card-border-width: 2px;                     /* Толщина рамки */
     --card-border-radius: 0.5rem;                 /* Скругление углов */
     --card-min-height: 120px;                     /* Мин. высота карточки */
@@ -144,7 +201,6 @@
     --card-padding-top-tablet: calc(1rem + 2rem); /* Верхний отступ на планшете */
     
     /* ======= АКЦИОННАЯ ДАТА (До 20 апреля) ======= */
-    --date-text-color: var(--color-magenta);      /* Цвет текста даты */
     --date-font-size: 1.2rem;                     /* Размер шрифта даты */
     --date-font-weight: var(--font-weight-normal); /* Жирность шрифта даты */
     --date-position-top: 1rem;                    /* Отступ сверху */
@@ -153,7 +209,6 @@
     --date-line-height: 1.2;                      /* Высота строки */
     
     /* ======= ЛОГОТИП FABERLIC ======= */
-    --logo-text-color: var(--color-magenta);      /* Цвет логотипа */
     --logo-font-size: 1.5rem;                     /* Размер шрифта логотипа */
     --logo-font-weight: normal;                   /* Жирность шрифта логотипа */
     --logo-position-top: 0.7rem;                  /* Отступ сверху */
@@ -162,7 +217,6 @@
     --logo-line-height: 1.2;                      /* Высота строки */
     
     /* ======= ОСНОВНОЙ ТЕКСТ ПРЕДЛОЖЕНИЯ ======= */
-    --offer-text-color: var(--color-dark-teal);   /* Цвет основного текста */
     --offer-font-size: 1.5rem;                    /* Размер шрифта */
     --offer-font-size-tablet: 1rem;               /* Размер на планшете */
     --offer-font-weight: var(--font-weight-normal); /* Жирность шрифта предложения */
@@ -171,8 +225,6 @@
     --offer-margin-right: 1rem;                   /* Отступ справа (увеличен с 0.5rem) */
     
     /* ======= ЦЕНА ======= */
-    --price-bg-color: linear-gradient(90deg, var(--color-magenta) 0%, #FF3DCE 50%, var(--color-magenta) 100%);  /* Градиент для блока цены */
-    --price-text-color: var(--color-white);       /* Цвет текста цены */
     --price-font-size: 1.7rem;                    /* Размер шрифта цены */
     --price-font-size-tablet: 1.2rem;             /* Размер на планшете */
     --price-font-weight: var(--font-weight-light); /* Жирность шрифта цены */
@@ -182,8 +234,6 @@
     --price-letter-spacing: 0.5px;                /* Межбуквенный интервал */
     
     /* ======= ПОЛОСКА "АКЦИЯ" ======= */
-    --promo-bg-color: linear-gradient(90deg, var(--color-purple) 0%, var(--color-magenta) 35%, #FF3DCE 65%, var(--color-purple) 100%);  /* Градиент для полоски "Акция" */
-    --promo-text-color: var(--color-white);       /* Цвет текста "Акция" */
     --promo-font-size: 1.5rem;                    /* Размер шрифта */
     --promo-font-weight: var(--font-weight-light); /* Жирность шрифта акции */
     --promo-padding: 0.75rem;                     /* Внутренний отступ */
@@ -196,7 +246,6 @@
        =============================================*/
     
     /* ======= ТАЙМЕР: ОСНОВНОЙ КОНТЕЙНЕР ======= */
-    --timer-bg-color: var(--color-turquoise);    /* Фон всего таймера (бирюзовый) */
     --timer-border-radius: 1.25rem;              /* Скругление углов таймера */
     --timer-margin: 0 auto;                      /* Отступы для центрирования */
     --timer-margin-top: 1rem;                    /* Верхний отступ таймера */
@@ -208,7 +257,6 @@
     --timer-padding-mobile: 0.8rem 0.8rem 1.2rem;  /* Отступы на мобильных */
     
     /* ======= ТАЙМЕР: ЗАГОЛОВОК ======= */
-    --timer-header-color: var(--color-purple);     /* Цвет заголовка таймера */
     --timer-header-font-size: 1.5rem;             /* Размер шрифта заголовка */
     --timer-header-font-size-tablet: calc(var(--timer-header-font-size) * 0.9);  /* Размер на планшете */
     --timer-header-font-size-mobile: calc(var(--timer-header-font-size) * 0.85); /* Размер на мобильном */
@@ -229,12 +277,6 @@
     /* Сетка 2х2 для маленьких экранов */
     --timer-grid-width: 90%;                      /* Ширина сетки блоков таймера */
     --timer-grid-width-mobile: 95%;               /* Ширина сетки на маленьких экранах */
-    
-    /* ======= ТАЙМЕР: ЦИФРЫ ======= */
-    /* Цвета цифр и блоков */
-    --digit-bg-color: var(--color-light-green);   /* Цвет верхнего прямоугольника */
-    --digit-back-color: var(--color-bright-green); /* Цвет нижнего прямоугольника */
-    --digit-color: var(--color-dark-teal);        /* Цвет текста цифр */
     
     /* Размеры цифровых блоков */
     --digit-width: 3.5rem;                        /* Ширина блока цифры */
@@ -257,10 +299,6 @@
     --digit-border-radius: 0.7rem;                /* Скругление углов цифровых блоков */
     --digit-offset: 0.3rem;                       /* Смещение верхнего прямоугольника от нижнего для 3D-эффекта */
     
-    /* ======= ТАЙМЕР: РАЗДЕЛИТЕЛИ (ДВОЕТОЧИЯ) ======= */
-    --separator-color: var(--digit-color);        /* Цвет разделительных двоеточий */
-    --separator-font-weight: var(--font-weight-bold); /* Жирность двоеточий */
-    
     /* Размер двоеточий на разных устройствах */
     --separator-font-size: 1.8rem;                /* Размер двоеточий на десктопе */
     --separator-font-size-tablet: 1.6rem;         /* Размер на планшете */
@@ -272,12 +310,24 @@
     --separator-offset-tablet: 0.2rem;            /* Смещение на планшете */
     
     /* ======= ТАЙМЕР: ПОДПИСИ (ДНИ, ЧАСЫ и т.д.) ======= */
-    --label-color: var(--color-dark-teal);            /* Цвет подписей под блоками таймера */
     --label-font-size: 1rem;                      /* Размер шрифта подписей */
     --label-font-size-tablet: 0.9rem;             /* Размер на планшете */
     --label-font-size-mobile: 0.75rem;            /* Размер на мобильных */
     --label-margin-top: 0.5rem;                   /* Отступ сверху */
     --label-font-weight: var(--font-weight-normal); /* Жирность подписей */
+
+    /* ======= СЕТКА ТЕТРАДИ ======= */
+    --grid-color: rgba(0, 0, 139, 0.1);    /* Цвет линий сетки */
+    --grid-size: 20px;                      /* Размер ячейки сетки */
+
+    /* Настройки божьих коровок */
+    --ladybug-size: 30px;
+    --ladybug-color: #e81e62;
+    --ladybug-spots: #210f4b;
+    --ladybug-count: 2;
+    --ladybug-eye-color: #FFFFFF;
+    --ladybug-eye-pupil: #210f4b;
+    --ladybug-smile-color: #210f4b;
 }
 
 * {
@@ -293,6 +343,22 @@ html {
 
 body {
     background-color: var(--body-bg-color);
+    background-image: 
+        /* Вертикальные линии */
+        linear-gradient(90deg, 
+            transparent calc(var(--grid-size) - 1px),
+            var(--grid-color) calc(var(--grid-size) - 1px),
+            var(--grid-color) var(--grid-size),
+            transparent var(--grid-size)
+        ),
+        /* Горизонтальные линии */
+        linear-gradient(0deg, 
+            transparent calc(var(--grid-size) - 1px),
+            var(--grid-color) calc(var(--grid-size) - 1px),
+            var(--grid-color) var(--grid-size),
+            transparent var(--grid-size)
+        );
+    background-size: var(--grid-size) var(--grid-size);
     display: flex;
     justify-content: center;
     align-items: flex-start;
@@ -305,6 +371,10 @@ body {
     width: var(--container-desktop-width);
     max-width: var(--container-max-width);
     margin: 0 auto;
+    background-color: transparent;
+    padding: 2rem;
+    position: relative;
+    z-index: 1;
 }
 
 /* Карточка с предложением */
@@ -369,7 +439,7 @@ body {
 /* Анимация для блока с ценой */
 @keyframes priceGlow {
     0% {
-        box-shadow: inset 0 0 5px rgba(220, 0, 187, 0.4);
+        box-shadow: inset 0 0 5px rgba(178, 117, 193, 0.4);
         background-position: 0% 50%;
     }
     50% {
@@ -377,7 +447,7 @@ body {
         background-position: 100% 50%;
     }
     100% {
-        box-shadow: inset 0 0 5px rgba(220, 0, 187, 0.4);
+        box-shadow: inset 0 0 5px rgba(178, 117, 193, 0.4);
         background-position: 0% 50%;
     }
 }
@@ -406,8 +476,8 @@ body {
     padding: var(--price-padding-y) var(--price-padding-x);
     border-radius: var(--price-border-radius);
     display: inline-flex;
-    align-items: center; /* Выравнивание по центру */
-    justify-content: center; /* Горизонтальное выравнивание */
+    align-items: center;
+    justify-content: center;
     font-size: var(--price-font-size);
     font-weight: var(--price-font-weight);
     font-family: var(--font-primary);
@@ -417,8 +487,8 @@ body {
     min-width: min-content;
     animation: priceGlow 3s ease-in-out infinite, priceTextShine 3s ease-in-out infinite;
     transition: transform 0.3s ease;
-    overflow: hidden; /* Ограничиваем свечение границами элемента */
-    line-height: 1; /* Для предотвращения проблем с выравниванием */
+    overflow: hidden;
+    line-height: 1;
 }
 
 .price:hover {
@@ -489,19 +559,20 @@ body {
     align-items: center;
     margin-top: var(--timer-margin-top);
     position: relative;
-    background-color: var(--timer-bg-color);   /* Восстанавливаем бирюзовый фон таймера */
-    border-radius: var(--timer-border-radius); /* Скругление углов */
-    padding: var(--timer-padding-desktop);             /* Внутренние отступы */
+    background-color: var(--timer-bg-color);
+    border-radius: var(--card-border-radius);
+    border: var(--card-border-width) solid var(--card-border-color);
+    padding: var(--timer-padding-desktop);
     text-align: center;
-    margin: var(--timer-margin);               /* Отступы для центрирования */
+    margin: var(--timer-margin);
     width: 100%;
-    overflow: hidden;                          /* Предотвращаем выход за границы */
-    box-sizing: border-box;                    /* Включаем padding в размер блока */
+    overflow: hidden;
+    box-sizing: border-box;
 }
 
 .timer-header {
     font-size: var(--timer-header-font-size);
-    color: var(--timer-header-color);
+    color: var(--timer-header-text);
     font-weight: var(--timer-header-font-weight);
     margin-bottom: var(--timer-header-margin-bottom);
     text-align: center;
@@ -965,5 +1036,256 @@ body {
     
     .timer-unit {
         gap: var(--timer-digit-gap-mobile);
+    }
+}
+
+/* Контейнер для божьих коровок */
+.ladybugs-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 1000;
+}
+
+/* Стили для божьих коровок */
+.ladybug {
+    position: absolute;
+    width: var(--ladybug-size);
+    height: var(--ladybug-size);
+    pointer-events: auto;
+    cursor: pointer;
+    will-change: transform, left, top;
+    z-index: 1000;
+    overflow: visible;
+}
+
+/* Тело божьей коровки */
+.ladybug-body {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-color: var(--ladybug-color);
+    border-radius: 50%;
+    box-shadow: 0 3px 5px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s ease, background-color 0.3s ease;
+    top: 0;
+    left: 0;
+    z-index: 2;
+    overflow: visible; /* Чтобы ножки могли выходить за пределы */
+}
+
+/* Пятна божьей коровки */
+.ladybug-spot {
+    position: absolute;
+    background-color: var(--ladybug-spots);
+    border-radius: 50%;
+    z-index: 1;
+}
+
+/* Глаза */
+.ladybug-eye {
+    position: absolute;
+    width: 25%;
+    height: 25%;
+    background-color: white;
+    border-radius: 50%;
+    top: 30%;
+    z-index: 3;
+}
+
+.ladybug-eye-left {
+    left: 20%;
+}
+
+.ladybug-eye-right {
+    right: 20%;
+}
+
+/* Улыбка божьей коровки */
+.ladybug-smile {
+    position: absolute;
+    width: 50%;
+    height: 25%;
+    border-bottom: 2px solid #210f4b;
+    border-radius: 0 0 50% 50%;
+    left: 25%;
+    top: 55%;
+    z-index: 3;
+}
+
+/* Усики */
+.ladybug-antenna {
+    position: absolute;
+    width: 5%;
+    height: 60%;
+    background-color: #210f4b;
+    top: -55%;
+    z-index: 2;
+    transform-origin: bottom center;
+    animation: antennaWiggle 2s ease-in-out infinite;
+}
+
+.ladybug-antenna-left {
+    left: 35%;
+    transform: rotate(-15deg);
+    animation-delay: -0.5s;
+}
+
+.ladybug-antenna-right {
+    right: 35%;
+    transform: rotate(15deg);
+    animation-delay: -1s;
+}
+
+/* Анимация для усиков */
+@keyframes antennaWiggle {
+    0%, 100% {
+        transform: rotate(-15deg);
+    }
+    50% {
+        transform: rotate(-5deg);
+    }
+}
+
+/* Разделительная линия */
+.ladybug-divider {
+    position: absolute;
+    width: 2%;
+    height: 100%;
+    background-color: #210f4b;
+    left: 49%;
+    top: 0;
+    z-index: 3;
+}
+
+/* Ножки божьей коровки */
+.ladybug-leg {
+    position: absolute;
+    width: 30%;
+    height: 1px;
+    background-color: #210f4b;
+    box-shadow: 0 1px 1px rgba(33, 15, 75, 0.2);
+    z-index: -5;
+}
+
+/* Голова божьей коровки */
+.ladybug-head {
+    position: absolute;
+    width: 40%;
+    height: 40%;
+    background-color: #210f4b;
+    border-radius: 50%;
+    top: -15%;
+    left: 30%;
+    z-index: 2;
+    overflow: visible;
+}
+
+/* Расположение ножек - левая сторона */
+.ladybug-leg-1 {
+    top: 25%;
+    left: -15%;
+    width: 20%;
+    transform-origin: right center;
+    transform: rotate(-25deg);
+    animation: legMoveLeft 0.8s infinite alternate;
+}
+
+.ladybug-leg-2 {
+    top: 50%;
+    left: -15%;
+    width: 20%;
+    transform-origin: right center;
+    transform: rotate(0deg);
+    animation: legMoveLeft 0.8s infinite alternate;
+    animation-delay: 0.1s;
+}
+
+.ladybug-leg-3 {
+    top: 75%;
+    left: -15%;
+    width: 20%;
+    transform-origin: right center;
+    transform: rotate(25deg);
+    animation: legMoveLeft 0.8s infinite alternate;
+    animation-delay: 0.2s;
+}
+
+/* Расположение ножек - правая сторона */
+.ladybug-leg-4 {
+    top: 25%;
+    right: -15%;
+    left: auto;
+    width: 20%;
+    transform-origin: left center;
+    transform: rotate(25deg);
+    animation: legMoveRight 0.8s infinite alternate;
+}
+
+.ladybug-leg-5 {
+    top: 50%;
+    right: -15%;
+    left: auto;
+    width: 20%;
+    transform-origin: left center;
+    transform: rotate(0deg);
+    animation: legMoveRight 0.8s infinite alternate;
+    animation-delay: 0.1s;
+}
+
+.ladybug-leg-6 {
+    top: 75%;
+    right: -15%;
+    left: auto;
+    width: 20%;
+    transform-origin: left center;
+    transform: rotate(-25deg);
+    animation: legMoveRight 0.8s infinite alternate;
+    animation-delay: 0.2s;
+}
+
+/* Общие анимации для ножек */
+@keyframes legMoveLeft {
+    0% { transform: rotate(-25deg); }
+    100% { transform: rotate(15deg); }
+}
+
+@keyframes legMoveRight {
+    0% { transform: rotate(25deg); }
+    100% { transform: rotate(-15deg); }
+}
+
+/* Состояния божьей коровки */
+.ladybug.fleeing {
+    background-color: #FF6B6B; /* Красный при испуге */
+    animation: fleeBobble 0.3s infinite;
+}
+
+.ladybug.resting {
+    background-color: #DD3333; /* Темнее при отдыхе */
+    transform: scale(0.95);
+}
+
+/* Анимация для эффекта "испуга" */
+@keyframes fleeBobble {
+    0%, 100% {
+        transform: scale(1.05);
+    }
+    50% {
+        transform: scale(0.95);
+    }
+}
+
+/* Медиа-запрос для мобильных устройств */
+@media (max-width: 768px) {
+    :root {
+        --ladybug-size: 25px;
+    }
+    
+    .ladybug:active {
+        transform: translate(30px, -30px) scale(0.8);
     }
 } 
