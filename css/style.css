@@ -85,8 +85,12 @@
     --color-white: #ffffff;
     --color-black: #000000;
 
+    /* ======= ЦВЕТА БЛОКА ТОВАРА ======= */
+    --product-bg-color: #b0ffbe;           /* Фон блока с описанием товара */
+    --product-image-bg-color: #FFFF05;     /* Фон блока с изображением товара (желтый) */
+    
     /* ======= ЦВЕТА ВЕРХНЕЙ КАРТОЧКИ ======= */
-    --card-background: #68ff9d;           /* Фон основной карточки */
+    --card-background: #90ffa0;           /* Фон основной карточки */
     --card-border: #FF59C8;              /* Цвет рамки карточки */
     --card-date-text: #1E2A4A;           /* Цвет текста даты "До 20 апреля" - более синеватый */
     --card-main-text: #1E2A4A;           /* Цвет основного текста "Набор всего за" - более синеватый */
@@ -108,7 +112,7 @@
     --promo-text: #ffffff;                /* Цвет текста "Акция" */
 
     /* ======= ЦВЕТА ТАЙМЕРА ======= */
-    --timer-background: #68ff9d;          /* Фон блока таймера */
+    --timer-background: #90ffa0;          /* Фон блока таймера */
     --timer-border: #FF59C8;             /* Цвет рамки таймера */
     --timer-header-text: #1E2A4A;        /* Цвет текста заголовка таймера - более синеватый */
     
@@ -140,10 +144,10 @@
     
     /* ======= БАЗОВЫЕ ЦВЕТА ======= */
     --color-dark-teal: #1E2A4A;      /* Тёмно-синий для текста - более синеватый */
-    --color-light-green: #68ff9d;    /* Яркий зеленый для фона */
+    --color-light-green: #90ffa0;    /* Яркий зеленый для фона */
     --color-bright-green: #1B2A41;   /* Тёмно-синий для нижнего прямоугольника (более тусклый и холодный) */
     --color-magenta: #FF59C8;        /* Фиолетовый для акцентов */
-    --color-turquoise: #68ff9d;      /* Яркий зеленый для фона таймера */
+    --color-turquoise: #90ffa0;      /* Яркий зеленый для фона таймера */
     --color-purple: #FF59C8;         /* Фиолетовый для элементов */
     
     /* Дополнительные цвета для градиентов и анимаций */
@@ -182,13 +186,13 @@
     
     /* ======= КОНТЕЙНЕР ======= */
     --container-desktop-width: 60%;       /* Ширина контейнера на десктопе */
-    --container-1200-width: 65%;          /* Ширина при 1024-1200px */
-    --container-1024-width: 70%;          /* Ширина при 900-1024px */
-    --container-900-width: 75%;           /* Ширина при 768-900px */
-    --container-768-width: 80%;           /* Ширина при 600-768px */
-    --container-600-width: 90%;           /* Ширина при 480-600px */
+    --container-1200-width: 70%;          /* Ширина при 1024-1200px - было 65%, стало 70% */
+    --container-1024-width: 80%;          /* Ширина при 900-1024px - было 70%, стало 80% */
+    --container-900-width: 85%;           /* Ширина при 768-900px - было 75%, стало 85% */
+    --container-768-width: 90%;           /* Ширина при 600-768px - было 80%, стало 90% */
+    --container-600-width: 95%;           /* Ширина при 480-600px - было 90%, стало 95% */
     --container-mobile-width: 100%;       /* Ширина на мобильных (<480px) */
-    --container-max-width: 1200px;        /* Максимальная ширина контейнера */
+    --container-max-width: 1400px;        /* Максимальная ширина контейнера */
     
     /* ======= ЗЕЛЕНАЯ КАРТОЧКА ======= */
     --card-border-width: 2px;                     /* Толщина рамки */
@@ -275,8 +279,8 @@
     --timer-digit-gap-xs: 0.15rem;                /* Отступ между цифрами на очень маленьких экранах */
     
     /* Сетка 2х2 для маленьких экранов */
-    --timer-grid-width: 90%;                      /* Ширина сетки блоков таймера */
-    --timer-grid-width-mobile: 95%;               /* Ширина сетки на маленьких экранах */
+    --timer-grid-width: 95%;                      /* Увеличиваем с 90% до 95% */
+    --timer-grid-width-mobile: 98%;               /* Увеличиваем с 95% до 98% */
     
     /* Размеры цифровых блоков */
     --digit-width: 3.5rem;                        /* Ширина блока цифры */
@@ -321,13 +325,35 @@
     --grid-size: 20px;                      /* Размер ячейки сетки */
 
     /* Настройки божьих коровок */
-    --ladybug-size: 30px;
+    --ladybug-size: 36px;                   /* Было 30px, увеличено в 1.2 раза */
     --ladybug-color: #e81e62;
     --ladybug-spots: #210f4b;
     --ladybug-count: 2;
     --ladybug-eye-color: #FFFFFF;
     --ladybug-eye-pupil: #210f4b;
     --ladybug-smile-color: #210f4b;
+    
+    /* Дополнительные размеры для плавного уменьшения */
+    --digit-width-900: 3.2rem;                    /* Ширина для экранов до 900px */
+    --digit-height-900: 3.8rem;                   /* Высота для экранов до 900px */
+    --digit-font-size-900: 2rem;                  /* Размер шрифта для экранов до 900px */
+    
+    --digit-width-800: 3rem;                      /* Ширина для экранов до 800px */
+    --digit-height-800: 3.6rem;                   /* Высота для экранов до 800px */
+    --digit-font-size-800: 1.9rem;                /* Размер шрифта для экранов до 800px */
+    
+    /* Дополнительные размеры для плавного уменьшения */
+    --digit-width-1100: 3.4rem;                   /* Ширина для экранов до 1100px */
+    --digit-height-1100: 4rem;                    /* Высота для экранов до 1100px */
+    --digit-font-size-1100: 2.1rem;               /* Размер шрифта для экранов до 1100px */
+    
+    --digit-width-900: 3rem;                      /* Было 3.2rem - уменьшаем быстрее */
+    --digit-height-900: 3.6rem;                   /* Было 3.8rem - уменьшаем быстрее */
+    --digit-font-size-900: 1.9rem;                /* Было 2rem - уменьшаем быстрее */
+    
+    --digit-width-800: 2.8rem;                    /* Было 3rem - уменьшаем быстрее */
+    --digit-height-800: 3.4rem;                   /* Было 3.6rem - уменьшаем быстрее */
+    --digit-font-size-800: 1.8rem;                /* Было 1.9rem - уменьшаем быстрее */
 }
 
 * {
@@ -386,13 +412,14 @@ body {
     flex-direction: column;
     position: relative;
     border: var(--card-border-width) solid var(--card-border-color);
-    margin-bottom: var(--promo-margin-bottom);
+    margin-bottom: 0.5rem; /* Вдвое уменьшенный отступ между блоками */
     width: 100%;
     min-height: var(--card-min-height);
     height: auto;
     justify-content: space-between;
     overflow: hidden;
-    padding-top: var(--card-padding-top);
+    padding-top: calc(var(--card-padding-top) + 1rem); /* Увеличиваем верхний отступ для пространства между надписями */
+    padding-bottom: calc(var(--card-padding) + 1rem); /* Увеличиваем нижний отступ для счетчика */
 }
 
 /* ТЕКСТ: "До 20 апреля!" - верхний левый текст в карточке */
@@ -403,12 +430,13 @@ body {
     font-family: var(--font-primary);
     position: absolute;
     top: var(--date-position-top);
-    left: var(--date-position-left);
+    left: var(--card-padding); /* Выравниваем по левому краю контента */
     max-width: var(--date-max-width);
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
     line-height: var(--date-line-height);
+    margin-bottom: 0.5rem; /* Добавляем отступ снизу */
 }
 
 .offer-content {
@@ -417,7 +445,8 @@ body {
     align-items: flex-end; /* Выравнивание по нижнему краю */
     margin-top: auto;
     width: 100%;
-    flex-wrap: nowrap; /* Предотвращает перенос блоков при уменьшении ширины */
+    flex-wrap: wrap; /* Разрешаем перенос блоков */
+    gap: 0.5rem; /* Добавляем отступ между элементами */
 }
 
 /* ТЕКСТ: "Набор всего за" - часть с основным текстом предложения */
@@ -426,14 +455,14 @@ body {
     font-size: var(--offer-font-size);
     font-weight: var(--offer-font-weight);
     font-family: var(--font-primary);
-    max-width: var(--offer-max-width);
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    margin-right: 2rem !important; /* Значительно увеличиваем отступ и делаем его приоритетным */
+    max-width: 90%; /* Увеличиваем ширину для размещения текста и цены */
+    overflow: visible; /* Меняем на visible, чтобы цена не обрезалась */
     display: inline-flex;
-    align-items: flex-end; /* Выравнивание по нижнему краю */
-    line-height: 1; /* Для лучшего выравнивания */
+    align-items: center; /* Выравнивание по центру */
+    flex-wrap: wrap; /* Разрешаем перенос при необходимости */
+    margin-bottom: 0.5rem; /* Отступ снизу */
+    margin-right: 0.5rem; /* Отступ справа */
+    line-height: 1.3; /* Увеличиваем высоту строки для лучшего выравнивания */
 }
 
 /* Удаляем старые анимации взрыва */
@@ -458,6 +487,7 @@ body {
     flex-shrink: 0;
     min-width: min-content;
     line-height: 1;
+    margin-left: 0.5rem; /* Добавляем отступ слева для пробела между текстом и ценой */
 }
 
 /* Удаляем эффект при наведении */
@@ -513,7 +543,7 @@ body {
     background-size: 300% 100%;
     animation: gradientMove 20s cubic-bezier(0.445, 0.05, 0.55, 0.95) infinite;
     padding: var(--promo-padding);
-    margin-bottom: var(--promo-margin-bottom);
+    margin-bottom: 0.5rem; /* Вдвое уменьшенный отступ между блоками */
     border-radius: var(--promo-border-radius);
     overflow: hidden;
     white-space: nowrap;
@@ -538,14 +568,14 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin-top: var(--timer-margin-top);
     position: relative;
     background-color: var(--timer-bg-color);
     border-radius: var(--card-border-radius);
     border: var(--card-border-width) solid var(--card-border-color);
     padding: var(--timer-padding-desktop);
     text-align: center;
-    margin: var(--timer-margin);
+    margin: 0 auto; /* Центрирование по горизонтали */
+    margin-bottom: 0.5rem; /* Вдвое уменьшенный отступ между блоками */
     width: 100%;
     overflow: hidden;
     box-sizing: border-box;
@@ -562,7 +592,7 @@ body {
 .timer-blocks {
     display: flex;
     justify-content: center;
-    gap: var(--timer-blocks-gap);
+    gap: 1.5rem; /* Увеличиваем отступ между блоками (было var(--timer-blocks-gap)) */
     margin: 0;
     padding: 0;
     flex-wrap: nowrap; /* Гарантируем отсутствие переноса */
@@ -578,13 +608,14 @@ body {
     margin: 0;
     padding: 0;
     position: relative; /* Для добавления разделителей */
+    background-color: transparent;
 }
 
 /* Добавляем разделительные двоеточия между блоками */
 .timer-block:not(:last-child)::after {
     content: ":";
     position: absolute;
-    right: calc(-1 * var(--timer-blocks-gap) / 2 - var(--separator-offset));
+    right: calc(-1 * 1.5rem / 2 - var(--separator-offset)); /* Обновляем позицию с учетом нового отступа */
     top: calc(var(--digit-height) / 2 - 0.8rem);
     font-size: var(--separator-font-size);
     font-weight: var(--separator-font-weight);
@@ -593,7 +624,40 @@ body {
 
 .timer-unit {
     display: flex;
-    gap: var(--timer-digit-gap);
+    gap: 0; /* Убираем отступ между цифрами в одной группе */
+    background-color: transparent;
+    padding: 0.2rem;
+    border-radius: var(--digit-border-radius);
+    position: relative;
+    box-shadow: none; /* Убираем тень */
+}
+
+/* Оболочка для групп цифр - нижний (темный) прямоугольник */
+.timer-unit::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: var(--digit-back-color); /* Цвет нижнего блока */
+    border-radius: var(--digit-border-radius);
+    z-index: 0;
+    border: none;
+}
+
+/* Верхний (светлый) прямоугольник со смещением для 3D-эффекта */
+.timer-unit::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: var(--digit-bg-color); /* Цвет верхнего блока */
+    border-radius: var(--digit-border-radius);
+    z-index: 1;
+    transform: translate(calc(-1 * var(--digit-offset)), calc(-1 * var(--digit-offset))); /* Смещаем верхний блок влево и вверх */
 }
 
 .timer-label {
@@ -611,30 +675,171 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    overflow: visible;
+    z-index: 2; /* Увеличиваем z-index, чтобы цифры были видны поверх фона */
+    transform: translate(calc(-1 * var(--digit-offset)), calc(-1 * var(--digit-offset))); /* Смещаем цифры вместе с верхним блоком */
 }
 
+/* Добавляем пунктирную линию между цифрами */
+.timer-digit:first-child {
+    position: relative;
+}
+
+/* Удаляем все стили для пунктирной линии, так как они теперь в JavaScript */
+.timer-digit:first-child::after {
+    display: none !important;
+    content: none !important;
+    border: none !important;
+}
+
+/* Удаляем все медиа-запросы с настройками пунктирной линии */
+/* Добавляем единый стиль для всех разрешений */
+@media screen {
+    .timer-unit {
+        position: relative; /* Сохраняем для правильного позиционирования */
+    }
+    
+    /* Удаляем альтернативный подход */
+    .timer-unit::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: var(--digit-back-color);
+        border-radius: var(--digit-border-radius);
+        z-index: 0;
+        border: none;
+    }
+}
+
+/* Удаляем специальные правила для удаления лишних разделителей */
+.timer-block:last-child .timer-unit::before,
+.timer-block .timer-digit:last-child::after {
+    display: none;
+}
+
+/* Удаляем все старые медиа-запросы для линии */
+@media screen {
+    .timer-digit:first-child::after {
+        display: none !important;
+        content: none !important;
+        border: none !important;
+    }
+}
+
+/* Удаляем применяемый стиль для линии на всех разрешениях */
+@media (max-width: 768px), 
+       (max-width: 700px), 
+       (max-width: 650px), 
+       (max-width: 600px), 
+       (max-width: 480px), 
+       (max-width: 400px) {
+    .timer-digit:first-child::after {
+        display: none !important;
+        content: none !important;
+        border: none !important;
+    }
+    
+    /* Сохраняем важные стили для темных прямоугольников и при адаптации */
+    .timer-unit::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: var(--digit-back-color);
+        border-radius: var(--digit-border-radius);
+        z-index: 0;
+    }
+}
+
+@media (max-width: 768px) {
+    .timer-blocks {
+        gap: 1.2rem; /* Увеличенный отступ для планшетов */
+    }
+    
+    .timer-block:not(:last-child)::after {
+        right: calc(-1 * 1.2rem / 2 - 0.2rem);
+        top: calc(var(--digit-height-tablet) / 2 - 0.7rem);
+        font-size: var(--separator-font-size-tablet);
+    }
+    
+    /* Здесь были удалены старые стили */
+}
+
+@media (max-width: 600px) {
+    .timer-blocks {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        grid-template-rows: repeat(2, auto);
+        gap: 0.7rem; /* Уменьшаем горизонтальный отступ с 1rem */
+        grid-row-gap: 2.75rem;
+        justify-items: center;
+        width: var(--timer-grid-width-mobile);
+        margin: 0 auto;
+        padding: 0; /* Убираем внутренние отступы */
+    }
+    
+    /* Также уменьшаем отступ у заголовка таймера */
+    .timer-header {
+        margin-bottom: 1.5rem; /* Уменьшаем с 2.5rem */
+    }
+    
+    /* Здесь были удалены старые стили */
+    
+    /* Скрываем стандартные разделители при перегруппировке в сетку 2×2 */
+    .timer-block:not(:last-child)::after {
+        content: "";
+        display: none;
+    }
+
+    /* Улучшаем отображение подписей, чтобы они не перекрывались */
+    .timer-label {
+        font-size: 0.75rem;
+        margin-top: 0.3rem;
+        position: relative;
+        z-index: 5; /* Повышаем z-index для надписей */
+    }
+    
+    /* Добавляем фон для подписей, чтобы они не перекрывались с цифрами */
+    .timer-label::before {
+        content: "";
+        position: absolute;
+        top: -0.15rem;
+        left: -0.5rem;
+        right: -0.5rem;
+        bottom: -0.15rem;
+        background-color: var(--timer-bg-color);
+        z-index: -1;
+        border-radius: 0.3rem;
+    }
+}
+
+@media (max-width: 480px) {
+    /* Здесь были удалены старые стили */
+    
+    /* Остальные стили не меняем */
+}
+
+/* Медиа-запрос для 700px */
+@media (max-width: 700px) {
+    .timer-digit {
+        width: calc(var(--digit-width-tablet) + 0.2rem);
+        height: calc(var(--digit-height-tablet) + 0.2rem);
+    }
+    
+    .timer-digit span {
+        font-size: calc(var(--digit-font-size-tablet) + 0.1rem);
+    }
+    
+    /* Здесь были удалены старые стили */
+}
+
+/* Убираем фоны для отдельных цифр, так как теперь фон общий */
 .timer-digit-front, .timer-digit-back {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    border-radius: var(--digit-border-radius);
-    background-color: var(--digit-bg-color);
-}
-
-/* Уменьшаем смещение зеленых блоков, чтобы не выходили за границы */
-.timer-digit-back {
-    top: calc(var(--digit-offset) * 0.8);
-    left: calc(var(--digit-offset) * 0.8);
-    background-color: var(--digit-back-color);
-    z-index: 1;
-}
-
-.timer-digit-front {
-    z-index: 2;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    display: none;
 }
 
 .timer-digit span {
@@ -650,32 +855,27 @@ body {
 
 /* Медиа-запросы для адаптации разделителей на разных устройствах */
 @media (max-width: 768px) {
-    .countdown-timer {
-        padding: var(--timer-padding-tablet);
+    .timer-blocks {
+        gap: 1.2rem; /* Увеличенный отступ для планшетов (было var(--timer-blocks-gap-tablet)) */
     }
     
     .timer-block:not(:last-child)::after {
-        right: calc(-1 * var(--timer-blocks-gap-tablet) / 2 - 0.2rem);
-        top: calc(var(--digit-height-tablet) / 2 - 0.7rem); /* Скорректировано положение */
+        right: calc(-1 * 1.2rem / 2 - 0.2rem); /* Обновляем позицию с учетом нового отступа */
+        top: calc(var(--digit-height-tablet) / 2 - 0.7rem);
         font-size: var(--separator-font-size-tablet);
+    }
+    
+    .timer-unit {
+        padding: 0.15rem;
     }
 }
 
 @media (max-width: 600px) {
-    .container {
-        width: var(--container-600-width);
-    }
-    
-    :root {
-        --base-font-size: 16px;
-    }
-    
-    /* Перегруппировка таймера в сетку 2×2 */
     .timer-blocks {
         display: grid;
         grid-template-columns: repeat(2, 1fr);
         grid-template-rows: repeat(2, auto);
-        gap: var(--timer-blocks-gap-mobile);
+        gap: 1rem; /* Увеличенный отступ для мобильных (было var(--timer-blocks-gap-mobile)) */
         justify-items: center;
         width: var(--timer-grid-width-mobile);
         margin: 0 auto;
@@ -711,7 +911,7 @@ body {
         color: var(--separator-color);
     }
     
-    /* Еще больше уменьшаем размер ячеек */
+    /* Настройки для мобильного размера ячеек */
     .timer-digit {
         width: var(--digit-width-small);
         height: var(--digit-height-small);
@@ -725,6 +925,10 @@ body {
     .timer-block:not(:last-child)::after {
         content: "";
         display: none;
+    }
+    
+    .timer-unit {
+        padding: 0.12rem;
     }
 }
 
@@ -742,22 +946,33 @@ body {
     }
     
     .offer-card {
-        height: auto;
-        min-height: var(--card-min-height);
         padding: var(--card-padding-tablet);
-        padding-top: var(--card-padding-top-tablet);
+        padding-top: calc(var(--card-padding-top-tablet) + 0.5rem); /* Меньший отступ на очень маленьких экранах */
+        padding-bottom: calc(var(--card-padding-tablet) + 1.8rem); /* Увеличенный нижний отступ для счетчика */
     }
     
     .offer-content {
         flex-direction: column;
         align-items: flex-start;
-        gap: 0.625rem;
+        gap: 0.3rem;
         margin-bottom: var(--promo-margin-bottom);
     }
     
     .offer-title {
-        max-width: 100%;
-        margin-right: 0; /* Сброс правого отступа в мобильной версии */
+        max-width: 80%;
+        font-size: calc(var(--offer-font-size-tablet) * 0.9); /* Немного уменьшаем шрифт */
+    }
+    
+    .price {
+        font-size: calc(var(--price-font-size-tablet) * 0.95); /* Немного уменьшаем шрифт цены */
+        padding: 0.15rem 0.3rem; /* Уменьшаем внутренние отступы блока цены */
+    }
+    
+    /* Перемещаем счетчик ниже на мобильных устройствах */
+    .views-counter {
+        bottom: 0.3rem;
+        right: var(--logo-position-right);
+        padding: 0.15rem 0.3rem;
     }
     
     /* Адаптация сетки 2×2 для маленьких экранов */
@@ -827,6 +1042,7 @@ body {
 @media (max-width: 768px) {
     :root {
         --base-font-size: 16px;
+        --ladybug-size: 30px;    /* Было 25px, увеличено в 1.2 раза */
     }
     
     .container {
@@ -837,13 +1053,21 @@ body {
         min-height: var(--card-min-height-tablet);
         height: auto;
         padding: var(--card-padding-tablet);
-        padding-top: var(--card-padding-top-tablet);
+        padding-top: calc(var(--card-padding-top-tablet) + 0.8rem); /* Адаптивный верхний отступ */
+        padding-bottom: calc(var(--card-padding-tablet) + 1rem); /* Адаптивный нижний отступ */
     }
     
-    /* Корректировка размеров текста для лучшей читаемости */
+    .offer-text {
+        left: var(--card-padding-tablet); /* Выравниваем на мобильных устройствах */
+    }
+    
+    .offer-content {
+        gap: 0.4rem; /* Уменьшаем отступ между элементами */
+    }
+    
     .offer-title {
-        max-width: var(--offer-max-width-tablet);
         font-size: var(--offer-font-size-tablet);
+        max-width: 70%; /* Сужаем на планшетах */
     }
     
     .price {
@@ -865,6 +1089,10 @@ body {
     .timer-unit {
         gap: var(--timer-blocks-gap-tablet);
     }
+    
+    .ladybug:active {
+        transform: translate(30px, -30px) scale(0.8);
+    }
 }
 
 @media (max-width: 600px) {
@@ -876,127 +1104,183 @@ body {
         --base-font-size: 16px;
     }
     
-    /* Перегруппировка таймера в сетку 2×2 */
+    .product-content {
+        flex-direction: column;
+        align-items: stretch;
+        width: 100%;
+    }
+    
+    .product-image {
+        width: calc(100% + 4px); /* Компенсируем границу 2px с каждой стороны */
+        max-width: none;
+        margin: 0 -2px; /* Отрицательные отступы для компенсации границы */
+        padding: 0;
+        border-radius: var(--card-border-radius) var(--card-border-radius) 0 0;
+        position: relative;
+        left: 0;
+        right: 0;
+    }
+    
+    .product-photo {
+        min-height: auto;
+        height: auto;
+        width: 100%;
+        border-radius: calc(var(--card-border-radius) - 2px) calc(var(--card-border-radius) - 2px) 0 0;
+    }
+    
+    .product-description {
+        padding: 1rem;
+        margin-left: 0;
+        width: 100%;
+    }
+
+    .product-list {
+        margin-bottom: 0;
+    }
+    
+    .product-info {
+        padding: 0;
+        overflow: hidden;
+    }
+}
+
+@media (max-width: 480px) {
+    .product-info {
+        padding: 0;
+        margin-top: 1rem;
+        margin-bottom: 0.5rem; /* Уменьшаем отступ внизу на маленьких экранах */
+    }
+    
+    .product-image {
+        width: calc(100% + 4px); /* Компенсируем границу 2px с каждой стороны */
+        max-width: none;
+        margin: 0 -2px; /* Отрицательные отступы для компенсации границы */
+        padding: 0;
+        min-height: auto;
+        max-height: none; /* Убираем ограничение по высоте */
+    }
+    
+    .product-photo {
+        min-height: auto; /* Убираем минимальную высоту полностью */
+        max-height: none; /* Убираем ограничение по высоте */
+    }
+    
+    .description-title {
+        font-size: 1.05rem;
+        margin-bottom: 0.7rem; /* Уменьшаем отступ заголовка */
+    }
+    
+    .product-item {
+        font-size: 0.9rem;
+        margin-bottom: 0.6rem;
+        padding-left: 1.1rem;
+    }
+    
+    .product-item:last-child {
+        margin-bottom: 0; /* Убираем отступ у последнего элемента списка */
+    }
+}
+
+/* Добавим стили для широких экранов */
+@media (min-width: 1200px) {
+    .product-content {
+        gap: 0;
+        min-height: 450px;
+    }
+    
+    .product-image {
+        min-width: 420px;
+        max-width: 55%;
+        display: flex;
+        align-items: center;
+    }
+    
+    .product-photo {
+        max-height: 100%;
+    }
+    
+    .description-title {
+        font-size: 1.3rem;
+    }
+    
+    .product-item {
+        font-size: 1.05rem;
+        line-height: 1.5;
+        margin-bottom: 0.9rem;
+    }
+}
+
+/* Медиа-запросы для плавного уменьшения размеров ячеек */
+@media (max-width: 900px) {
+    .timer-digit {
+        width: var(--digit-width-900);
+        height: var(--digit-height-900);
+    }
+    
+    .timer-digit span {
+        font-size: var(--digit-font-size-900);
+    }
+}
+
+@media (max-width: 800px) {
+    .timer-digit {
+        width: var(--digit-width-800);
+        height: var(--digit-height-800);
+    }
+    
+    .timer-digit span {
+        font-size: var(--digit-font-size-800);
+    }
+}
+
+/* Увеличиваем расстояние между рядами в сетке 2x2 */
+@media (max-width: 600px) {
     .timer-blocks {
         display: grid;
         grid-template-columns: repeat(2, 1fr);
         grid-template-rows: repeat(2, auto);
-        gap: var(--timer-blocks-gap-mobile);
+        gap: 1rem; /* Горизонтальный отступ */
+        grid-row-gap: 2.75rem; /* Уменьшаем вдвое вертикальный отступ (было 5.5rem) */
         justify-items: center;
         width: var(--timer-grid-width-mobile);
         margin: 0 auto;
     }
     
-    .countdown-timer {
-        padding: var(--timer-padding-small);
+    /* Также уменьшаем отступ у заголовка таймера */
+    .timer-header {
+        margin-bottom: 1.5rem; /* Уменьшаем с 2.5rem */
     }
     
-    /* Добавляем разделитель между днями и часами (первый и второй блоки) */
-    .timer-block:first-child::after {
-        content: ":";
-        display: block;
-        position: absolute;
-        right: -50%; /* Смещаем на половину расстояния между ячейками */
-        top: 50%; /* Размещаем по вертикальному центру */
-        transform: translate(50%, -50%); /* Центрируем по обеим осям */
-        font-size: var(--separator-font-size-mobile);
-        font-weight: var(--separator-font-weight);
-        color: var(--separator-color);
+    /* Улучшаем отображение подписей, чтобы они не перекрывались */
+    .timer-label {
+        font-size: 0.75rem;
+        margin-top: 0.4rem;
+        position: relative;
+        z-index: 5;
+        font-weight: var(--font-weight-semibold); /* Делаем подписи чуть жирнее */
     }
     
-    /* Добавляем разделитель между минутами и секундами (третий и четвертый блоки) */
-    .timer-block:nth-child(3)::after {
-        content: ":";
-        display: block;
-        position: absolute;
-        right: -50%; /* Смещаем на половину расстояния между ячейками */
-        top: 50%; /* Размещаем по вертикальному центру */
-        transform: translate(50%, -50%); /* Центрируем по обеим осям */
-        font-size: var(--separator-font-size-mobile);
-        font-weight: var(--separator-font-weight);
-        color: var(--separator-color);
-    }
-    
-    /* Еще больше уменьшаем размер ячеек */
-    .timer-digit {
-        width: var(--digit-width-small);
-        height: var(--digit-height-small);
-    }
-    
-    .timer-digit span {
-        font-size: var(--digit-font-size-mobile);
-    }
-    
-    .timer-unit {
-        gap: var(--timer-digit-gap-mobile);
-    }
-    
-    .timer-block {
-        margin: 0;
-        padding: 0;
-    }
-    
-    .timer-blocks {
-        padding: 0;
-    }
-    
-    /* Скрываем стандартные разделители при перегруппировке в сетку 2×2 */
-    .timer-block:not(:last-child)::after {
+    /* Усиливаем фон для подписей */
+    .timer-label::before {
         content: "";
-        display: none;
+        position: absolute;
+        top: -0.2rem;
+        left: -0.6rem;
+        right: -0.6rem;
+        bottom: -0.2rem;
+        background-color: var(--timer-bg-color);
+        z-index: -1;
+        border-radius: 0.3rem;
     }
 }
 
 @media (max-width: 480px) {
-    :root {
-        --base-font-size: 15px;
-    }
-    
-    body {
-        padding: var(--card-padding-tablet);
-    }
-    
-    .container {
-        width: var(--container-mobile-width);
-    }
-    
-    .offer-card {
-        height: auto;
-        min-height: var(--card-min-height);
-        padding: var(--card-padding-tablet);
-        padding-top: var(--card-padding-top-tablet);
-    }
-    
-    .offer-content {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 0.625rem;
-        margin-bottom: var(--promo-margin-bottom);
-    }
-    
-    .offer-title {
-        max-width: 100%;
-        margin-right: 0; /* Сброс правого отступа в мобильной версии */
-    }
-    
-    /* Адаптация сетки 2×2 для маленьких экранов */
+    /* Увеличиваем вертикальный отступ в сетке на очень маленьких экранах */
     .timer-blocks {
-        gap: var(--timer-digit-gap-xs);
-        width: var(--timer-grid-width-mobile);
+        grid-row-gap: 2.75rem; /* Уменьшаем вдвое (было 5.5rem) */
     }
     
-    .countdown-timer {
-        padding: var(--timer-padding-mobile);
-    }
-    
-    /* Подправляем разделители для маленьких экранов */
-    .timer-block:first-child::after,
-    .timer-block:nth-child(3)::after {
-        font-size: var(--separator-font-size-mobile);
-        /* Сохраняем центрирование, меняя только размер шрифта */
-    }
-    
-    /* Максимально уменьшаем размер ячеек */
+    /* Уменьшаем размер ячеек на маленьких экранах */
     .timer-digit {
         width: var(--digit-width-mobile);
         height: var(--digit-height-mobile);
@@ -1005,18 +1289,178 @@ body {
     .timer-digit span {
         font-size: var(--digit-font-size-mobile);
     }
+}
+
+/* Добавляем промежуточную точку для более быстрого уменьшения */
+@media (max-width: 1100px) {
+    .timer-digit {
+        width: var(--digit-width-1100);
+        height: var(--digit-height-1100);
+    }
     
+    .timer-digit span {
+        font-size: var(--digit-font-size-1100);
+    }
+}
+
+/* Улучшаем медиа-запросы для плавного уменьшения размеров ячеек */
+@media (max-width: 900px) {
+    .timer-digit {
+        width: var(--digit-width-900);
+        height: var(--digit-height-900);
+    }
+    
+    .timer-digit span {
+        font-size: var(--digit-font-size-900);
+    }
+}
+
+@media (max-width: 800px) {
+    .timer-digit {
+        width: var(--digit-width-800);
+        height: var(--digit-height-800);
+    }
+    
+    .timer-digit span {
+        font-size: var(--digit-font-size-800);
+    }
+}
+
+/* Добавляем ещё одну промежуточную точку для более быстрого уменьшения */
+@media (max-width: 700px) {
+    .timer-digit {
+        width: calc(var(--digit-width-tablet) + 0.2rem);
+        height: calc(var(--digit-height-tablet) + 0.2rem);
+    }
+    
+    .timer-digit span {
+        font-size: calc(var(--digit-font-size-tablet) + 0.1rem);
+    }
+    
+    /* Фиксируем позицию пунктирной линии для ширины 700px */
+    .timer-digit:first-child::after {
+        right: -1px;
+        height: 60%;
+        top: 20%;
+        transform: translateX(50%); /* Центрируем линию */
+        border-right-width: 1px;
+    }
+}
+
+/* Увеличиваем расстояние между рядами в сетке 2x2 */
+@media (max-width: 600px) {
+    .timer-blocks {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        grid-template-rows: repeat(2, auto);
+        gap: 1rem; /* Горизонтальный отступ */
+        grid-row-gap: 2.75rem;
+        justify-items: center;
+        width: var(--timer-grid-width-mobile);
+        margin: 0 auto;
+    }
+    
+    /* Также уменьшаем отступ у заголовка таймера */
     .timer-header {
-        font-size: var(--timer-header-font-size-mobile);
-        margin-bottom: var(--timer-header-margin-mobile);
+        margin-bottom: 1.5rem; /* Уменьшаем с 2.5rem */
     }
     
+    /* Улучшаем отображение подписей, чтобы они не перекрывались */
     .timer-label {
-        font-size: var(--label-font-size-mobile);
+        font-size: 0.75rem;
+        margin-top: 0.4rem;
+        position: relative;
+        z-index: 5;
+        font-weight: var(--font-weight-semibold); /* Делаем подписи чуть жирнее */
     }
     
-    .timer-unit {
-        gap: var(--timer-digit-gap-mobile);
+    /* Усиливаем фон для подписей */
+    .timer-label::before {
+        content: "";
+        position: absolute;
+        top: -0.2rem;
+        left: -0.6rem;
+        right: -0.6rem;
+        bottom: -0.2rem;
+        background-color: var(--timer-bg-color);
+        z-index: -1;
+        border-radius: 0.3rem;
+    }
+}
+
+@media (max-width: 480px) {
+    /* Сохраняем значительный вертикальный отступ в сетке на очень маленьких экранах */
+    .timer-blocks {
+        grid-row-gap: 2.75rem; /* Уменьшаем вдвое (было 5.5rem) */
+    }
+    
+    /* Уменьшаем размер ячеек на маленьких экранах */
+    .timer-digit {
+        width: var(--digit-width-mobile);
+        height: var(--digit-height-mobile);
+    }
+    
+    .timer-digit span {
+        font-size: var(--digit-font-size-mobile);
+    }
+}
+
+/* Дополнительная точка для уменьшения размеров ячеек перед переходом в сетку 2x2 */
+@media (max-width: 650px) and (min-width: 601px) {
+    .timer-digit {
+        width: calc(var(--digit-width-tablet) - 0.2rem);
+        height: calc(var(--digit-height-tablet) - 0.2rem);
+    }
+    
+    .timer-digit span {
+        font-size: calc(var(--digit-font-size-tablet) - 0.1rem);
+    }
+    
+    /* Уменьшаем отступы между блоками */
+    .timer-blocks {
+        gap: 0.8rem;
+    }
+}
+
+@media (max-width: 600px) {
+    .timer-blocks {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        grid-template-rows: repeat(2, auto);
+        gap: 0.7rem; /* Уменьшаем горизонтальный отступ с 1rem */
+        grid-row-gap: 2.75rem;
+        justify-items: center;
+        width: var(--timer-grid-width-mobile);
+        margin: 0 auto;
+        padding: 0; /* Убираем внутренние отступы */
+    }
+    
+    /* Уменьшаем размер ячеек в сетке 2x2 */
+    .timer-digit {
+        width: calc(var(--digit-width-small) - 0.15rem);
+        height: calc(var(--digit-height-small) - 0.15rem);
+    }
+    
+    .timer-digit span {
+        font-size: calc(var(--digit-font-size-small) - 0.05rem);
+    }
+    
+    /* Делаем контейнер таймера шире */
+    .countdown-timer {
+        padding: 1rem 0.5rem 1.5rem; /* Уменьшаем боковые отступы */
+        width: 100%; /* Контейнер на полную ширину */
+    }
+}
+
+/* Для очень узких экранов делаем еще меньше */
+@media (max-width: 400px) {
+    .timer-digit {
+        width: calc(var(--digit-width-mobile) - 0.1rem);
+        height: calc(var(--digit-height-mobile) - 0.1rem);
+    }
+    
+    .timer-blocks {
+        gap: 0.5rem; /* Еще уменьшаем горизонтальный отступ */
     }
 }
 
@@ -1036,11 +1480,13 @@ body {
     position: absolute;
     width: var(--ladybug-size);
     height: var(--ladybug-size);
-    pointer-events: auto;
+    pointer-events: auto !important;
     cursor: pointer;
-    will-change: transform, left, top;
+    will-change: transform, left, top, rotate;
     z-index: 1000;
     overflow: visible;
+    transition: transform 0.3s ease;
+    transform-style: preserve-3d;
 }
 
 /* Тело божьей коровки */
@@ -1260,13 +1706,284 @@ body {
     }
 }
 
-/* Медиа-запрос для мобильных устройств */
+/* Стили для счетчика просмотров */
+.views-counter {
+    position: absolute;
+    top: auto;
+    bottom: 0.5rem;
+    right: var(--logo-position-right); /* Выравниваем с надписью Faberlic */
+    display: flex;
+    align-items: center;
+    padding: 0.3rem 0.6rem; /* Было 0.25rem 0.5rem, увеличено в 1.2 раза */
+    background-color: var(--card-background);
+    border-radius: 1.2rem; /* Было 1rem, увеличено в 1.2 раза */
+    border: 1px solid #1a692f; /* Темно-зеленая обводка */
+    font-family: var(--font-primary);
+    z-index: 2; /* Уменьшаем z-index, чтобы не перекрывать другие элементы */
+}
+
+.views-icon {
+    width: 1.44rem; /* Было 1.2rem, увеличено в 1.2 раза */
+    height: 1.44rem; /* Было 1.2rem, увеличено в 1.2 раза */
+    margin-right: 0.36rem; /* Было 0.3rem, увеличено в 1.2 раза */
+    filter: invert(26%) sepia(79%) saturate(545%) hue-rotate(102deg) brightness(91%) contrast(89%); /* Темно-зеленый цвет для иконки */
+}
+
+.views-count {
+    display: flex;
+    align-items: center;
+    color: #1a692f; /* Темно-зеленый цвет для текста */
+    font-weight: var(--font-weight-semibold);
+    font-size: 1.08rem; /* Было 0.9rem, увеличено в 1.2 раза */
+}
+
+.views-digit {
+    position: relative;
+    margin: 0 0.01rem;
+}
+
+.views-digit-front, .views-digit-back {
+    display: none;
+}
+
+.views-digit span {
+    position: relative;
+    color: #1a692f; /* Темно-зеленый цвет для цифр */
+    font-weight: var(--font-weight-semibold);
+}
+
+/* Медиа-запросы для адаптивности счетчика просмотров */
 @media (max-width: 768px) {
-    :root {
-        --ladybug-size: 25px;
+    .views-counter {
+        bottom: 0.48rem; /* Было 0.4rem, увеличено в 1.2 раза */
+        right: var(--logo-position-right);
+        padding: 0.24rem 0.48rem; /* Было 0.2rem 0.4rem, увеличено в 1.2 раза */
     }
     
-    .ladybug:active {
-        transform: translate(30px, -30px) scale(0.8);
+    .views-icon {
+        width: 1.2rem; /* Было 1rem, увеличено в 1.2 раза */
+        height: 1.2rem; /* Было 1rem, увеличено в 1.2 раза */
     }
-} 
+    
+    .views-count {
+        font-size: 0.96rem; /* Было 0.8rem, увеличено в 1.2 раза */
+    }
+}
+
+@media (max-width: 480px) {
+    .views-counter {
+        bottom: 0.36rem; /* Было 0.3rem, увеличено в 1.2 раза */
+        right: var(--logo-position-right);
+        padding: 0.18rem 0.36rem; /* Было 0.15rem 0.3rem, увеличено в 1.2 раза */
+    }
+    
+    .views-icon {
+        width: 1.08rem; /* Было 0.9rem, увеличено в 1.2 раза */
+        height: 1.08rem; /* Было 0.9rem, увеличено в 1.2 раза */
+    }
+    
+    .views-count {
+        font-size: 0.84rem; /* Было 0.7rem, увеличено в 1.2 раза */
+    }
+}
+
+/* Стили для блока с информацией о товаре */
+.product-info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    background-color: var(--product-bg-color);
+    border-radius: var(--card-border-radius);
+    border: var(--card-border-width) solid var(--card-border-color);
+    padding: 0;
+    margin: 0 auto;
+    margin-bottom: 0.5rem; /* Вдвое уменьшенный отступ между блоками */
+    width: 100%;
+    overflow: hidden;
+    box-sizing: border-box;
+}
+
+.product-header {
+    font-size: var(--timer-header-font-size);
+    color: var(--timer-header-text);
+    font-weight: var(--timer-header-font-weight);
+    margin-bottom: var(--timer-header-margin-bottom);
+    text-align: center;
+    width: 100%;
+}
+
+.product-content {
+    display: flex;
+    width: 100%;
+    gap: 0;
+    align-items: stretch;
+    justify-content: flex-start;
+    min-height: 0;
+}
+
+.product-image {
+    flex: 1.5;
+    min-width: 320px;
+    max-width: 55%;
+    padding: 0;
+    margin: 0;
+    background-color: var(--product-image-bg-color);
+    display: flex; /* Используем flex для центрирования */
+    align-items: center; /* Центрируем изображение по вертикали */
+    justify-content: center; /* Центрируем изображение по горизонтали */
+    overflow: hidden;
+    border: 2px dashed #1a692f;
+    line-height: 0;
+    border-radius: var(--card-border-radius) 0 0 var(--card-border-radius); /* Скругляем только левые углы */
+    height: auto; /* Удаляем фиксированную высоту */
+}
+
+.product-photo {
+    width: 100%;
+    height: auto;
+    display: block;
+    object-fit: contain;
+    border-radius: calc(var(--card-border-radius) - 2px) 0 0 calc(var(--card-border-radius) - 2px); /* Скругляем только левые углы */
+    max-height: 100%; /* Ограничиваем максимальную высоту */
+}
+
+.product-description {
+    flex: 1;
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+    margin-left: 1rem;
+    padding: 1rem 1.5rem 1rem 0;
+}
+
+.description-title {
+    color: var(--card-main-text);
+    font-size: 1.25rem;
+    font-weight: var(--font-weight-semibold);
+    margin-bottom: 1rem;
+}
+
+.product-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.product-item {
+    position: relative;
+    padding-left: 1.25rem;
+    margin-bottom: 0.8rem;
+    color: var(--card-main-text);
+    font-size: 1rem;
+    line-height: 1.4;
+}
+
+.product-item::before {
+    content: "•";
+    position: absolute;
+    left: 0.25rem;
+    color: var(--card-border-color);
+    font-weight: bold;
+}
+
+/* Адаптивность для блока информации о товаре */
+@media (max-width: 768px) {
+    .product-info {
+        padding: 0;
+    }
+    
+    .product-image {
+        min-width: 250px;
+        max-width: 50%;
+    }
+    
+    .product-description {
+        padding: 0.75rem 1rem 0.75rem 0;
+    }
+    
+    .product-photo {
+        min-height: 220px;
+    }
+}
+
+@media (max-width: 600px) {
+    .product-content {
+        flex-direction: column;
+        align-items: center; /* Центрируем изображение на маленьких экранах */
+    }
+    
+    .product-image {
+        width: 100%;
+        max-width: 100%; /* Блок занимает всю ширину */
+        margin: 0; /* Убираем все отступы */
+        border-radius: var(--card-border-radius) var(--card-border-radius) 0 0; /* Скругляем только верхние углы на мобильном */
+    }
+    
+    .product-photo {
+        min-height: auto; /* Убираем минимальную высоту */
+        height: auto;
+        border-radius: calc(var(--card-border-radius) - 2px) calc(var(--card-border-radius) - 2px) 0 0; /* Скругляем только верхние углы на мобильном */
+    }
+    
+    .product-description {
+        padding: 1rem;
+        margin-left: 0;
+        width: 100%;
+    }
+
+    .product-list {
+        margin-bottom: 0; /* Убираем нижний отступ у списка */
+    }
+}
+
+/* Анимация для усиков в режиме злости */
+@keyframes antennaShake {
+    0%, 100% {
+        transform: rotate(-30deg);
+    }
+    50% {
+        transform: rotate(30deg);
+    }
+}
+
+/* Стиль для божьей коровки при перетаскивании */
+.ladybug.dragging {
+    cursor: grabbing !important;
+    filter: saturate(1.5);
+    pointer-events: auto !important;
+    z-index: 1100 !important;
+}
+
+/* Убираем квадратик при перетаскивании */
+.ladybug * {
+    box-sizing: border-box;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    pointer-events: none;
+}
+
+.ladybug-body, .ladybug-head, .ladybug-spot, 
+.ladybug-eye, .ladybug-smile, .ladybug-antenna, 
+.ladybug-divider, .ladybug-leg {
+    pointer-events: none;
+}
+
+/* Убираем стандартное выделение при перетаскивании */
+.ladybug::before, .ladybug::after,
+.ladybug *::before, .ladybug *::after {
+    box-sizing: border-box;
+}
+
+/* Стиль для элементов гнева божьей коровки */
+.ladybug-anger-sign {
+    position: absolute;
+    display: inline-block;
+    line-height: 1;
+    font-family: 'Arial', sans-serif;
+    filter: drop-shadow(0 1px 2px rgba(0,0,0,0.2));
+    pointer-events: none;
+}
+  

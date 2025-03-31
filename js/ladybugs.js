@@ -1,4 +1,4 @@
-// Класс для божьей коровки с расширенным поведением
+// Класс для божьей коровки с расширенным поворотом
 class Ladybug {
     constructor(controller, id) {
         this.id = id;
@@ -6,34 +6,57 @@ class Ladybug {
         this.element = this.createLadybugElement();
         this.x = Math.random() * 90;
         this.y = Math.random() * 90;
-        this.speed = 0.3 + Math.random() * 1.0; // Уменьшаем скорость
+        this.speed = 0.7 + Math.random() * 1.0; // Увеличиваем начальную скорость для более активного движения
         this.direction = Math.random() * 360;
-        this.rotationSpeed = 0.1 + Math.random() * 0.3; // Уменьшаем скорость поворота
+        this.rotationSpeed = 0.15 + Math.random() * 0.3; // Увеличиваем скорость поворота для быстрой реакции
         
         // Добавляем переменные для плавности движения
         this.targetDirection = this.direction;
         this.targetSpeed = this.speed;
         this.lastRepelTime = 0;
-        this.smoothingFactor = 0.05; // Уменьшаем фактор плавности для более мягкого движения
+        this.smoothingFactor = 0.05; // Увеличиваем фактор плавности для более динамичного движения
+        
+        // Индивидуальный коэффициент выбора направления при столкновении
+        // Используем ID для создания противоположных коэффициентов у разных коровок
+        // Четные ID отклоняются в одну сторону, нечетные - в противоположную
+        // Добавляем небольшое случайное смещение для естественности
+        const baseAngle = this.id % 2 === 0 ? 25 : -25;
+        const variability = 15; // Диапазон вариации внутри группы
+        this.directionBias = baseAngle + (Math.random() * variability - variability/2);
         
         // Увеличиваем количество состояний
-        this.states = ['wander', 'flee', 'rest', 'eating', 'sleeping', 'flying', 'dancing', 'following', 'landing'];
-        this.state = 'wander'; // начальное состояние
+        this.states = ['wander', 'flee', 'rest', 'eating', 'sleeping', 'flying', 'dancing', 'following', 'landing', 'dragging'];
+        this.state = 'wander'; // Начальное состояние
         
         this.stateTimer = 0;
         this.nearbyLadybugs = [];
         this.targetElement = null;
         this.targetLeaf = null;
-        this.isHappy = false; // настроение
-        this.trail = []; // след за божьей коровкой
+        this.isHappy = false; // Настроение
+        this.trail = []; // След за божьей коровкой
         this.trailUpdateCounter = 0;
         
+        // Переменные для перетаскивания
+        this.isDragging = false;
+        this.dragOffsetX = 0;
+        this.dragOffsetY = 0;
+        this.originalScale = 1;
+        this.beforeDragState = null;
+        
+        // Переменные для отслеживания кликов
+        this.mouseDownTime = 0;
+        this.mouseDownX = 0;
+        this.mouseDownY = 0;
+        this.clickThreshold = 300; // Миллисекунды для определения клика
+        this.moveThreshold = 5; // Пиксели для определения начала движения
+        this.potentialDrag = false; // Флаг перетаскивания
+        
         this.personality = {
-            sociability: Math.random(), // склонность к группированию
-            curiosity: Math.random(),   // склонность к исследованию
-            laziness: Math.random(),    // склонность к отдыху
-            playfulness: Math.random(), // склонность к играм
-            fearfulness: Math.random()  // склонность к страху
+            sociability: Math.random(), // Социальность к группировке
+            curiosity: Math.random(),   // Социальность к исследованию
+            laziness: Math.random(),    // Социальность к отдыху
+            playfulness: Math.random(), // Социальность к игре
+            fearfulness: Math.random()  // Социальность к страху
         };
         
         this.updatePosition();
@@ -49,7 +72,7 @@ class Ladybug {
         const body = document.createElement('div');
         body.className = 'ladybug-body';
         
-        // Создаем симметричные пятна
+        // Создаем симметричные точки
         const spotPositions = [
             {x: 30, y: 30}, 
             {x: 70, y: 30}, 
@@ -76,7 +99,7 @@ class Ladybug {
         const head = document.createElement('div');
         head.className = 'ladybug-head';
         
-        // Добавляем усики
+        // Добавляем антенны
         const leftAntenna = document.createElement('div');
         leftAntenna.className = 'ladybug-antenna ladybug-antenna-left';
         
@@ -108,7 +131,7 @@ class Ladybug {
         divider.className = 'ladybug-divider';
         body.appendChild(divider);
         
-        // Добавляем ножки ВНУТРИ тела (ключевое отличие)
+        // Добавляем ножки
         for (let i = 1; i <= 6; i++) {
             const leg = document.createElement('div');
             leg.className = `ladybug-leg ladybug-leg-${i}`;
@@ -117,40 +140,43 @@ class Ladybug {
             body.appendChild(leg);
         }
         
-        // Добавляем тело в основной контейнер
+        // Добавляем тело в контейнер божьей коровки
         ladybug.appendChild(body);
         
         return ladybug;
     }
 
     setupEventListeners() {
-        // При нажатии - показываем "счастье"
-        this.element.addEventListener('click', (e) => {
-            e.stopPropagation();
-            this.showHappiness();
-        });
+        // Удаляем прямой обработчик клика, вместо этого будем использовать handleDragEnd
         
-        // При наведении мыши - убегание или иное поведение
+        // При наведении мыши - проверяем, не находимся ли мы в режиме перетаскивания или потенциального перетаскивания
         this.element.addEventListener('mouseover', () => {
-            // С вероятностью, зависящей от fearfulness, убегаем
+            if (this.isDragging || this.potentialDrag) return;
+            
+            // С вероятностью, зависящей от страха, мы убегаем
             if (Math.random() < this.personality.fearfulness) {
                 this.startFlee();
             } else if (Math.random() < this.personality.playfulness) {
-                // Иначе с вероятностью, зависящей от playfulness, начинаем танцевать
+                // Если с вероятностью, зависящей от игры, мы начинаем танцевать
                 this.startDancing();
             }
         });
         
-        this.element.addEventListener('touchstart', (e) => {
-            e.preventDefault();
-            e.stopPropagation();
-            this.showHappiness();
-        });
+        // Обработчики для мыши
+        this.element.addEventListener('mousedown', this.handleMouseDown.bind(this));
+        document.addEventListener('mousemove', this.handleMouseMove.bind(this));
+        document.addEventListener('mouseup', this.handleMouseUp.bind(this));
+        
+        // Обработчики для сенсорных экранов
+        this.element.addEventListener('touchstart', this.handleTouchStart.bind(this));
+        document.addEventListener('touchmove', this.handleTouchMove.bind(this));
+        document.addEventListener('touchend', this.handleTouchEnd.bind(this));
     }
     
     startSleeping() {
-        this.changeState('sleeping', 5000 + Math.random() * 5000);
-        this.speed = 0; // не двигаемся во время сна
+        // Делаем сон значительно дольше
+        this.changeState('sleeping', 3000 + Math.random() * 4000); // Увеличиваем время сна до 3-7 секунд
+        this.speed = 0; // Не двигаемся во время сна
         
         // Массив для хранения элементов сна
         this.sleepElements = [];
@@ -190,43 +216,46 @@ class Ladybug {
         }
     }
     
-    // Показываем счастье (улыбаемся и подпрыгиваем) с улучшенной анимацией сердечек
+    // Показываем счастье (увеличиваем масштаб элемента)
     showHappiness() {
         this.isHappy = true;
-        this.element.style.transform = 'scale(1.2)';
+        // Удаляем изменение масштаба элемента, чтобы божья коровка не исчезала
+        // this.element.style.transform = 'scale(1.2)';
         
-        // Определяем цвет сердечка - яркий оттенок розового
+        // Определяем цвет сердца - светло-красный оттенок
         const heartColor = '#ff5252';
         
-        // Создаем одно сердечко
+        // Создаем одно сердце
         const heart = document.createElement('div');
         heart.className = 'ladybug-heart';
         
-        // Используем unicode сердце
+        // Используем unicode для сердца
         heart.innerHTML = '&#x2764;';
         heart.style.position = 'fixed'; // Используем fixed вместо absolute
-        heart.style.fontSize = '16px'; // Фиксированный размер для стабильности
+        // Увеличиваем размер сердца
+        heart.style.fontSize = '28px'; // Было 16px
+        heart.style.fontWeight = 'bold';
         
-        // Вычисляем позицию божьей коровки на экране
+        // Вычисляем позицию сердца на экране
         const rect = this.element.getBoundingClientRect();
-        // Размещаем сердечко над божьей коровкой, вычисляя абсолютные координаты
-        heart.style.left = `${rect.left + rect.width / 2 - 8}px`; // Центрируем по горизонтали (8px - половина ширины сердечка)
-        heart.style.top = `${rect.top - 10}px`;  // Немного выше божьей коровки
+        // Рассчитываем позицию на экране
+        heart.style.left = `${rect.left + rect.width / 2 - 14}px`; // Центрируем по горизонтали (14px - половина ширины божьей коровки)
+        heart.style.top = `${rect.top - 20}px`;  // Немножко выше верхней границы божьей коровки
         
-        // Настраиваем внешний вид сердечка
+        // Цвет сердца
         heart.style.color = heartColor;
         heart.style.opacity = '0';
         heart.style.zIndex = '1001';
         heart.style.pointerEvents = 'none';
-        heart.style.filter = 'drop-shadow(0 0 2px rgba(255,0,0,0.5))';
+        heart.style.filter = 'drop-shadow(0 0 3px rgba(255,0,0,0.7))';
         
-        // Добавляем сердечко напрямую в body вместо элемента божьей коровки
+        // Добавляем сердце в тело
         document.body.appendChild(heart);
         
-        // Создаем анимацию для сердечка
+        // Создаем анимацию для сердца
         const duration = 1.5; // 1.5 секунды
         
-        // Анимация для сердечка - просто поднимается вверх
+        // Анимация для сердца - простое уменьшение и увеличение
         const keyframes = `
             @keyframes heart${this.id} {
                 0% {
@@ -235,28 +264,28 @@ class Ladybug {
                 }
                 20% {
                     opacity: 1;
-                    transform: translateY(-10px) scale(1);
+                    transform: translateY(-15px) scale(1.2);
                 }
                 80% {
                     opacity: 0.8;
-                    transform: translateY(-30px) scale(1.1);
+                    transform: translateY(-45px) scale(1.4);
                 }
                 100% {
                     opacity: 0;
-                    transform: translateY(-50px) scale(0.8);
+                    transform: translateY(-70px) scale(1);
                 }
             }
         `;
         
-        // Добавляем стиль с анимацией в head
+        // Добавляем стили анимации в head
         const style = document.createElement('style');
         style.textContent = keyframes;
         document.head.appendChild(style);
         
-        // Применяем анимацию
-        heart.style.animation = `heart${this.id} ${duration}s forwards`;
+        // Применяем анимацию к сердцу
+        heart.style.animation = `heart${this.id} ${duration}s ease-out forwards`;
         
-        // Удаляем сердечко и стиль через время
+        // Удаляем сердце и стили анимации после окончания
         setTimeout(() => {
             if (heart.parentNode) {
                 heart.parentNode.removeChild(heart);
@@ -264,56 +293,51 @@ class Ladybug {
             if (style.parentNode) {
                 style.parentNode.removeChild(style);
             }
-        }, duration * 1000 + 100);
-        
-        // Возвращаем обычное состояние через 1.5 секунды
-        setTimeout(() => {
-            this.element.style.transform = '';
-            this.isHappy = false;
-        }, 1500);
+        }, duration * 1000);
     }
 
     startFlee() {
-        this.changeState('flee', 2000); // сокращаем время бегства для плавности
+        this.changeState('flee', 2000); // Время бегства 2000 мс
         
-        // Плавно увеличиваем скорость при убегании
-        this.targetSpeed = 2 + Math.random() * 1.5; // уменьшаем скорость бегства
+        // Увеличиваем скорость при бегстве
+        this.targetSpeed = 2.2 + Math.random() * 1.5; // Увеличиваем скорость бегства
         
-        // Меняем направление в противоположную сторону от курсора
+        // Меняем направление движения на противоположное
         const cursorX = this.controller.lastMouseX;
         const cursorY = this.controller.lastMouseY;
         
         if (cursorX !== null && cursorY !== null) {
-            // Вычисляем направление от курсора к божьей коровке
+            // Вычисляем новое направление от курсора
             const dx = this.x - cursorX;
             const dy = this.y - cursorY;
             this.targetDirection = Math.atan2(dy, dx) * 180 / Math.PI;
             
             // Добавляем небольшое случайное отклонение
-            this.targetDirection += (Math.random() - 0.5) * 30;
+            this.targetDirection += (Math.random() - 0.5) * 20; // Уменьшаем разброс на 30 до 20
         } else {
             // Если нет данных о курсоре, просто выбираем случайное направление
-            this.targetDirection = (this.direction + 120 + Math.random() * 60) % 360;
+            this.targetDirection = (this.direction + 120 + Math.random() * 40) % 360; // Уменьшаем на 60 до 40
         }
     }
     
     startDancing() {
-        this.changeState('dancing', 4000); // танцуем 4 секунды
-        this.speed = 0.1; // очень медленное перемещение во время танца
+        this.changeState('dancing', 4000); // Танцуем 4 секунды
+        this.speed = 0.1; // Медленное движение в танце
     }
     
     startFlying() {
-        this.changeState('flying', 5000); // летаем 5 секунд
-        this.targetSpeed = 3 + Math.random() * 2; // снижаем скорость полета
-        this.y -= 3; // медленнее взлетаем вверх
+        this.changeState('flying', 5000); // Летим 5 секунд
+        this.targetSpeed = 4 + Math.random() * 2; // Увеличиваем скорость полета
+        this.y -= 3; // Летим вверх
     }
     
     startEating(leaf) {
         this.targetLeaf = leaf;
-        this.changeState('eating', 3000 + Math.random() * 2000);
-        this.speed = 0; // не двигаемся во время еды
+        // Ограничиваем время приема пищи максимум до 3 секунд
+        this.changeState('eating', 1000 + Math.random() * 2000);
+        this.speed = 0; // Не двигаемся во время поедания
         
-        // Отмечаем лист как "съедаемый"
+        // Отмечаем лист как "съеденный"
         leaf.classList.add('eaten');
         
         // Удаляем лист после анимации "поедания"
@@ -328,21 +352,23 @@ class Ladybug {
     }
     
     startFollowing(target) {
-        this.changeState('following', 3000 + Math.random() * 2000);
+        // Ограничиваем время следования максимум до 3 секунд
+        this.changeState('following', 1000 + Math.random() * 2000);
         this.targetLadybug = target;
-        this.speed = 1.2 + Math.random() * 0.8; // Уменьшаем скорость следования
+        this.speed = 1.5 + Math.random() * 1.0; // Увеличиваем скорость следования
     }
     
     startLanding(element) {
-        this.changeState('landing', 4000 + Math.random() * 3000);
+        // Ограничиваем время посадки максимум до 3 секунд
+        this.changeState('landing', 1000 + Math.random() * 2000);
         this.targetElement = element;
-        this.speed = 1 + Math.random(); // умеренная скорость для посадки
+        this.speed = 1 + Math.random(); // Средняя скорость для посадки
     }
     
     endLanding() {
         if (this.targetElement) {
-            // После посадки отдыхаем на элементе
-            this.changeState('rest', 3000 + Math.random() * 2000);
+            // После посадки меняем состояние на "отдых" не дольше 3 секунд
+            this.changeState('rest', 1000 + Math.random() * 2000);
             this.speed = 0;
         }
     }
@@ -357,7 +383,7 @@ class Ladybug {
         // Очищаем предыдущее состояние
         this.element.classList.remove(this.state);
         
-        // Специальная обработка для некоторых состояний
+        // Обработка для некоторых состояний
         if (this.state === 'sleeping') {
             this.endSleeping();
         } else if (this.state === 'landing' && newState !== 'rest') {
@@ -371,9 +397,11 @@ class Ladybug {
         
         // Сбрасываем скорость по умолчанию для нового состояния
         if (newState === 'wander') {
-            this.speed = 0.5 + Math.random() * 1.5;
+            // Плавно устанавливаем новую скорость для блуждания
+            this.targetSpeed = 0.7 + Math.random() * 0.9; // Увеличиваем диапазон скорости (было 0.4 + Math.random() * 0.7)
         } else if (newState === 'rest') {
             this.speed = 0;
+            this.targetSpeed = 0;
         }
     }
 
@@ -381,19 +409,24 @@ class Ladybug {
         this.element.style.left = `${this.x}vw`;
         this.element.style.top = `${this.y}vh`;
         
-        // Поворачиваем в соответствии с направлением движения только если не в специальных состояниях
+        // Применяем поворот только если не в режиме танца, сна или поедания
         if (!['dancing', 'sleeping', 'eating', 'rest'].includes(this.state)) {
+            // Следим за текущим движением божьей коровки при перетаскивании
+            if (this.state === 'dragging') {
+                // Не меняем трансформацию при перетаскивании, она уже установлена в startDragging
+                return;
+            }
             this.element.style.transform = `rotate(${this.direction}deg)`;
         }
         
-        // Обновляем след каждые несколько кадров, только во время движения
+        // Обновляем след за божьей коровкой каждые 5 пикселей
         if (this.speed > 0 && ++this.trailUpdateCounter % 5 === 0) {
             this.createTrail();
         }
     }
     
     createTrail() {
-        // Создаем элемент следа
+        // Создаем элемент следующий
         const trail = document.createElement('div');
         trail.className = 'ladybug-trail';
         trail.style.left = `${this.x}vw`;
@@ -402,10 +435,10 @@ class Ladybug {
         // Добавляем в DOM
         document.body.appendChild(trail);
         
-        // Добавляем в массив следов
+        // Добавляем в массив следующих
         this.trail.push(trail);
         
-        // Ограничиваем количество следов
+        // Ограничиваем количество следующих
         if (this.trail.length > 10) {
             const oldTrail = this.trail.shift();
             if (oldTrail && oldTrail.parentNode) {
@@ -426,19 +459,19 @@ class Ladybug {
     }
 
     detectCollision(otherLadybugs, interactiveElements, leaves) {
-        // Текущее время для контроля частоты отталкивания
+        // Текущее время для проверки столкновений
         const currentTime = Date.now();
         
-        // Поиск ближайших божьих коровок
+        // Проверяем ближайших соседей
         this.nearbyLadybugs = otherLadybugs.filter(other => {
             if (other.id === this.id) return false;
             
-            // Рассчитываем расстояние между божьими коровками
+            // Вычисляем расстояние между божьими коровками
             const dx = other.x - this.x;
             const dy = other.y - this.y;
             const distance = Math.sqrt(dx * dx + dy * dy);
             
-            // Считаем близкими, если расстояние меньше 20vw (увеличено для раннего обнаружения)
+            // Считаем, если расстояние меньше 20vw (увеличено для расширения области)
             return distance < 20;
         });
         
@@ -449,11 +482,11 @@ class Ladybug {
             return distA - distB;
         });
         
-        // Проверяем наложения с другими божьими коровками
-        const minDistance = 15; // Увеличиваем минимальную дистанцию (было 10)
-        const criticalDistance = 8; // Увеличиваем критическую дистанцию (было 5)
+        // Проверяем, не находимся ли мы в пределах расстояния для столкновений
+        const minDistance = 20; // Увеличиваем максимальное расстояние (было 15)
+        const criticalDistance = 12; // Увеличиваем критическое расстояние (было 8)
         
-        // Подсчитываем количество очень близких коровок
+        // Считаем количество близких божьих коровок
         let nearbyCount = 0;
         for (const other of otherLadybugs) {
             if (other.id === this.id) continue;
@@ -467,13 +500,13 @@ class Ladybug {
             }
         }
         
-        // Еще больше увеличиваем силу отталкивания
-        const crowdFactor = Math.min(1.5, nearbyCount * 0.4); // Увеличено для большего отталкивания
+        // Если больше божьих коровок, увеличиваем силу отталкивания
+        const crowdFactor = Math.min(1.5, nearbyCount * 0.4); // Увеличиваем для больших групп
         
-        // Сокращаем время задержки между отталкиваниями для более активной реакции
-        const repelCooldown = 150 + (nearbyCount * 30); // Уменьшено для более частого реагирования
+        // Замедляем время между столкновениями
+        const repelCooldown = 150 + (nearbyCount * 30); // Уменьшаем для более частого столкновения
         
-        // Флаг, который определяет, было ли отталкивание
+        // Флаг, определяющий, было ли отталкивание
         let wasRepelled = false;
         
         for (const other of otherLadybugs) {
@@ -483,17 +516,17 @@ class Ladybug {
             const dy = other.y - this.y;
             const distance = Math.sqrt(dx * dx + dy * dy);
             
-            // Начинаем отталкивание раньше для более плавного разделения
+            // Начинаем отталкивание ближе для более плавного перемещения
             if (distance < minDistance) {
-                // Всегда легкое отталкивание при приближении
+                // Легкое отталкивание при приближении
                 const repelAngle = Math.atan2(-dy, -dx);
                 const forceFactor = Math.pow(1 - (distance / minDistance), 1.5);
                 
-                // Базовое отталкивание даже при кулдауне
+                // Базовое отталкивание, которое увеличивается при приближении
                 this.x += Math.cos(repelAngle) * forceFactor * 0.15;
                 this.y += Math.sin(repelAngle) * forceFactor * 0.15;
                 
-                // Основное отталкивание с задержкой
+                // Основное отталкивание с использованием задержки
                 if (currentTime - this.lastRepelTime < repelCooldown && this.state !== 'flee') {
                     continue;
                 }
@@ -501,62 +534,65 @@ class Ladybug {
                 this.lastRepelTime = currentTime;
                 wasRepelled = true;
                 
-                // Коэффициент силы отталкивания с резким ростом при малом расстоянии
+                // Коэффициент силы отталкивания при малых расстояниях
                 const repelStrength = Math.pow(1 - (distance / minDistance), 2.2) * (1.8 + crowdFactor);
                 
-                // При критически малом расстоянии - мгновенно раздвигаем коровок
+                // При больших расстояниях - вращение вокруг центра
                 if (distance < criticalDistance) {
-                    // Принудительно изменяем координаты с большим шагом
-                    const pushAmount = (criticalDistance - distance + 1.0) * (2.0 + crowdFactor);
+                    // Вращение вокруг центра при критическом расстоянии
+                    const pushAmount = (criticalDistance - distance + 0.8) * (1.5 + crowdFactor);
                     
-                    // Сильный импульс для надёжного разделения
-                    this.x += Math.cos(repelAngle) * pushAmount * 0.9;
-                    this.y += Math.sin(repelAngle) * pushAmount * 0.9;
+                    // Сила для разделения, но больше по мере увеличения расстояния
+                    this.x += Math.cos(repelAngle) * pushAmount * 0.7;
+                    this.y += Math.sin(repelAngle) * pushAmount * 0.7;
                     
-                    // Резко меняем направление
-                    this.direction = repelAngle * 180 / Math.PI;
+                    // Меняем направление на противоположное встрече с учетом индивидуального отклонения
+                    const baseDirection = (repelAngle * 180 / Math.PI);
+                    // Добавляем индивидуальное отклонение для каждой коровки
+                    this.direction = baseDirection + this.directionBias;
+                    // Устанавливаем целевое направление с индивидуальным отклонением
                     this.targetDirection = this.direction;
                     
-                    // Увеличиваем скорость для немедленного разделения
-                    this.speed = 2.5 + Math.random() * 1.0 + crowdFactor;
+                    // Увеличиваем скорость для быстрого разделения
+                    this.speed = 1.8 + Math.random() * 0.8 + crowdFactor;
                     this.targetSpeed = this.speed;
                     
-                    // Всегда переходим в состояние бегства при критическом сближении
+                    // Переходим в состояние бега при критическом приближении
                     this.changeState('flee', 1500 + crowdFactor * 1000);
                 } 
-                // Более раннее и сильное отталкивание при просто близком расстоянии
+                // Если больше расстояния, но меньше критического,
                 else {
-                    // Устанавливаем направление противоположное от другой коровки
-                    this.targetDirection = repelAngle * 180 / Math.PI + (Math.random() * 15 - 7.5);
+                    // Меняем направление на противоположное встрече с учетом индивидуального отклонения
+                    const baseOppositeDirection = (repelAngle * 180 / Math.PI);
+                    // Добавляем индивидуальное отклонение и небольшое случайное для естественности
+                    this.targetDirection = baseOppositeDirection + this.directionBias + (Math.random() * 10 - 5);
                     
-                    // Значительно увеличиваем скорость для эффективного разделения
-                    this.targetSpeed = 1.2 + 1.5 * repelStrength;
+                    // Увеличиваем скорость для эффективного разделения, но меньше
+                    this.targetSpeed = 1.0 + 1.2 * repelStrength;
                     
-                    // Если мы следуем за коровкой, но слишком близко, переходим в состояние бегства
+                    // Если мы следуем за другой божьей коровкой,
                     if (this.state === 'following' && this.targetLadybug && this.targetLadybug.id === other.id) {
                         this.changeState('flee', 1200);
                     }
                 }
                 
-                // Добавляем небольшое случайное отклонение для естественности
-                this.targetDirection += (Math.random() - 0.5) * 5;
-                
-                // Немедленно обновляем позицию для начала разделения при любом расстоянии меньше минимального
+                // Немедленно обновляем позицию для начала разделения
                 this.move(60);
                 
-                // Разрываем цикл после взаимодействия с ближайшей коровкой
+                // Меняем направление при столкновении
                 break;
             }
         }
         
-        // Если мы находимся рядом с другими коровками, но не было отталкивания,
-        // то с большой вероятностью меняем направление на случайное, чтобы разбить группы
+        // Если мы находимся рядом с другими божьими коровками,
+        // но не было отталкивания,
+        // то с вероятностью 0.15 меняем направление на случайное
         if (this.nearbyLadybugs.length > 1 && !wasRepelled && Math.random() < 0.15) {
             this.targetDirection = Math.random() * 360;
-            this.targetSpeed = 0.9 + Math.random() * 1.0;
+            this.targetSpeed = 0.9 + Math.random() * 0.6;
         }
         
-        // Проверяем столкновения с интерактивными элементами
+        // Проверяем, не находимся ли мы в пределах расстояния для столкновений
         if (interactiveElements && interactiveElements.length > 0) {
             for (const element of interactiveElements) {
                 const rect = element.getBoundingClientRect();
@@ -567,11 +603,11 @@ class Ladybug {
                 const bugX = (this.x * viewportWidth) / 100;
                 const bugY = (this.y * viewportHeight) / 100;
                 
-                // Проверяем, не находится ли божья коровка близко к элементу
+                // Проверяем, не находимся ли мы рядом с элементом
                 if (bugX > rect.left - 50 && bugX < rect.right + 50 &&
                     bugY > rect.top - 50 && bugY < rect.bottom + 50) {
                     
-                    // С некоторой вероятностью решаем "приземлиться" на элемент
+                    // Если с вероятностью 0.01 мы приземляемся на элемент
                     if (this.state === 'wander' && Math.random() < 0.01) {
                         this.startLanding(element);
                         break;
@@ -580,7 +616,7 @@ class Ladybug {
             }
         }
         
-        // Проверяем столкновения с листьями
+        // Проверяем, не находимся ли мы в пределах расстояния для столкновений
         if (leaves && leaves.length > 0) {
             for (const leaf of leaves) {
                 const leafRect = leaf.getBoundingClientRect();
@@ -591,11 +627,11 @@ class Ladybug {
                 const bugX = (this.x * viewportWidth) / 100;
                 const bugY = (this.y * viewportHeight) / 100;
                 
-                // Проверяем, не находится ли божья коровка близко к листу
+                // Проверяем, не находимся ли мы рядом с листом
                 if (bugX > leafRect.left - 20 && bugX < leafRect.right + 20 &&
                     bugY > leafRect.top - 20 && bugY < leafRect.bottom + 20) {
                     
-                    // С некоторой вероятностью решаем "съесть" лист
+                    // Если с вероятностью 0.03 мы есть лист
                     if (['wander', 'following'].includes(this.state) && 
                         Math.random() < 0.03 && 
                         !leaf.classList.contains('eaten')) {
@@ -608,29 +644,69 @@ class Ladybug {
     }
 
     update(deltaTime) {
-        // Плавно изменяем направление и скорость
+        // Если в режиме перетаскивания, просто возвращаемся
+        if (this.isDragging) return;
+        
+        // Добавляем проверку на "зависимость" от божьей коровки
+        if (!this.lastPosition) {
+            this.lastPosition = { x: this.x, y: this.y };
+            this.stuckTime = 0;
+            this.positionCheckTimer = 0;
+        }
+        
+        // Обновляем таймер каждые 300 мс
+        this.positionCheckTimer += deltaTime;
+        if (this.positionCheckTimer > 300) {
+            const distMoved = Math.sqrt(
+                Math.pow(this.x - this.lastPosition.x, 2) + 
+                Math.pow(this.y - this.lastPosition.y, 2)
+            );
+            
+            // Если божья коровка не двигается
+            if (distMoved < 0.1) {
+                this.stuckTime += this.positionCheckTimer;
+                // Уменьшаем время обнаружения "зависания" до 1 секунды
+                if (this.stuckTime > 1000 && this.state !== 'sleeping' && this.state !== 'eating') {
+                    // Выводим состояние из-за отсутствия движения
+                    this.targetDirection = this.direction + (Math.random() * 40 - 20); // Меняем направление на случайное
+                    this.targetSpeed = 0.6 + Math.random() * 0.4; // Начинаем с более низкой скоростью (было 1.0+0.5)
+                    this.changeState('wander', 0);
+                    this.stuckTime = 0;
+                }
+            } else {
+                // Если божья коровка двигается, сбрасываем таймер задержки
+                this.stuckTime = 0;
+            }
+            
+            // Обновляем предыдущую позицию
+            this.lastPosition.x = this.x;
+            this.lastPosition.y = this.y;
+            this.positionCheckTimer = 0;
+        }
+        
+        // Обновляем параметры движения
         this.updateMovementParameters(deltaTime);
         
-        // Обработка таймера состояния
+        // Обработка состояния божьей коровки
         if (this.stateTimer > 0) {
             this.stateTimer -= deltaTime;
             if (this.stateTimer <= 0) {
                 // Переходим в следующее состояние в зависимости от текущего
                 if (this.state === 'flee') {
-                    // После бегства отдыхаем
-                    this.changeState('rest', 2000);
+                    // После бега удаляем
+                    this.changeState('rest', 800);
                 } else if (this.state === 'rest') {
-                    // После отдыха - в обычное состояние
+                    // После отдыха переходим в обычное состояние
                     this.changeState('wander', 0);
                 } else if (this.state === 'eating') {
-                    // После еды - небольшой отдых
+                    // После поедания небольшой порции
                     this.targetLeaf = null;
-                    this.changeState('rest', 1000);
+                    this.changeState('rest', 500);
                 } else if (this.state === 'sleeping') {
                     // После сна - бодрое состояние
                     this.changeState('wander', 0);
                 } else if (this.state === 'flying') {
-                    // После полета - медленно приземляемся
+                    // После полета - медленное приземление
                     this.targetSpeed = 1;
                     this.changeState('wander', 0);
                 } else if (this.state === 'dancing') {
@@ -642,14 +718,14 @@ class Ladybug {
                     if (Math.random() < 0.7) {
                         this.changeState('wander', 0);
                     } else {
-                        // Иногда после следования отдыхаем
-                        this.changeState('rest', 2000);
+                        // Если нет цели, меняем состояние на "отдых"
+                        this.changeState('rest', 700);
                     }
                 } else if (this.state === 'landing') {
                     // Завершаем посадку
                     this.endLanding();
                 } else {
-                    // По умолчанию - в состояние wandering
+                    // После отдыха - блуждание
                     this.changeState('wander', 0);
                 }
             }
@@ -663,14 +739,14 @@ class Ladybug {
         } else if (this.state === 'landing' && this.targetElement) {
             this.landOnElement(deltaTime);
         } else if (this.state === 'flee') {
-            // При бегстве просто двигаемся с повышенной скоростью в установленном направлении
+            // При беге с ускорением двигаемся с увеличенной скоростью в направлении, указанном в начале
             this.move(deltaTime);
         } else if (this.state === 'flying') {
-            // При полете перемещаемся быстрее и немного вверх
+            // При полете медленно перемещаемся вверх и вниз
             this.move(deltaTime);
-            if (Math.random() < 0.05) {
+            if (Math.random() < 0.03) { // Уменьшаем вероятность появления случайного направления с 0.05 до 0.03
                 // Случайно меняем направление в полете, но не резко
-                this.targetDirection += (Math.random() - 0.5) * 30;
+                this.targetDirection += (Math.random() - 0.5) * 20; // Уменьшаем разброс на 30 до 20
             }
         }
         
@@ -678,52 +754,56 @@ class Ladybug {
         this.updatePosition();
     }
     
-    // Новый метод для плавного изменения параметров движения
+    // Новый метод для изменения параметров движения
     updateMovementParameters(deltaTime) {
-        // Рассчитываем фактор сглаживания в зависимости от deltaTime
-        const smoothing = Math.min(this.smoothingFactor * (deltaTime / 20), 0.5);
+        // Вычисляем фактор плавности в зависимости от deltaTime, уменьшаем его для более плавного движения
+        const smoothing = Math.min(this.smoothingFactor * (deltaTime / 25), 0.15); // Уменьшаем с 20 до 25, с 0.5 до 0.15
         
-        // Плавно изменяем направление
+        // Меняем направление
         const angleDiff = this.targetDirection - this.direction;
-        // Нормализуем разницу углов для корректного поворота
+        // Нормализуем разницу углов для вращения по кругу
         const normalizedDiff = ((angleDiff + 180) % 360) - 180;
+        // Для более плавного вращения применяем больший фактор
         this.direction += normalizedDiff * smoothing;
         
-        // Плавно изменяем скорость с более быстрым переходом для лучшего разделения
-        this.speed += (this.targetSpeed - this.speed) * (smoothing * 1.2);
+        // Меняем скорость, используя больший фактор
+        this.speed += (this.targetSpeed - this.speed) * (smoothing * 1.0); // Уменьшаем с 1.2 до 1.0
     }
 
     handleWandering(deltaTime) {
         // Обработка обычного состояния
         
         // Случайно меняем направление время от времени
-        // Делаем изменения направления менее резкими и более редкими
-        if (Math.random() < 0.005) { // Уменьшаем вероятность изменения направления
-            this.targetDirection += (Math.random() - 0.5) * 40; // Уменьшаем амплитуду поворота
+        if (Math.random() < 0.003) { // Вероятность изменения направления
+            this.targetDirection += (Math.random() - 0.5) * 25; // Случайное отклонение
         }
         
-        // С небольшой вероятностью переходим в новое состояние
+        // Устанавливаем скорость для блуждания
+        this.targetSpeed = 0.9 + Math.random() * 1.1; // Увеличиваем скорость блуждания
+        
+        // С вероятностью 0.0005 переходим в новое состояние
         if (Math.random() < 0.0005) {
             const randomState = Math.random();
             
-            if (randomState < this.personality.laziness * 0.5) {
-                // Засыпаем
+            // Увеличиваем вероятность перехода в состояние сна
+            if (randomState < this.personality.laziness * 0.5) { // Увеличиваем влияние лени на сон (было 0.3)
+                // Начинаем спать
                 this.startSleeping();
-            } else if (randomState < this.personality.laziness * 0.5 + 0.002) {
+            } else if (randomState < this.personality.laziness * 0.5 + 0.003) { // Увеличиваем скорость листа
                 // Начинаем летать
                 this.startFlying();
-            } else if (randomState < this.personality.laziness * 0.5 + 0.004) {
+            } else if (randomState < this.personality.laziness * 0.5 + 0.006) { // Увеличиваем скорость танца
                 // Начинаем танцевать
                 this.startDancing();
             }
         }
         
-        // Если рядом есть другие божьи коровки, взаимодействуем с ними
-        // Уменьшаем вероятность следования, особенно если есть много соседних коровок
+        // Если рядом есть другие божьи коровки,
+        // уменьшаем вероятность следования, особенно если их много
         if (this.nearbyLadybugs.length > 0) {
             // Чем больше соседей, тем меньше вероятность следования
             const followFactor = Math.max(0.1, 1 - this.nearbyLadybugs.length * 0.1);
-            // Снижаем вероятность следования в 3 раза
+            // Уменьшаем вероятность следования в 3 раза
             if (Math.random() < this.personality.sociability * 0.1 * followFactor) {
                 const closest = this.nearbyLadybugs[0];
                 this.startFollowing(closest);
@@ -742,41 +822,41 @@ class Ladybug {
         const dy = this.targetLadybug.y - this.y;
         const distance = Math.sqrt(dx * dx + dy * dy);
         
-        // Увеличиваем безопасную дистанцию следования
-        const followDistance = 6; // Минимальная безопасная дистанция
+        // Увеличиваем безразмерное расстояние следования
+        const followDistance = 6; // Минимальное безразмерное расстояние следования
         
         if (distance < followDistance) {
-            // Если слишком близко - отходим, но плавно
+            // Если близко - просто отходим, но остаемся на месте
             const repelAngle = Math.atan2(-dy, -dx);
-            // Плавно меняем направление
+            // Меняем направление
             this.targetDirection = repelAngle * 180 / Math.PI + (Math.random() * 10 - 5);
             
-            // Скорость пропорциональна близости, но с плавным изменением
+            // Скорость пропорциональна расстоянию
             const proximityFactor = 1 - (distance / followDistance);
             this.targetSpeed = 0.8 + proximityFactor * 1.0;
             
-            // С определенной вероятностью прекращаем следование при близком расстоянии
+            // Если мы близко к цели,
             if (Math.random() < 0.02) {
                 this.changeState('wander', 0);
                 return;
             }
         } else if (distance < followDistance * 1.5) {
-            // На комфортной дистанции - останавливаемся или медленно кружим с большей вероятностью остановки
+            // На большом расстоянии - останавливаемся или летим на месте
             if (Math.random() < 0.8) {
                 this.targetSpeed = 0;
             } else {
-                // Случайное движение по дуге с плавным изменением
+                // Случайное движение по дуге с вращением
                 const orbitAngle = Math.atan2(dy, dx) + (Math.PI / 2 + (Math.random() - 0.5) * Math.PI / 4);
                 this.targetDirection = orbitAngle * 180 / Math.PI;
                 this.targetSpeed = 0.2 + Math.random() * 0.1;
             }
         } else {
-            // Если далеко от цели - следуем к ней с умеренной скоростью
+            // Если далеко от цели - просто летим с небольшой скоростью
             this.targetSpeed = 0.8 + Math.random() * 0.3;
             
             const targetDirection = Math.atan2(dy, dx) * 180 / Math.PI;
             
-            // Плавно поворачиваем к цели
+            // Меняем направление
             this.targetDirection = targetDirection + (Math.random() * 10 - 5);
         }
         
@@ -791,7 +871,7 @@ class Ladybug {
         const viewportWidth = window.innerWidth;
         const viewportHeight = window.innerHeight;
         
-        // Рассчитываем целевые координаты в центре элемента
+        // Вычисляем координаты цели в пикселях
         const targetX = ((rect.left + rect.width / 2) / viewportWidth) * 100;
         const targetY = ((rect.top + rect.height / 2) / viewportHeight) * 100;
         
@@ -800,7 +880,7 @@ class Ladybug {
         const dy = targetY - this.y;
         const distance = Math.sqrt(dx * dx + dy * dy);
         
-        // Если достаточно близко, считаем, что посадка завершена
+        // Если достаточно близко, завершаем посадку
         if (distance < 3) {
             this.endLanding();
             return;
@@ -808,7 +888,7 @@ class Ladybug {
         
         const targetDirection = Math.atan2(dy, dx) * 180 / Math.PI;
         
-        // Плавно меняем целевое направление
+        // Меняем направление цели
         this.targetDirection = targetDirection;
         
         // Двигаемся
@@ -816,53 +896,433 @@ class Ladybug {
     }
     
     move(deltaTime) {
-        if (this.speed <= 0) return;
-        
+        // Не двигаемся при слишком малой скорости, чтобы избежать дергания
+        if (this.speed < 0.3) {
+            this.speed = 0;
+            return;
+        }
+
         const radians = this.direction * Math.PI / 180;
-        this.x += Math.cos(radians) * this.speed * deltaTime / 1000;
-        this.y += Math.sin(radians) * this.speed * deltaTime / 1000;
+        // Увеличиваем коэффициент скорости движения
+        this.x += Math.cos(radians) * this.speed * deltaTime / 700; // Увеличиваем скорость движения (было 800)
+        this.y += Math.sin(radians) * this.speed * deltaTime / 700; // Увеличиваем скорость движения (было 800)
         
         // Улучшенное отталкивание от границ экрана
-        const borderMargin = 5; // Отступ от края, при котором начинаем отталкиваться
-        const pushForce = 1.5; // Сила отталкивания от края
+        const borderMargin = 6; // Отступ от края экрана
+        const pushForce = 0.8; // Сила отталкивания от границ
         
         if (this.x < borderMargin) {
             // Отталкиваемся от левого края
             this.x += pushForce * (borderMargin - this.x) / borderMargin;
-            this.targetDirection = (Math.random() * 90 - 45) % 360; // Направление вправо с разбросом
-            this.targetSpeed = 1.2 + Math.random() * 0.8; // Увеличиваем скорость для уверенного отхода
-            // Небольшой дополнительный импульс
-            this.x += 0.5;
+            this.targetDirection = (Math.random() * 60) % 360; // Уменьшаем разброс направления (было 90-45)
+            this.targetSpeed = 0.9 + Math.random() * 0.6; // Уменьшаем ускорение (было 1.2+0.8)
+            // Увеличиваем дополнительный импульс
+            this.x += 0.3; // Было 0.5
         } else if (this.x > (100 - borderMargin)) {
             // Отталкиваемся от правого края
             this.x -= pushForce * (this.x - (100 - borderMargin)) / borderMargin;
-            this.targetDirection = (180 + Math.random() * 90 - 45) % 360; // Направление влево с разбросом
-            this.targetSpeed = 1.2 + Math.random() * 0.8;
-            // Небольшой дополнительный импульс
-            this.x -= 0.5;
+            this.targetDirection = (180 + Math.random() * 60 - 30) % 360; // Уменьшаем разброс направления
+            this.targetSpeed = 0.9 + Math.random() * 0.6;
+            // Увеличиваем дополнительный импульс
+            this.x -= 0.3;
         }
         
         if (this.y < borderMargin) {
             // Отталкиваемся от верхнего края
             this.y += pushForce * (borderMargin - this.y) / borderMargin;
-            this.targetDirection = (90 + Math.random() * 90 - 45) % 360; // Направление вниз с разбросом
-            this.targetSpeed = 1.2 + Math.random() * 0.8;
-            // Небольшой дополнительный импульс
-            this.y += 0.5;
+            this.targetDirection = (90 + Math.random() * 60 - 30) % 360; // Уменьшаем разброс направления
+            this.targetSpeed = 0.9 + Math.random() * 0.6;
+            // Увеличиваем дополнительный импульс
+            this.y += 0.3;
         } else if (this.y > (100 - borderMargin)) {
             // Отталкиваемся от нижнего края
             this.y -= pushForce * (this.y - (100 - borderMargin)) / borderMargin;
-            this.targetDirection = (270 + Math.random() * 90 - 45) % 360; // Направление вверх с разбросом
-            this.targetSpeed = 1.2 + Math.random() * 0.8;
-            // Небольшой дополнительный импульс
-            this.y -= 0.5;
+            this.targetDirection = (270 + Math.random() * 60 - 30) % 360; // Уменьшаем разброс направления
+            this.targetSpeed = 0.9 + Math.random() * 0.6;
+            // Увеличиваем дополнительный импульс
+            this.y -= 0.3;
         }
         
-        // Жесткие ограничения - на случай, если божья коровка каким-то образом оказалась за пределами экрана
+        // Пределы экрана
         if (this.x < 0) this.x = 0.5;
         if (this.x > 100) this.x = 99.5;
         if (this.y < 0) this.y = 0.5;
         if (this.y > 100) this.y = 99.5;
+    }
+
+    // Начало перетаскивания
+    startDragging() {
+        this.isDragging = true;
+        this.changeState('dragging');
+        
+        // Запоминаем текущий масштаб
+        this.originalScale = this.element.style.transform ? 
+            parseFloat(this.element.style.transform.replace('scale(', '').replace(')', '')) || 1 : 1;
+        
+        // Добавляем плавный переход для трансформации
+        this.element.style.transition = 'transform 0.2s ease-out';
+        
+        // Увеличиваем масштаб при перетаскивании
+        this.element.style.transform = 'scale(1.8)';
+        
+        // Добавляем класс перетаскивания
+        this.element.classList.add('dragging');
+        
+        // Меняем вид лица при перетаскивании
+        this.makeAngryFace();
+        
+        // Увеличиваем z-index божьей коровки, чтобы она была поверх других элементов
+        this.element.style.zIndex = '1100';
+        
+        // Устанавливаем скорость движения на 0
+        this.speed = 0;
+        this.targetSpeed = 0;
+        
+        // Добавляем знаки злости (восклицательные знаки)
+        this.angerSigns = [];
+        
+        // Создаем 2-3 восклицательных знака
+        const count = 2 + Math.floor(Math.random());
+        
+        for (let i = 0; i < count; i++) {
+            const angerSign = document.createElement('div');
+            angerSign.className = 'ladybug-anger-sign';
+            angerSign.innerHTML = '&#x2757;'; // Восклицательный знак Unicode
+            angerSign.style.position = 'absolute';
+            // Увеличиваем размер восклицательного знака
+            angerSign.style.fontSize = `${18 + i * 3}px`;
+            angerSign.style.fontWeight = 'bold';
+            angerSign.style.top = `-${20 + i * 10}px`;
+            angerSign.style.right = `${-10 - i * 15}px`;
+            angerSign.style.color = '#FF3333';
+            angerSign.style.textShadow = '1px 1px 2px rgba(0,0,0,0.3)';
+            angerSign.style.zIndex = '1101';
+            angerSign.style.pointerEvents = 'none';
+            angerSign.style.transform = `rotate(${-15 + Math.random() * 30}deg)`;
+            angerSign.style.animation = `angerAnimation ${0.8 + i * 0.2}s infinite alternate`;
+            angerSign.style.animationDelay = `${i * 0.15}s`;
+            
+            this.element.appendChild(angerSign);
+            this.angerSigns.push(angerSign);
+        }
+        
+        // Добавляем анимацию для восклицательных знаков
+        this.angerAnimationStyle = document.createElement('style');
+        this.angerAnimationStyle.textContent = `
+            @keyframes angerAnimation {
+                0% {
+                    transform: scale(0.7) translateY(0) rotate(-5deg);
+                }
+                100% {
+                    transform: scale(1.1) translateY(-5px) rotate(5deg);
+                }
+            }
+        `;
+        document.head.appendChild(this.angerAnimationStyle);
+    }
+    
+    // Завершение перетаскивания
+    endDragging() {
+        this.isDragging = false;
+        
+        // Возвращаемся к исходному масштабу
+        this.element.style.transform = `scale(${this.originalScale})`;
+        
+        // Добавляем обработчик для завершения анимации
+        const removeTransition = () => {
+            this.element.style.transition = '';
+            this.element.removeEventListener('transitionend', removeTransition);
+        };
+        this.element.addEventListener('transitionend', removeTransition);
+        
+        // Удаляем класс перетаскивания
+        this.element.classList.remove('dragging');
+        
+        // Возвращаем нормальное лицо
+        this.restoreNormalFace();
+        
+        // Возвращаем обычный z-index
+        this.element.style.zIndex = '1000';
+        
+        // Удаляем элементы знаков злости
+        if (this.angerSigns && this.angerSigns.length) {
+            this.angerSigns.forEach(sign => {
+                if (sign && sign.parentNode) {
+                    sign.parentNode.removeChild(sign);
+                }
+            });
+            this.angerSigns = [];
+        }
+        
+        // Удаляем анимацию для восклицательных знаков
+        if (this.angerAnimationStyle && this.angerAnimationStyle.parentNode) {
+            this.angerAnimationStyle.parentNode.removeChild(this.angerAnimationStyle);
+            this.angerAnimationStyle = null;
+        }
+        
+        // Возвращаемся к предыдущему состоянию
+        if (this.beforeDragState) {
+            this.changeState(this.beforeDragState);
+            this.beforeDragState = null;
+        } else {
+            this.changeState('wander');
+        }
+        
+        // Устанавливаем скорость движения
+        this.speed = 0.3 + Math.random() * 1.0;
+        this.targetSpeed = this.speed;
+    }
+
+    // Новый обработчик для mousedown
+    handleMouseDown(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        
+        // Запоминаем время и позицию клика
+        this.mouseDownTime = Date.now();
+        this.mouseDownX = e.clientX;
+        this.mouseDownY = e.clientY;
+        
+        // Устанавливаем флаг перетаскивания
+        this.potentialDrag = true;
+        
+        // Получаем позицию элемента и вычисляем смещение для перетаскивания (если элемент был инициализирован)
+        const rect = this.element.getBoundingClientRect();
+        this.dragOffsetX = e.clientX - rect.left;
+        this.dragOffsetY = e.clientY - rect.top;
+    }
+    
+    // Обычный обработчик для mousemove
+    handleMouseMove(e) {
+        // Если мы уже в режиме перетаскивания, обновляем позицию
+        if (this.isDragging) {
+            // Получаем текущую позицию мыши
+            const mouseX = e.clientX;
+            const mouseY = e.clientY;
+            
+            // Вычисляем новую позицию элемента
+            const left = mouseX - this.dragOffsetX;
+            const top = mouseY - this.dragOffsetY;
+            
+            // Преобразуем координаты из vw/vh в пиксели
+            const vw = window.innerWidth / 100;
+            const vh = window.innerHeight / 100;
+            
+            this.x = left / vw;
+            this.y = top / vh;
+            
+            // Обновляем позицию
+            this.updatePosition();
+            return;
+        }
+        
+        // Если есть флаг перетаскивания, проверяем, достаточно ли быстро мышь двигается для начала перетаскивания
+        if (this.potentialDrag) {
+            const dx = e.clientX - this.mouseDownX;
+            const dy = e.clientY - this.mouseDownY;
+            const distance = Math.sqrt(dx * dx + dy * dy);
+            
+            // Если движение превышает пороговое значение, начинаем перетаскивание
+            if (distance > this.moveThreshold) {
+                // Сохраняем текущее состояние перед началом перетаскивания
+                this.beforeDragState = this.state;
+                
+                // Анимация перетаскивания
+                this.startDragging();
+            }
+        }
+    }
+    
+    // Обычный обработчик для mouseup
+    handleMouseUp(e) {
+        // Если было перетаскивание, завершаем его
+        if (this.isDragging) {
+            this.endDragging();
+            this.potentialDrag = false;
+            return;
+        }
+        
+        // Если было перетаскивание, но движение было недостаточно быстрым, и время нажатия было меньше порогового значения
+        if (this.potentialDrag) {
+            const clickDuration = Date.now() - this.mouseDownTime;
+            
+            // Если это был клик, показываем счастье
+            if (clickDuration < this.clickThreshold) {
+                this.showHappiness();
+            }
+            
+            this.potentialDrag = false;
+        }
+    }
+
+    // Новый обработчик для touchstart
+    handleTouchStart(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        
+        // Получаем первое касание
+        const touch = e.touches[0];
+        
+        // Запоминаем время и позицию касания
+        this.mouseDownTime = Date.now();
+        this.mouseDownX = touch.clientX;
+        this.mouseDownY = touch.clientY;
+        
+        // Устанавливаем флаг перетаскивания
+        this.potentialDrag = true;
+        
+        // Получаем позицию элемента и вычисляем смещение для перетаскивания
+        const rect = this.element.getBoundingClientRect();
+        this.dragOffsetX = touch.clientX - rect.left;
+        this.dragOffsetY = touch.clientY - rect.top;
+    }
+    
+    // Обычный обработчик для touchmove
+    handleTouchMove(e) {
+        // Если мы уже в режиме перетаскивания, обновляем позицию
+        if (this.isDragging) {
+            // Получаем первое касание
+            const touch = e.touches[0];
+            
+            // Получаем текущую позицию касания
+            const touchX = touch.clientX;
+            const touchY = touch.clientY;
+            
+            // Вычисляем новую позицию элемента
+            const left = touchX - this.dragOffsetX;
+            const top = touchY - this.dragOffsetY;
+            
+            // Преобразуем координаты из vw/vh в пиксели
+            const vw = window.innerWidth / 100;
+            const vh = window.innerHeight / 100;
+            
+            this.x = left / vw;
+            this.y = top / vh;
+            
+            // Обновляем позицию
+            this.updatePosition();
+            return;
+        }
+        
+        // Если есть флаг перетаскивания, проверяем, достаточно ли быстро касание продолжается для начала перетаскивания
+        if (this.potentialDrag) {
+            const touch = e.touches[0];
+            const dx = touch.clientX - this.mouseDownX;
+            const dy = touch.clientY - this.mouseDownY;
+            const distance = Math.sqrt(dx * dx + dy * dy);
+            
+            // Если движение превышает пороговое значение, начинаем перетаскивание
+            if (distance > this.moveThreshold) {
+                // Сохраняем текущее состояние перед началом перетаскивания
+                this.beforeDragState = this.state;
+                
+                // Анимация перетаскивания
+                this.startDragging();
+            }
+        }
+    }
+    
+    // Обычный обработчик для touchend
+    handleTouchEnd(e) {
+        // Если было перетаскивание, завершаем его
+        if (this.isDragging) {
+            this.endDragging();
+            this.potentialDrag = false;
+            return;
+        }
+        
+        // Если было перетаскивание, но движение было недостаточно быстрым, и время нажатия было меньше порогового значения
+        if (this.potentialDrag) {
+            const clickDuration = Date.now() - this.mouseDownTime;
+            
+            // Если это был конечный тап, показываем счастье
+            if (clickDuration < this.clickThreshold) {
+                this.showHappiness();
+            }
+            
+            this.potentialDrag = false;
+        }
+    }
+
+    // Делаем лицо злого таракана
+    makeAngryFace() {
+        // Находим элементы глаз и улыбки
+        const leftEye = this.element.querySelector('.ladybug-eye-left');
+        const rightEye = this.element.querySelector('.ladybug-eye-right');
+        const smile = this.element.querySelector('.ladybug-smile');
+        
+        // Меняем размер головы - делаем их немного выше и наклонными
+        if (leftEye) {
+            leftEye.style.height = '20%';
+            leftEye.style.transform = 'rotate(-20deg)';
+        }
+        
+        if (rightEye) {
+            rightEye.style.height = '20%';
+            rightEye.style.transform = 'rotate(20deg)';
+        }
+        
+        // Меняем улыбку на ненадутой гриме
+        if (smile) {
+            smile.style.borderBottom = 'none';
+            smile.style.borderTop = '2px solid #210f4b';
+            smile.style.borderRadius = '50% 50% 0 0';
+            smile.style.top = '60%';
+        }
+        
+        // Добавляем анимацию для антенн
+        const leftAntenna = this.element.querySelector('.ladybug-antenna-left');
+        const rightAntenna = this.element.querySelector('.ladybug-antenna-right');
+        
+        if (leftAntenna) {
+            leftAntenna.style.animation = 'antennaShake 0.3s infinite';
+        }
+        
+        if (rightAntenna) {
+            rightAntenna.style.animation = 'antennaShake 0.3s infinite';
+            rightAntenna.style.animationDelay = '0.15s';
+        }
+    }
+    
+    // Возвращаем нормальное лицо
+    restoreNormalFace() {
+        // Находим элементы глаз и улыбки
+        const leftEye = this.element.querySelector('.ladybug-eye-left');
+        const rightEye = this.element.querySelector('.ladybug-eye-right');
+        const smile = this.element.querySelector('.ladybug-smile');
+        
+        // Восстанавливаем голову
+        if (leftEye) {
+            leftEye.style.height = '25%';
+            leftEye.style.transform = 'none';
+        }
+        
+        if (rightEye) {
+            rightEye.style.height = '25%';
+            rightEye.style.transform = 'none';
+        }
+        
+        // Восстанавливаем улыбку
+        if (smile) {
+            smile.style.borderBottom = '2px solid #210f4b';
+            smile.style.borderTop = 'none';
+            smile.style.borderRadius = '0 0 50% 50%';
+            smile.style.top = '55%';
+        }
+        
+        // Возвращаем анимацию для антенн
+        const leftAntenna = this.element.querySelector('.ladybug-antenna-left');
+        const rightAntenna = this.element.querySelector('.ladybug-antenna-right');
+        
+        if (leftAntenna) {
+            leftAntenna.style.animation = 'antennaWiggle 2s ease-in-out infinite';
+            leftAntenna.style.animationDelay = '-0.5s';
+        }
+        
+        if (rightAntenna) {
+            rightAntenna.style.animation = 'antennaWiggle 2s ease-in-out infinite';
+            rightAntenna.style.animationDelay = '-1s';
+        }
     }
 }
 
@@ -877,16 +1337,16 @@ class LadybugController {
         // Массив всех божьих коровок
         this.ladybugs = [];
         
-        // Интерактивные элементы страницы, на которые могут садиться божьи коровки
+        // Элементы страницы, на которые можно нажать (карточки предложений, таймер обратного отсчета, рекламные бары)
         this.interactiveElements = Array.from(document.querySelectorAll('.offer-card, .countdown-timer, .promo-bar'));
         
         // Массив для хранения листьев
         this.leaves = [];
         
-        // Последнее время обновления
+        // Время последнего обновления
         this.lastUpdateTime = Date.now();
         
-        // Отслеживание положения мыши
+        // Позиция мыши на предыдущем кадре
         this.lastMouseX = null;
         this.lastMouseY = null;
         
@@ -894,15 +1354,23 @@ class LadybugController {
         const countValue = getComputedStyle(document.documentElement).getPropertyValue('--ladybug-count').trim();
         this.count = parseInt(countValue) || 7; // Если не указано, то 7 по умолчанию
         
-        // Инициализация
+        // Флаг видимости страницы
+        this.isPageVisible = true;
+        
+        // Идентификатор интервала для обновления, когда страница не активна
+        this.updateInterval = null;
+        
+        // Настройка отслеживания мыши
         this.setupMouseTracking();
+        // Настройка отслеживания видимости страницы
+        this.setupVisibilityTracking();
         this.createLeaves(10); // Создаем 10 начальных листьев
         this.createLadybugs();
         this.startUpdateLoop();
     }
     
     setupMouseTracking() {
-        // Отслеживаем движение мыши для реакции на курсор
+        // Отслеживаем движение мыши для взаимодействия с божьими коровками
         document.addEventListener('mousemove', (e) => {
             // Преобразуем координаты мыши в vw/vh
             const viewportWidth = window.innerWidth;
@@ -912,10 +1380,38 @@ class LadybugController {
             this.lastMouseY = (e.clientY / viewportHeight) * 100;
         });
         
-        // Очищаем координаты при уходе мыши за пределы окна
+        // Отключаем координаты мыши при выходе из области
         document.addEventListener('mouseout', () => {
             this.lastMouseX = null;
             this.lastMouseY = null;
+        });
+    }
+    
+    setupVisibilityTracking() {
+        // Отслеживаем видимость страницы
+        document.addEventListener('visibilitychange', () => {
+            this.isPageVisible = document.visibilityState === 'visible';
+            
+            // Переключаемся между requestAnimationFrame и setInterval
+            if (this.isPageVisible) {
+                // Если страница стала видимой, останавливаем интервал и возобновляем анимацию
+                if (this.updateInterval) {
+                    clearInterval(this.updateInterval);
+                    this.updateInterval = null;
+                }
+                this.lastUpdateTime = Date.now();
+                requestAnimationFrame(this.update.bind(this));
+            } else {
+                // Если страница стала невидимой, запускаем интервал для обновления
+                if (!this.updateInterval) {
+                    this.updateInterval = setInterval(() => {
+                        const currentTime = Date.now();
+                        const deltaTime = currentTime - this.lastUpdateTime;
+                        this.updateLadybugs(deltaTime);
+                        this.lastUpdateTime = currentTime;
+                    }, 50); // Обновление примерно 20 раз в секунду
+                }
+            }
         });
     }
     
@@ -944,30 +1440,42 @@ class LadybugController {
         }
     }
     
-    startUpdateLoop() {
-        const update = () => {
-            const currentTime = Date.now();
-            const deltaTime = currentTime - this.lastUpdateTime;
-            
-            // Чистим удаленные листья из массива
-            this.leaves = this.leaves.filter(leaf => document.body.contains(leaf));
-            
-            // Обновляем поведение каждой божьей коровки
-            this.ladybugs.forEach(ladybug => {
-                // Определяем взаимодействия
-                ladybug.detectCollision(this.ladybugs, this.interactiveElements, this.leaves);
-                ladybug.update(deltaTime);
-            });
-            
-            this.lastUpdateTime = currentTime;
-            requestAnimationFrame(update);
-        };
+    // Обновление божьих коровок
+    updateLadybugs(deltaTime) {
+        // Удаляем уже удаленные листья из массива
+        this.leaves = this.leaves.filter(leaf => document.body.contains(leaf));
         
-        requestAnimationFrame(update);
+        // Обновляем позицию каждой божьей коровки
+        this.ladybugs.forEach(ladybug => {
+            // Определяем взаимодействие
+            ladybug.detectCollision(this.ladybugs, this.interactiveElements, this.leaves);
+            ladybug.update(deltaTime);
+        });
+    }
+    
+    // Обновление анимации
+    update() {
+        const currentTime = Date.now();
+        const deltaTime = currentTime - this.lastUpdateTime;
+        
+        this.updateLadybugs(deltaTime);
+        
+        this.lastUpdateTime = currentTime;
+        
+        // Продолжаем анимацию только если страница видима
+        if (this.isPageVisible) {
+            requestAnimationFrame(this.update.bind(this));
+        }
+    }
+    
+    startUpdateLoop() {
+        // Запускаем анимацию
+        this.lastUpdateTime = Date.now();
+        requestAnimationFrame(this.update.bind(this));
     }
 }
 
-// Добавим CSS анимации для новых элементов
+// Добавляем CSS анимации для новых элементов
 const styleSheet = document.createElement('style');
 styleSheet.textContent = `
 @keyframes heartFloat {
