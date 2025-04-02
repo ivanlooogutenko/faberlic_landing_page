@@ -406,8 +406,17 @@ class Ladybug {
     }
 
     updatePosition() {
-        this.element.style.left = `${this.x}vw`;
-        this.element.style.top = `${this.y}vh`;
+        // Определяем, является ли устройство мобильным
+        const isMobile = window.innerWidth <= 768;
+        
+        // Округляем координаты до 2 знаков после запятой для лучшей производительности
+        // это сокращает количество перерисовок у браузера
+        const roundedX = Math.round(this.x * 100) / 100;
+        const roundedY = Math.round(this.y * 100) / 100;
+        
+        // Обновляем позицию элемента
+        this.element.style.left = `${roundedX}vw`;
+        this.element.style.top = `${roundedY}vh`;
         
         // Применяем поворот только если не в режиме танца, сна или поедания
         if (!['dancing', 'sleeping', 'eating', 'rest'].includes(this.state)) {
@@ -426,12 +435,16 @@ class Ladybug {
             const rotateAngle = isVertical ? 
                 safeDirection + (Math.random() < 0.5 ? 3 : -3) : // Отклоняем на 3 градуса
                 safeDirection;
+                
+            // Округляем угол поворота до ближайшего градуса для оптимизации
+            const roundedAngle = Math.round(rotateAngle);
             
-            this.element.style.transform = `rotate(${rotateAngle}deg)`;
+            // Применяем поворот
+            this.element.style.transform = `rotate(${roundedAngle}deg)`;
         }
         
-        // Обновляем след за божьей коровкой каждые 5 пикселей
-        if (this.speed > 0 && ++this.trailUpdateCounter % 5 === 0) {
+        // Создаем след только если скорость достаточно высокая и только на не-мобильных устройствах
+        if (!isMobile && this.speed > 1.0 && ++this.trailUpdateCounter % 5 === 0) {
             this.createTrail();
         }
     }
@@ -800,20 +813,36 @@ class Ladybug {
         this.updatePosition();
     }
     
-    // Новый метод для изменения параметров движения
+    // Оптимизированный метод для изменения параметров движения
     updateMovementParameters(deltaTime) {
-        // Вычисляем фактор плавности в зависимости от deltaTime, уменьшаем его для более плавного движения
-        const smoothing = Math.min(this.smoothingFactor * (deltaTime / 25), 0.15); // Уменьшаем с 20 до 25, с 0.5 до 0.15
+        // Определяем, является ли устройство мобильным
+        const isMobile = window.innerWidth <= 768;
         
-        // Меняем направление
+        // Адаптируем сглаживание для мобильных устройств для более плавного поворота
+        // На мобильных делаем поворот более плавным, уменьшая шаг изменения
+        const baseSmoothingFactor = isMobile ? 0.04 : 0.05;
+        
+        // Вычисляем фактор плавности в зависимости от deltaTime, нормализуя его
+        // Это гарантирует одинаковую скорость поворота независимо от FPS
+        const deltaScale = Math.min(deltaTime / 30, 2.0); // Нормализация с ограничением сверху
+        const smoothing = baseSmoothingFactor * deltaScale;
+        
+        // Ограничиваем максимальное изменение за кадр
+        const maxStepDir = isMobile ? 6.0 : 8.0;  
+        const maxStepSpeed = isMobile ? 0.12 : 0.15;
+        
+        // Плавное изменение направления с контролем максимального шага
         const angleDiff = this.targetDirection - this.direction;
         // Нормализуем разницу углов для вращения по кругу
         const normalizedDiff = ((angleDiff + 180) % 360) - 180;
-        // Для более плавного вращения применяем больший фактор
-        this.direction += normalizedDiff * smoothing;
+        // Ограничиваем изменение за один кадр
+        const directionChange = Math.max(-maxStepDir, Math.min(maxStepDir, normalizedDiff * smoothing));
+        this.direction += directionChange;
         
-        // Меняем скорость, используя больший фактор
-        this.speed += (this.targetSpeed - this.speed) * (smoothing * 1.0); // Уменьшаем с 1.2 до 1.0
+        // Плавное изменение скорости с контролем максимального шага
+        const speedDiff = this.targetSpeed - this.speed;
+        const speedChange = Math.max(-maxStepSpeed, Math.min(maxStepSpeed, speedDiff * smoothing * 1.5));
+        this.speed += speedChange;
     }
 
     handleWandering(deltaTime) {
@@ -954,48 +983,58 @@ class Ladybug {
             this.direction += (Math.random() < 0.5 ? 5 : -5);
         }
 
+        // Определяем, является ли устройство мобильным
+        const isMobile = window.innerWidth <= 768;
+        
+        // Адаптируем коэффициент скорости для мобильных устройств
+        // На мобильных движение должно быть немного медленнее для лучшего восприятия
+        const speedFactor = isMobile ? 750 : 700;
+        
         const radians = this.direction * Math.PI / 180;
-        // Увеличиваем коэффициент скорости движения
-        this.x += Math.cos(radians) * this.speed * deltaTime / 700; // Увеличиваем скорость движения (было 800)
-        this.y += Math.sin(radians) * this.speed * deltaTime / 700; // Увеличиваем скорость движения (было 800)
+        // Плавное движение с адаптацией под устройство
+        this.x += Math.cos(radians) * this.speed * deltaTime / speedFactor;
+        this.y += Math.sin(radians) * this.speed * deltaTime / speedFactor;
         
         // Улучшенное отталкивание от границ экрана
-        const borderMargin = 6; // Отступ от края экрана
-        const pushForce = 0.8; // Сила отталкивания от границ
+        const borderMargin = isMobile ? 8 : 6; // Увеличиваем отступ на мобильных
+        const pushForce = isMobile ? 0.85 : 0.8; // Усиливаем отталкивание на мобильных
+        
+        // Рассчитываем дополнительный импульс для более плавного отскока
+        const impulseScale = isMobile ? 0.25 : 0.3;
         
         if (this.x < borderMargin) {
             // Отталкиваемся от левого края
             this.x += pushForce * (borderMargin - this.x) / borderMargin;
-            this.targetDirection = (Math.random() * 60) % 360; // Уменьшаем разброс направления (было 90-45)
-            this.targetSpeed = 0.9 + Math.random() * 0.6; // Уменьшаем ускорение (было 1.2+0.8)
-            // Увеличиваем дополнительный импульс
-            this.x += 0.3; // Было 0.5
+            this.targetDirection = (Math.random() * 60) % 360; // Уменьшаем разброс направления
+            this.targetSpeed = 0.9 + Math.random() * 0.6;
+            // Уменьшаем импульс для плавности
+            this.x += impulseScale;
         } else if (this.x > (100 - borderMargin)) {
             // Отталкиваемся от правого края
             this.x -= pushForce * (this.x - (100 - borderMargin)) / borderMargin;
-            this.targetDirection = (180 + Math.random() * 60 - 30) % 360; // Уменьшаем разброс направления
+            this.targetDirection = (180 + Math.random() * 60 - 30) % 360;
             this.targetSpeed = 0.9 + Math.random() * 0.6;
-            // Увеличиваем дополнительный импульс
-            this.x -= 0.3;
+            // Уменьшаем импульс для плавности
+            this.x -= impulseScale;
         }
         
         if (this.y < borderMargin) {
             // Отталкиваемся от верхнего края
             this.y += pushForce * (borderMargin - this.y) / borderMargin;
-            this.targetDirection = (90 + Math.random() * 60 - 30) % 360; // Уменьшаем разброс направления
+            this.targetDirection = (90 + Math.random() * 60 - 30) % 360;
             this.targetSpeed = 0.9 + Math.random() * 0.6;
-            // Увеличиваем дополнительный импульс
-            this.y += 0.3;
+            // Уменьшаем импульс для плавности
+            this.y += impulseScale;
         } else if (this.y > (100 - borderMargin)) {
             // Отталкиваемся от нижнего края
             this.y -= pushForce * (this.y - (100 - borderMargin)) / borderMargin;
-            this.targetDirection = (270 + Math.random() * 60 - 30) % 360; // Уменьшаем разброс направления
+            this.targetDirection = (270 + Math.random() * 60 - 30) % 360;
             this.targetSpeed = 0.9 + Math.random() * 0.6;
-            // Увеличиваем дополнительный импульс
-            this.y -= 0.3;
+            // Уменьшаем импульс для плавности
+            this.y -= impulseScale;
         }
         
-        // Пределы экрана
+        // Пределы экрана с аккуратной обработкой граничных значений
         if (this.x < 0) this.x = 0.5;
         if (this.x > 100) this.x = 99.5;
         if (this.y < 0) this.y = 0.5;
@@ -1530,6 +1569,9 @@ class LadybugController {
     
     // Обновление божьих коровок
     updateLadybugs(deltaTime) {
+        // Ограничиваем максимальный deltaTime для предотвращения слишком больших скачков
+        const cappedDeltaTime = Math.min(deltaTime, 50);
+        
         // Удаляем уже удаленные листья из массива
         this.leaves = this.leaves.filter(leaf => document.body.contains(leaf));
         
@@ -1537,12 +1579,14 @@ class LadybugController {
         this.ladybugs.forEach(ladybug => {
             // Определяем взаимодействие
             ladybug.detectCollision(this.ladybugs, this.interactiveElements, this.leaves);
-            ladybug.update(deltaTime);
+            ladybug.update(cappedDeltaTime);
         });
     }
     
     // Обновление анимации
     update() {
+        if (!this.isPageVisible) return;
+        
         const currentTime = Date.now();
         const deltaTime = currentTime - this.lastUpdateTime;
         
@@ -1550,9 +1594,13 @@ class LadybugController {
         
         this.lastUpdateTime = currentTime;
         
-        // Продолжаем анимацию только если страница видима
-        if (this.isPageVisible) {
+        // Оптимизация: используем throttleRAF для ограничения частоты кадров
+        // особенно на мобильных устройствах
+        if ('requestAnimationFrame' in window) {
             requestAnimationFrame(this.update.bind(this));
+        } else {
+            // Для старых браузеров используем setTimeout
+            setTimeout(this.update.bind(this), 16);
         }
     }
     

@@ -1500,11 +1500,13 @@ body {
     height: var(--ladybug-size);
     pointer-events: auto !important;
     cursor: pointer;
-    will-change: transform, left, top, rotate;
+    will-change: transform, left, top;
     z-index: 1000;
     overflow: visible;
     transition: transform 0.3s ease;
     transform-style: preserve-3d;
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
 }
 
 .ladybug * {
@@ -2244,5 +2246,29 @@ body {
 
 .whatsapp-button:active::after {
     transform: translate(2px, 2px);
+}
+
+/* Оптимизации для мобильных устройств */
+@media (max-width: 768px) {
+    .ladybug {
+        /* Уменьшаем размер божьих коровок на мобильных */
+        width: calc(var(--ladybug-size) * 0.85);
+        height: calc(var(--ladybug-size) * 0.85);
+        /* Ускоряем переходы для более отзывчивого интерфейса */
+        transition: transform 0.2s ease;
+        /* Оптимизации рендеринга */
+        transform: translateZ(0);
+        -webkit-transform: translateZ(0);
+    }
+    
+    /* Упрощаем анимацию на мобильных устройствах */
+    .ladybug-antenna {
+        animation-duration: 2.5s !important;
+    }
+    
+    /* Уменьшаем интенсивность анимаций для экономии ресурсов */
+    .ladybug-leg {
+        animation-duration: 1.5s !important;
+    }
 }
   
