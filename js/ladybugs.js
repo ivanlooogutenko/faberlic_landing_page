@@ -416,7 +416,18 @@ class Ladybug {
                 // Не меняем трансформацию при перетаскивании, она уже установлена в startDragging
                 return;
             }
-            this.element.style.transform = `rotate(${this.direction}deg)`;
+            
+            // Проверяем, не установлен ли угол точно 90 или 270 градусов
+            // (это может привести к застреванию)
+            const safeDirection = this.direction;
+            const isVertical = safeDirection % 180 === 90;
+            
+            // Если направление точно вертикальное, добавляем небольшое отклонение
+            const rotateAngle = isVertical ? 
+                safeDirection + (Math.random() < 0.5 ? 3 : -3) : // Отклоняем на 3 градуса
+                safeDirection;
+            
+            this.element.style.transform = `rotate(${rotateAngle}deg)`;
         }
         
         // Обновляем след за божьей коровкой каждые 5 пикселей
@@ -652,6 +663,7 @@ class Ladybug {
             this.lastPosition = { x: this.x, y: this.y };
             this.stuckTime = 0;
             this.positionCheckTimer = 0;
+            this.stuckRotation = 0; // Счетчик для обнаружения застревания в вертикальном положении
         }
         
         // Обновляем таймер каждые 300 мс
@@ -665,17 +677,51 @@ class Ladybug {
             // Если божья коровка не двигается
             if (distMoved < 0.1) {
                 this.stuckTime += this.positionCheckTimer;
-                // Уменьшаем время обнаружения "зависания" до 1 секунды
-                if (this.stuckTime > 1000 && this.state !== 'sleeping' && this.state !== 'eating') {
+                
+                // Проверяем, не застряла ли божья коровка в вертикальном положении
+                const isVerticallyStuck = Math.abs(this.direction % 180) < 10 || Math.abs(this.direction % 180 - 180) < 10;
+                
+                if (isVerticallyStuck) {
+                    this.stuckRotation += this.positionCheckTimer;
+                } else {
+                    this.stuckRotation = 0;
+                }
+                
+                // Если коровка застряла в вертикальном положении более 1000 мс
+                if (this.stuckRotation > 1000) {
+                    // Выводим из застрявшего состояния - меняем направление на случайное не вертикальное
+                    this.targetDirection = 45 + Math.random() * 90; // От 45° до 135°
+                    if (Math.random() < 0.5) this.targetDirection += 180; // Может быть также от 225° до 315°
+                    
+                    this.targetSpeed = 1.0 + Math.random() * 0.5;
+                    this.changeState('wander', 0);
+                    this.stuckRotation = 0;
+                    this.stuckTime = 0;
+                    
+                    // Принудительно двигаем коровку, чтобы вывести из застрявшего положения
+                    this.move(300);
+                }
+                // Обычная проверка на застревание по времени
+                else if (this.stuckTime > 800 && 
+                   !['sleeping', 'eating', 'rest'].includes(this.state)) {
+                    // Если коровка "застряла" в состоянии dragging, восстановим её
+                    if (this.element.classList.contains('dragging')) {
+                        this.endDragging();
+                    }
+                    
                     // Выводим состояние из-за отсутствия движения
                     this.targetDirection = this.direction + (Math.random() * 40 - 20); // Меняем направление на случайное
-                    this.targetSpeed = 0.6 + Math.random() * 0.4; // Начинаем с более низкой скоростью (было 1.0+0.5)
+                    this.targetSpeed = 0.6 + Math.random() * 0.4; 
                     this.changeState('wander', 0);
                     this.stuckTime = 0;
+                    
+                    // Гарантируем очистку стилей перехода
+                    this.element.style.transition = '';
                 }
             } else {
-                // Если божья коровка двигается, сбрасываем таймер задержки
+                // Если божья коровка двигается, сбрасываем таймеры задержки
                 this.stuckTime = 0;
+                this.stuckRotation = 0;
             }
             
             // Обновляем предыдущую позицию
@@ -902,6 +948,12 @@ class Ladybug {
             return;
         }
 
+        // Проверяем, не установлено ли точно вертикальное направление
+        if (Math.abs(this.direction % 180 - 90) < 1) {
+            // Если направление точно 90° или 270°, добавляем небольшое отклонение
+            this.direction += (Math.random() < 0.5 ? 5 : -5);
+        }
+
         const radians = this.direction * Math.PI / 180;
         // Увеличиваем коэффициент скорости движения
         this.x += Math.cos(radians) * this.speed * deltaTime / 700; // Увеличиваем скорость движения (было 800)
@@ -958,6 +1010,9 @@ class Ladybug {
         // Запоминаем текущий масштаб
         this.originalScale = this.element.style.transform ? 
             parseFloat(this.element.style.transform.replace('scale(', '').replace(')', '')) || 1 : 1;
+        
+        // Сначала очищаем все текущие стили transition
+        this.element.style.transition = '';
         
         // Добавляем плавный переход для трансформации
         this.element.style.transition = 'transform 0.2s ease-out';
@@ -1023,28 +1078,21 @@ class Ladybug {
     
     // Завершение перетаскивания
     endDragging() {
+        // Защита от двойного вызова
+        if (!this.isDragging) return;
+        
         this.isDragging = false;
         
-        // Возвращаемся к исходному масштабу
-        this.element.style.transform = `scale(${this.originalScale})`;
-        
-        // Добавляем обработчик для завершения анимации
-        const removeTransition = () => {
-            this.element.style.transition = '';
-            this.element.removeEventListener('transitionend', removeTransition);
-        };
-        this.element.addEventListener('transitionend', removeTransition);
-        
-        // Удаляем класс перетаскивания
+        // Немедленно удаляем класс перетаскивания
         this.element.classList.remove('dragging');
         
-        // Возвращаем нормальное лицо
+        // Немедленно восстанавливаем нормальное лицо
         this.restoreNormalFace();
         
-        // Возвращаем обычный z-index
+        // Немедленно восстанавливаем z-index
         this.element.style.zIndex = '1000';
         
-        // Удаляем элементы знаков злости
+        // Удаляем элементы гнева сразу
         if (this.angerSigns && this.angerSigns.length) {
             this.angerSigns.forEach(sign => {
                 if (sign && sign.parentNode) {
@@ -1054,23 +1102,57 @@ class Ladybug {
             this.angerSigns = [];
         }
         
-        // Удаляем анимацию для восклицательных знаков
+        // Удаляем анимацию для знаков немедленно
         if (this.angerAnimationStyle && this.angerAnimationStyle.parentNode) {
             this.angerAnimationStyle.parentNode.removeChild(this.angerAnimationStyle);
             this.angerAnimationStyle = null;
         }
         
-        // Возвращаемся к предыдущему состоянию
-        if (this.beforeDragState) {
-            this.changeState(this.beforeDragState);
-            this.beforeDragState = null;
-        } else {
-            this.changeState('wander');
-        }
+        // Очищаем переходы немедленно
+        this.element.style.transition = '';
         
-        // Устанавливаем скорость движения
-        this.speed = 0.3 + Math.random() * 1.0;
-        this.targetSpeed = this.speed;
+        // Создаем новую функцию для безопасного возврата с рандомизированным начальным углом
+        const safeRestore = () => {
+            // Сначала восстановим масштаб
+            this.element.style.transform = `scale(${this.originalScale || 1})`;
+            
+            // Небольшая задержка перед восстановлением поворота
+            setTimeout(() => {
+                // Генерируем случайный начальный угол, избегая вертикальных углов
+                let newDirection;
+                do {
+                    newDirection = Math.random() * 360;
+                } while (Math.abs(newDirection % 180 - 90) < 15); // Избегаем углов близких к 90/270
+                
+                this.direction = newDirection;
+                this.targetDirection = newDirection;
+                
+                // Применяем стандартный поворот, избегая вертикальных углов
+                const rotateAngle = this.direction;
+                this.element.style.transform = `rotate(${rotateAngle}deg)`;
+                
+                // Запускаем божью коровку в случайном направлении
+                this.speed = 0.6 + Math.random() * 1.0;
+                this.targetSpeed = this.speed;
+                
+                // Небольшое смещение в случайном направлении для гарантии движения
+                const radians = this.direction * Math.PI / 180;
+                this.x += Math.cos(radians) * 0.5;
+                this.y += Math.sin(radians) * 0.5;
+                this.updatePosition();
+                
+                // Переход в состояние блуждания
+                if (this.beforeDragState) {
+                    this.changeState(this.beforeDragState);
+                    this.beforeDragState = null;
+                } else {
+                    this.changeState('wander');
+                }
+            }, 50);
+        };
+        
+        // Выполняем безопасное восстановление сразу
+        safeRestore();
     }
 
     // Новый обработчик для mousedown
@@ -1135,6 +1217,9 @@ class Ladybug {
     
     // Обычный обработчик для mouseup
     handleMouseUp(e) {
+        // Защита от ситуации, когда mouseup произошел за пределами окна
+        if (!this.potentialDrag && !this.isDragging) return;
+        
         // Если было перетаскивание, завершаем его
         if (this.isDragging) {
             this.endDragging();
@@ -1224,6 +1309,9 @@ class Ladybug {
     
     // Обычный обработчик для touchend
     handleTouchEnd(e) {
+        // Защита от ситуации, когда touchend произошел за пределами окна
+        if (!this.potentialDrag && !this.isDragging) return;
+        
         // Если было перетаскивание, завершаем его
         if (this.isDragging) {
             this.endDragging();

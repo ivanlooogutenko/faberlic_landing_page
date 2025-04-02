@@ -354,6 +354,24 @@
     --digit-width-800: 2.8rem;                    /* Было 3rem - уменьшаем быстрее */
     --digit-height-800: 3.4rem;                   /* Было 3.6rem - уменьшаем быстрее */
     --digit-font-size-800: 1.8rem;                /* Было 1.9rem - уменьшаем быстрее */
+    
+    /* ======= ЦВЕТА КНОПКИ WHATSAPP ======= */
+    --whatsapp-top-color-1: #11a757; /* Начальный цвет градиента верхнего прямоугольника */
+    --whatsapp-top-color-2: #179e88; /* Средний цвет градиента верхнего прямоугольника */
+    --whatsapp-top-color-3: #0d8075; /* Конечный цвет градиента верхнего прямоугольника */
+    --whatsapp-bottom-color: #08544e; /* Цвет нижнего прямоугольника */
+    --whatsapp-text-color: #ffffff; /* Цвет текста кнопки */
+    --whatsapp-shadow-color: rgba(9, 76, 46, 0.6); /* Цвет тени */
+    --whatsapp-grain-opacity: 0.05; /* Интенсивность эффекта зернистости */
+}
+
+/* Генератор шума для эффекта зернистости */
+@keyframes noiseAnimation {
+    0% { background-position: 0% 0%; }
+    25% { background-position: 25% 25%; }
+    50% { background-position: 50% 50%; }
+    75% { background-position: 75% 75%; }
+    100% { background-position: 0% 0%; }
 }
 
 * {
@@ -1489,6 +1507,15 @@ body {
     transform-style: preserve-3d;
 }
 
+.ladybug * {
+    box-sizing: border-box;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    pointer-events: none;
+}
+
 /* Тело божьей коровки */
 .ladybug-body {
     position: absolute;
@@ -1985,5 +2012,237 @@ body {
     font-family: 'Arial', sans-serif;
     filter: drop-shadow(0 1px 2px rgba(0,0,0,0.2));
     pointer-events: none;
+}
+
+/* ======= СТИЛИ ДЛЯ БЛОКА С КНОПКОЙ WHATSAPP ======= */
+.whatsapp-block {
+    background-color: var(--card-bg-color);
+    border: var(--card-border-width) solid var(--card-border-color);
+    border-radius: var(--card-border-radius);
+    padding: 1.5rem;
+    margin-top: 0;
+    margin-bottom: 0.5rem; /* Стандартный отступ между блоками как у других элементов */
+    text-align: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.whatsapp-text {
+    font-family: var(--font-primary);
+    font-weight: var(--timer-header-font-weight);
+    font-size: var(--timer-header-font-size);
+    color: var(--timer-header-text);
+    margin-bottom: var(--timer-header-margin-bottom);
+    text-align: center;
+    font-style: var(--timer-header-font-style);
+}
+
+.whatsapp-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    background: none;
+    color: var(--whatsapp-text-color);
+    font-family: var(--font-primary);
+    font-weight: var(--font-weight-normal); /* Было var(--font-weight-semibold), меняем на normal */
+    font-size: 1.4rem;
+    padding: 0.8rem 2rem;
+    border-radius: 0.8rem; /* Было 2rem, сделал меньше скругление */
+    text-decoration: none;
+    transition: transform 0.3s ease;
+    letter-spacing: var(--price-letter-spacing);
+    z-index: 1;
+    width: auto;
+    min-width: 200px;
+    transform: translate(-4px, -4px);
+    text-shadow: none; /* Убираем тень текста */
+}
+
+.whatsapp-button::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: var(--whatsapp-bottom-color);
+    border-radius: 0.8rem; /* Было 2rem, сделал меньше скругление */
+    z-index: -2;
+    transform: translate(4px, 4px);
+}
+
+.whatsapp-button::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    /* Используем переменные для градиента */
+    background: radial-gradient(circle at center, var(--whatsapp-top-color-1) 0%, var(--whatsapp-top-color-2) 50%, var(--whatsapp-top-color-3) 100%);
+    background-size: 300% 300%; /* Увеличиваем размер для более плавного переливания */
+    border-radius: 0.8rem; /* Было 2rem, сделал меньше скругление */
+    z-index: -1;
+    transform: none;
+    animation: whatsappGradientMove 8s ease-in-out infinite; /* Увеличиваем время до 8 секунд для большей плавности */
+    box-shadow: none; /* Убираем тень */
+}
+
+/* Добавляем эффект зернистости с помощью псевдоэлемента */
+.whatsapp-button span::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+    background-size: 200px 200px;
+    opacity: var(--whatsapp-grain-opacity);
+    border-radius: 0.8rem; /* Было 2rem, сделал меньше скругление */
+    z-index: 1;
+    pointer-events: none;
+    animation: noiseAnimation 3s linear infinite;
+}
+
+.button-text, .whatsapp-icon {
+    position: relative;
+    z-index: 2;
+}
+
+.whatsapp-icon {
+    width: 1.8rem;
+    height: 1.8rem;
+    margin-right: 0.8rem;
+    filter: brightness(0) invert(1); /* Убираем drop-shadow */
+}
+
+@media (max-width: 768px) {
+    .whatsapp-text {
+        font-size: var(--timer-header-font-size-tablet);
+        margin-bottom: calc(var(--timer-header-margin-bottom) * 0.9);
+    }
+    
+    .whatsapp-button {
+        font-size: 1.2rem;
+        padding: 0.7rem 1.8rem;
+        min-width: 180px;
+        transform: translate(-3px, -3px);
+    }
+    
+    .whatsapp-button::before {
+        transform: translate(3px, 3px);
+    }
+    
+    .whatsapp-button:hover {
+        transform: translate(-3px, -5px);
+    }
+    
+    .whatsapp-button:active {
+        transform: translate(-3px, -3px);
+    }
+    
+    .whatsapp-button:active::after {
+        transform: translate(1px, 1px);
+    }
+    
+    .whatsapp-icon {
+        width: 1.6rem;
+        height: 1.6rem;
+        margin-right: 0.6rem;
+        filter: brightness(0) invert(1); /* Убираем drop-shadow */
+    }
+}
+
+@media (max-width: 480px) {
+    .whatsapp-block {
+        padding: 1.2rem;
+        margin-top: 0;
+        margin-bottom: 0.5rem; /* Стандартный отступ между блоками */
+    }
+    
+    .whatsapp-text {
+        font-size: var(--timer-header-font-size-mobile);
+        margin-bottom: var(--timer-header-margin-mobile);
+    }
+    
+    .whatsapp-button {
+        font-size: 1.1rem;
+        padding: 0.6rem 1.5rem;
+        min-width: 160px;
+        max-width: 250px;
+        transform: translate(-2px, -2px);
+    }
+    
+    .whatsapp-button::before {
+        transform: translate(2px, 2px);
+    }
+    
+    .whatsapp-button:hover {
+        transform: translate(-2px, -4px);
+    }
+    
+    .whatsapp-button:active {
+        transform: translate(-2px, -2px);
+    }
+    
+    .whatsapp-button:active::after {
+        transform: translate(1px, 1px);
+    }
+    
+    .whatsapp-icon {
+        width: 1.4rem;
+        height: 1.4rem;
+        filter: brightness(0) invert(1); /* Убираем drop-shadow */
+    }
+}
+
+/* Анимация для переливания кнопки WhatsApp */
+@keyframes whatsappGradientMove {
+    0% {
+        background-position: 0% 0%;
+        filter: saturate(1) brightness(1);
+    }
+    25% {
+        background-position: 25% 25%;
+        filter: saturate(1.05) brightness(1.05);
+    }
+    50% {
+        background-position: 50% 50%;
+        filter: saturate(1.1) brightness(1.1);
+    }
+    75% {
+        background-position: 75% 75%;
+        filter: saturate(1.05) brightness(1.05);
+    }
+    100% {
+        background-position: 0% 0%;
+        filter: saturate(1) brightness(1);
+    }
+}
+
+.whatsapp-button::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: var(--whatsapp-bottom-color);
+    border-radius: 0.8rem; /* Было 2rem, сделал меньше скругление */
+    z-index: -2;
+    transform: translate(4px, 4px);
+}
+
+.whatsapp-button:hover {
+    transform: translate(-4px, -6px);
+}
+
+.whatsapp-button:active {
+    transform: translate(-4px, -4px);
+}
+
+.whatsapp-button:active::after {
+    transform: translate(2px, 2px);
 }
   
