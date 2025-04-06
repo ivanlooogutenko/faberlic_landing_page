@@ -353,17 +353,20 @@ style.textContent = `
 `;
 document.head.appendChild(style);
 
-// Создаем экземпляр таймера с фиксированными значениями для демонстрации
+// Создаем экземпляр таймера с датой 20 апреля текущего года
 document.addEventListener('DOMContentLoaded', () => {
-    // Создаем таймер с указанными значениями из макета
-    const timer = new CountdownTimer(new Date(Date.now() + 1000000000)); // Просто большое время в будущем
+    // Получаем текущий год
+    const currentYear = new Date().getFullYear();
+    // Устанавливаем дату окончания - 20 апреля текущего года, конец дня
+    const endDateString = `${currentYear}-04-20T23:59:59`; 
     
-    // Установим конкретные значения из макета
-    timer.updateDisplay(3, 7, 46, 3);
+    // Создаем таймер с рассчитанной датой окончания
+    const timer = new CountdownTimer(endDateString);
     
     // Добавляем разделительные линии между цифрами
     timer.addSeparatorLines();
     
-    // Запускаем таймер для постоянного обновления
+    // Таймер уже запущен в конструкторе, статическое обновление не нужно
+    // timer.updateDisplay(3, 7, 46, 3); // Удаляем эту строку
     // timer.startTimer(); // Уже запущен в конструкторе
 });
