@@ -2736,7 +2736,7 @@ body {
     margin-top: 1.5rem; /* Отступ сверху (оставляем большим) */
     display: flex;
     flex-direction: column;
-    gap: 0.5rem; /* Стандартный отступ между QR и соцсетями */
+    gap: 1.2rem; /* Увеличиваем отступ */
 }
 
 /* Общий стиль для заголовков секций */
@@ -2877,8 +2877,8 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 40px; /* Размер кнопки */
-    height: 40px;
+    width: 48px; /* Увеличиваем размер кнопки */
+    height: 48px; /* Увеличиваем размер кнопки */
     border-radius: 50%; /* Круглая форма */
     text-decoration: none;
     transition: transform 0.2s ease, opacity 0.2s ease;
@@ -2893,8 +2893,8 @@ body {
 }
 
 .social-icon {
-    width: 20px; /* Немного уменьшаем иконку из-за рамки */
-    height: 20px;
+    width: 24px; /* Увеличиваем иконку пропорционально кнопке */
+    height: 24px; /* Увеличиваем иконку пропорционально кнопке */
     filter: brightness(0) invert(1); /* Делаем иконки белыми */
 }
 
