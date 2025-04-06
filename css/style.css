@@ -363,6 +363,12 @@
     --whatsapp-text-color: #ffffff; /* Цвет текста кнопки */
     --whatsapp-shadow-color: rgba(9, 76, 46, 0.6); /* Цвет тени */
     --whatsapp-grain-opacity: 0.05; /* Интенсивность эффекта зернистости */
+
+    /* ======= ЦВЕТА КНОПКИ ПОДАРКА (СИНИЕ) ======= */
+    --gift-button-top-color-1: #007bff; /* Ярко-синий */
+    --gift-button-top-color-2: #0056b3; /* Средне-синий */
+    --gift-button-top-color-3: #004085; /* Темно-синий */
+    --gift-button-bottom-color: #00274f; /* Очень темно-синий */
 }
 
 /* Генератор шума для эффекта зернистости */
@@ -2023,7 +2029,7 @@ body {
     border-radius: var(--card-border-radius);
     padding: 1.5rem;
     margin-top: 0;
-    margin-bottom: 0.5rem; /* Стандартный отступ между блоками как у других элементов */
+    margin-bottom: 1.5rem; /* Увеличиваем отступ снизу */
     text-align: center;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
@@ -2058,6 +2064,9 @@ body {
     min-width: 200px;
     transform: translate(-4px, -4px);
     text-shadow: none; /* Убираем тень текста */
+    /* Убираем розовую обводку */
+    /* border: var(--card-border-width) solid var(--card-border-color); */
+    /* box-sizing: border-box; */ /* Уже не нужно */
 }
 
 .whatsapp-button::before {
@@ -2493,7 +2502,7 @@ body {
   
 /* Добавляем стили для нового блока "Хотите подарок?" */
 .gift-promo-bar {
-    margin-top: 0.5rem; /* Добавляем отступ сверху, если нужно */
+    margin-top: 1.5rem; /* Увеличиваем отступ сверху */
     /* Наследует градиент и другие стили от .promo-bar */
     /* Можно добавить/переопределить стили, если нужно */
 }
@@ -2509,4 +2518,351 @@ body {
     font-weight: var(--promo-font-weight); /* Используем ту же жирность */
     color: var(--promo-text-color); /* Используем тот же цвет */
 }
+
+/* --- Конец стилей для блока пояснений --- */
+
+/* ======= СТИЛИ ДЛЯ БЛОКА С ПОЯСНЕНИЯМИ ======= */
+.explanation-block {
+    background-color: var(--card-bg-color); /* Используем тот же фон */
+    border: var(--card-border-width) solid var(--card-border-color); /* Та же рамка */
+    border-radius: var(--card-border-radius); /* То же скругление */
+    padding: 1.5rem; /* Стандартный отступ */
+    margin: 0 auto 0.5rem; /* Стандартный нижний отступ */
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.explanation-list {
+    list-style: none; /* Убираем стандартные маркеры */
+    padding: 0;
+    margin: 0;
+}
+
+.explanation-item {
+    position: relative;
+    padding-left: 1.25rem; /* Отступ для кастомного маркера */
+    margin-bottom: 0.8rem; /* Отступ между пунктами */
+    color: var(--card-main-text); /* Основной цвет текста */
+    font-size: 1rem; /* Стандартный размер текста */
+    line-height: 1.5; /* Увеличиваем межстрочный интервал */
+    font-family: var(--font-primary);
+    font-weight: var(--font-weight-normal);
+}
+
+.explanation-item::before {
+    content: "•"; /* Кастомный маркер-точка */
+    position: absolute;
+    left: 0.25rem;
+    color: var(--card-border-color); /* Цвет маркера как у рамки */
+    font-weight: bold;
+    font-size: 1.1em; /* Чуть крупнее текста */
+}
+
+.explanation-item:last-child {
+    margin-bottom: 0; /* Убираем отступ у последнего пункта */
+}
+
+/* Адаптивность для блока пояснений */
+@media (max-width: 768px) {
+    .explanation-block {
+        padding: 1.2rem; /* Уменьшаем отступы */
+    }
+    .explanation-item {
+        font-size: 0.95rem; /* Немного уменьшаем шрифт */
+    }
+}
+
+@media (max-width: 480px) {
+    .explanation-block {
+        padding: 1rem; /* Еще уменьшаем отступы */
+    }
+    .explanation-item {
+        font-size: 0.9rem; /* Еще уменьшаем шрифт */
+        padding-left: 1.1rem;
+        line-height: 1.4;
+    }
+    .explanation-item::before {
+        left: 0.15rem;
+    }
+}
+
+/* --- Конец стилей для блока пояснений --- */
   
+/* ======= СТИЛИ ДЛЯ ГОРИЗОНТАЛЬНОГО РАЗДЕЛИТЕЛЯ ======= */
+.section-divider {
+    border: none; 
+    height: 3px; 
+    background: linear-gradient(90deg, 
+        var(--promo-gradient-start) 0%, 
+        var(--promo-gradient-middle1) 35%, 
+        var(--promo-gradient-middle2) 65%, 
+        var(--promo-gradient-end) 100%
+    ); 
+    background-size: 300% 100%; 
+    animation: gradientMove 20s cubic-bezier(0.445, 0.05, 0.55, 0.95) infinite; 
+    margin: 1.5rem auto; 
+    width: 100%; 
+    border-radius: 2px; 
+}
+
+@media (max-width: 768px) {
+    .section-divider {
+        margin: 1.2rem auto; 
+    }
+}
+
+@media (max-width: 480px) {
+    .section-divider {
+        margin: 1rem auto; 
+        height: 2px; 
+    }
+}
+
+/* --- Конец стилей для блока пояснений --- */
+
+/* ======= СТИЛИ ДЛЯ СЕКЦИИ "ДОПОЛНИТЕЛЬНАЯ ИНФОРМАЦИЯ" ======= */
+.more-info-section {
+    /* Этот контейнер можно не стилизовать особо, 
+       он просто группирует блоки */
+    margin-top: 1.5rem; /* Отступ сверху (оставляем большим) */
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem; /* Стандартный отступ между QR и соцсетями */
+}
+
+/* Общий стиль для заголовков секций */
+.section-title {
+    font-family: var(--font-primary);
+    font-size: 1.5rem; /* Размер как у заголовка таймера */
+    font-weight: var(--font-weight-normal); /* Уменьшаем жирность по умолчанию */
+    color: var(--timer-header-text); /* Цвет как у заголовков */
+    text-align: center;
+    margin-bottom: 1.25rem;
+}
+
+/* --- Блок QR-кодов --- */
+.app-download-block {
+    background-color: #f0f0f0; /* Светло-серый фон */
+    border: var(--card-border-width) solid var(--card-border-color); /* Розовая рамка */
+    border-radius: var(--card-border-radius);
+    padding: 1.5rem;
+    box-sizing: border-box;
+}
+
+.qr-codes-container {
+    display: flex;
+    justify-content: space-around; /* Распределяем QR-коды */
+    align-items: flex-start;
+    flex-wrap: wrap; /* Разрешаем перенос на маленьких экранах */
+    gap: 1.5rem;
+}
+
+.qr-code-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.qr-code-img {
+    width: 120px; /* Размер QR-кода */
+    height: 120px;
+    margin-bottom: 0.5rem;
+    /* Заменяем рамку на розовую */
+    border: var(--card-border-width) solid var(--card-border-color);
+    padding: 5px; /* Небольшой отступ внутри рамки */
+    background-color: var(--color-white);
+}
+
+.qr-code-label {
+    font-family: var(--font-primary);
+    font-size: 1rem;
+    color: var(--card-main-text);
+}
+
+/* --- Блок "Что ещё?" --- */
+.benefits-block {
+    background-color: var(--card-bg-color); /* Стандартный зеленый фон */
+    border: var(--card-border-width) solid var(--card-border-color); /* Розовая рамка */
+    border-radius: var(--card-border-radius);
+    padding: 1.5rem;
+    box-sizing: border-box;
+    margin: 0 auto 1.5rem; /* Добавляем увеличенный отступ снизу */
+}
+
+.benefits-title {
+    /* Убираем розовый цвет, жирность и курсив */
+    color: var(--timer-header-text); 
+    font-weight: var(--font-weight-normal);
+    font-style: normal;
+    /* Можно сделать чуть крупнее, если нужно выделить */
+    /* font-size: 1.6rem; */ 
+    text-transform: uppercase; /* Оставляем капс */
+}
+
+.benefits-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem; /* Отступ между пунктами */
+}
+
+.benefit-item {
+    display: flex;
+    /* align-items: flex-start; Убираем, т.к. нет иконки */
+    /* gap: 0.8rem; Убираем, т.к. нет иконки */
+    position: relative; 
+    padding-left: 1.25rem; /* Оставляем отступ для маркера */
+    /* Убеждаемся, что маркер позиционируется правильно */
+}
+
+/* Добавляем маркер вместо иконки */
+.benefit-item::before {
+    content: "•";
+    position: absolute;
+    left: 0.25rem;
+    top: 0.1em; /* Позиционируем маркер */
+    color: var(--card-border-color); /* Розовый маркер */
+    font-weight: bold;
+    font-size: 1.1em; 
+}
+
+/* Удаляем стили для иконки */
+/* 
+.benefit-icon {
+    width: 24px; 
+    height: 24px;
+    flex-shrink: 0; 
+     filter: invert(39%) sepia(63%) saturate(4767%) hue-rotate(295deg) brightness(100%) contrast(101%); 
+}
+*/
+
+.benefit-text {
+    font-family: var(--font-primary);
+    font-size: 1rem;
+    color: var(--card-main-text);
+    line-height: 1.4;
+}
+
+/* --- Блок соцсетей --- */
+.social-share-block {
+    background-color: #f0f0f0; /* Светло-серый фон */
+    border: var(--card-border-width) solid var(--card-border-color); /* Розовая рамка */
+    border-radius: var(--card-border-radius);
+    padding: 1rem 1.5rem;
+    display: flex;
+    justify-content: center; /* Центрируем кнопки */
+    align-items: center;
+    flex-wrap: wrap; /* Перенос на маленьких экранах */
+    gap: 1rem;
+}
+
+.social-buttons {
+    display: flex;
+    gap: 0.8rem;
+}
+
+.social-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px; /* Размер кнопки */
+    height: 40px;
+    border-radius: 50%; /* Круглая форма */
+    text-decoration: none;
+    transition: transform 0.2s ease, opacity 0.2s ease;
+    /* Добавляем розовую рамку */
+    border: var(--card-border-width) solid var(--card-border-color);
+    box-sizing: border-box; /* Учитываем рамку в размере */
+}
+
+.social-button:hover {
+    transform: scale(1.1);
+    opacity: 0.9;
+}
+
+.social-icon {
+    width: 20px; /* Немного уменьшаем иконку из-за рамки */
+    height: 20px;
+    filter: brightness(0) invert(1); /* Делаем иконки белыми */
+}
+
+/* Цвета кнопок соцсетей */
+.social-button.instagram {
+    background: radial-gradient(circle at 30% 107%, #fdf497 0%, #fdf497 5%, #fd5949 45%, #d6249f 60%, #285AEB 90%);
+}
+
+.social-button.telegram {
+    background-color: #0088cc;
+}
+
+.social-button.tiktok {
+    background-color: #000000; /* Или градиент #ff0050, #00f2ea */
+}
+
+/* Адаптивность для новой секции */
+@media (max-width: 768px) {
+    .more-info-section {
+        gap: 0.5rem; /* Стандартный отступ */
+    }
+    .section-title {
+        font-size: 1.3rem;
+        margin-bottom: 1rem;
+    }
+    .app-download-block, .benefits-block {
+        padding: 1.2rem;
+    }
+    .qr-code-img {
+        width: 100px;
+        height: 100px;
+    }
+    .benefit-item {
+        /* gap: 0.6rem; */
+        padding-left: 1.1rem; /* Адаптируем отступ */
+    }
+    .benefit-icon {
+        width: 20px;
+        height: 20px;
+    }
+    .social-share-block {
+        justify-content: center; /* Центрируем на планшете */
+    }
+}
+
+@media (max-width: 480px) {
+    .more-info-section {
+        gap: 0.5rem; /* Стандартный отступ */
+        margin-top: 1rem;
+    }
+    .section-title {
+        font-size: 1.2rem;
+    }
+    .app-download-block, .benefits-block, .social-share-block {
+        padding: 1rem;
+    }
+    .qr-codes-container {
+        justify-content: center; /* Центрируем QR-коды */
+        gap: 1rem;
+    }
+    .qr-code-img {
+        width: 90px;
+        height: 90px;
+        /* Розовая рамка наследуется */
+    }
+    .benefit-text {
+        font-size: 0.9rem;
+    }
+    .social-button {
+        width: 36px;
+        height: 36px;
+        /* Розовая рамка наследуется */
+    }
+    .social-icon {
+        width: 18px; /* Уменьшаем иконку */
+        height: 18px;
+    }
+}
+
+/* --- Конец стилей для ДОП. ИНФО --- */
