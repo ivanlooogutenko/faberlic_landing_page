@@ -2870,15 +2870,15 @@ body {
 
 .social-buttons {
     display: flex;
-    gap: 0.8rem;
+    gap: 1.5rem; /* Ещё увеличиваем отступ */
 }
 
 .social-button {
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 48px; /* Увеличиваем размер кнопки */
-    height: 48px; /* Увеличиваем размер кнопки */
+    width: 52px; /* Ещё увеличиваем размер кнопки */
+    height: 52px; /* Ещё увеличиваем размер кнопки */
     border-radius: 50%; /* Круглая форма */
     text-decoration: none;
     transition: transform 0.2s ease, opacity 0.2s ease;
@@ -2893,8 +2893,8 @@ body {
 }
 
 .social-icon {
-    width: 24px; /* Увеличиваем иконку пропорционально кнопке */
-    height: 24px; /* Увеличиваем иконку пропорционально кнопке */
+    width: 28px; /* Ещё увеличиваем иконку */
+    height: 28px; /* Ещё увеличиваем иконку */
     filter: brightness(0) invert(1); /* Делаем иконки белыми */
 }
 
@@ -2961,16 +2961,20 @@ body {
         /* Розовая рамка наследуется */
     }
     .benefit-text {
-        font-size: 0.9rem;
+        font-size: 1rem; /* Ещё увеличиваем шрифт */
     }
     .social-button {
-        width: 36px;
-        height: 36px;
+        width: 52px; /* Ещё увеличиваем размер */
+        height: 52px;
         /* Розовая рамка наследуется */
     }
     .social-icon {
-        width: 18px; /* Уменьшаем иконку */
-        height: 18px;
+        width: 28px; /* Ещё увеличиваем иконку */
+        height: 28px;
+    }
+    /* Увеличиваем отступ между кнопками */
+    .social-buttons {
+        gap: 1.5rem;
     }
 }
 
