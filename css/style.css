@@ -2271,4 +2271,242 @@ body {
         animation-duration: 1.5s !important;
     }
 }
+
+/* ======= СТИЛИ ДЛЯ БЛОКА С ПРЕДЛОЖЕНИЕМ ПОДАРКА ======= */
+.gift-offer-block {
+    /* Стили остаются похожими на .product-info */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    background-color: var(--product-bg-color); /* Тот же фон */
+    border-radius: var(--card-border-radius);
+    border: var(--card-border-width) solid var(--card-border-color);
+    padding: 0; /* Убираем внешний padding, как у .product-info */
+    margin: 0 auto 0.5rem; 
+    width: 100%;
+    overflow: hidden;
+    box-sizing: border-box;
+}
+
+.gift-content {
+    /* Копируем из .product-content */
+    display: flex;
+    width: 100%;
+    gap: 0;
+    align-items: stretch;
+    justify-content: flex-start;
+    min-height: 0;
+}
+
+.gift-image-wrapper {
+    /* Копируем из .product-image */
+    flex: 1.5; 
+    min-width: 320px; 
+    max-width: 55%;
+    padding: 0;
+    margin: 0;
+    background-color: var(--product-image-bg-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    border: 2px dashed #1a692f; 
+    line-height: 0;
+    border-radius: var(--card-border-radius) 0 0 var(--card-border-radius); 
+    height: auto;
+    min-width: 0; /* Сбрасываем min-width для flex */
+}
+
+.gift-image {
+    /* Копируем из .product-photo */
+    width: 100%;
+    height: auto;
+    display: block;
+    object-fit: contain;
+    border-radius: calc(var(--card-border-radius) - 2px) 0 0 calc(var(--card-border-radius) - 2px); 
+    max-height: 100%;
+}
+
+.gift-details {
+    /* Копируем из .product-description */
+    flex: 1;
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+    margin-left: 0; /* Убрали gap, отступ не нужен */
+    padding: 1rem 1.5rem 1rem 1rem; /* Отступ внутри текстового блока */
+}
+
+/* Стили для текстовых элементов внутри .gift-details остаются */
+.gift-date {
+    font-family: var(--font-primary);
+    font-size: 0.9rem; 
+    font-weight: var(--font-weight-normal);
+    color: var(--timer-label-text); 
+    margin-bottom: 0.5rem;
+}
+
+.gift-description {
+    font-family: var(--font-primary);
+    font-size: 1.1rem; 
+    font-weight: var(--font-weight-normal);
+    color: var(--card-main-text); 
+    margin-bottom: 0.5rem;
+    line-height: 1.4;
+}
+
+.gift-name {
+    font-family: var(--font-primary);
+    font-size: 1.1rem; 
+    font-weight: var(--font-weight-semibold);
+    color: var(--card-main-text);
+    line-height: 1.4;
+    margin-bottom: 1.5rem; /* Отступ перед кнопкой */
+}
+
+.gift-button {
+    margin-top: auto; /* Прижимаем кнопку к низу */
+    align-self: center; /* Центрируем саму кнопку */
+}
+
+/* Добавляем выравнивание текста внутри кнопки */
+.gift-button .button-text {
+    text-align: center;
+    width: 100%; /* Позволяем тексту занимать всю ширину кнопки для центрирования */
+}
+
+/* Адаптивность для блока подарка */
+@media (max-width: 768px) {
+    /* .gift-offer-block стили не меняем */
+
+    /* .gift-content стили не меняем */
+
+    .gift-image-wrapper {
+        /* Копируем из @media .product-image */
+        min-width: 250px;
+        max-width: 50%;
+    }
+
+    .gift-details {
+         /* Копируем из @media .product-description */
+         padding: 0.75rem 1rem 0.75rem 1rem; 
+    }
+
+    /* Стили текста и кнопки можно подкорректировать, если нужно */
+    .gift-description,
+    .gift-name {
+        font-size: 1rem;
+    }
+
+    .gift-button {
+        align-self: center; /* Центрируем кнопку на планшетах */
+        margin-top: 1rem; /* Добавляем отступ сверху */
+    }
+}
+
+@media (max-width: 600px) {
+    /* .gift-offer-block без изменений */
+
+    .gift-content {
+        /* Копируем из @media .product-content */
+        flex-direction: column; 
+        align-items: stretch; 
+        width: 100%;
+    }
+
+    .gift-image-wrapper {
+        /* Копируем из @media .product-image */
+        width: calc(100% + 4px);
+        max-width: none;
+        margin: 0 -2px;
+        padding: 0;
+        border-radius: var(--card-border-radius) var(--card-border-radius) 0 0;
+        position: relative;
+        left: 0;
+        right: 0;
+        min-width: auto; /* Убираем */
+        height: auto; /* Убираем */
+        flex-basis: auto; /* Убираем */
+        border: 2px dashed #1a692f; /* Восстанавливаем рамку */
+        border-bottom: none; /* Убираем нижнюю */
+    }
+
+    .gift-image {
+        /* Копируем из @media .product-photo */
+        min-height: auto;
+        height: auto;
+        width: 100%;
+        border-radius: calc(var(--card-border-radius) - 2px) calc(var(--card-border-radius) - 2px) 0 0;
+        max-height: none; /* Убираем ограничение */
+        display: block;
+    }
+
+    .gift-details {
+        /* Копируем из @media .product-description */
+        padding: 1rem;
+        margin-left: 0;
+        width: 100%;
+        align-items: center; /* Центрируем текст */
+        text-align: center; /* Центрируем текст */
+        border-top: 2px dashed #1a692f; /* Добавляем рамку сверху */
+    }
+
+    /* Стили текста можно оставить или адаптировать */
+    .gift-name {
+        margin-bottom: 1.5rem; /* Отступ перед кнопкой */
+    }
+
+    .gift-button {
+        align-self: center; 
+        margin-top: 0; /* Отступ создается за счет margin-bottom у .gift-name */
+    }
+}
+
+@media (max-width: 480px) {
+    /* В основном наследуем стили от 600px */
+
+    /* Убираем внешний padding у родителя */
+    .gift-offer-block {
+        padding: 0;
+    }
+
+    /* Можно уменьшить шрифты текста */
+    .gift-date {
+        font-size: 0.8rem;
+    }
+
+    .gift-description,
+    .gift-name {
+        font-size: 0.9rem; 
+    }
+
+    .gift-button {
+        width: 90%; 
+        max-width: 250px; 
+        padding: 0.6rem 1rem; 
+        font-size: 1rem;
+    }
+}
+
+/* --- Конец стилей для блока подарка --- */
+  
+/* Добавляем стили для нового блока "Хотите подарок?" */
+.gift-promo-bar {
+    margin-top: 0.5rem; /* Добавляем отступ сверху, если нужно */
+    /* Наследует градиент и другие стили от .promo-bar */
+    /* Можно добавить/переопределить стили, если нужно */
+}
+
+.gift-promo-text {
+    /* Переопределяем стили для текста, чтобы он был по центру и не бежал */
+    text-align: center;
+    white-space: normal; /* Разрешаем перенос текста, если он длинный */
+    display: block; /* Убеждаемся, что это блочный элемент для центрирования */
+    /* Можно добавить/переопределить стили шрифта, если нужно */
+    font-style: italic; /* Сохраняем курсив */
+    font-size: var(--promo-font-size); /* Используем тот же размер */
+    font-weight: var(--promo-font-weight); /* Используем ту же жирность */
+    color: var(--promo-text-color); /* Используем тот же цвет */
+}
   
